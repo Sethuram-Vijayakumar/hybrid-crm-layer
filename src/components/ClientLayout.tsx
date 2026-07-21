@@ -41,8 +41,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     setTourStep
   } = useApp();
 
-  // Mode Selection States: 'presentation' | 'crm' | 'architecture'
-  const [activeMode, setActiveMode] = useState<'presentation' | 'crm' | 'architecture'>('presentation');
+
   
   // Transition Loader State
   const [loadingMode, setLoadingMode] = useState<boolean>(false);
@@ -197,7 +196,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
     
     setTimeout(() => {
-      setActiveMode(mode);
       setLoadingMode(false);
     }, 400);
   };
@@ -1230,16 +1228,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 View Demo CRM Portal
               </button>
               <button
+                onClick={() => setCurrentSlide(11)}
+                className="p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-2xl transition duration-200 active-press"
+              >
+                View Technology Architecture
+              </button>
+              <button
                 onClick={() => setCurrentSlide(1)}
                 className="p-4 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl shadow-md transition duration-200 active-press"
               >
                 Back to Executive Summary
-              </button>
-              <button
-                onClick={() => handleModeSwitch('architecture')}
-                className="p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-2xl transition duration-200 active-press"
-              >
-                Open System Architecture
               </button>
             </div>
 
@@ -1292,32 +1290,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <button
                 onClick={() => handleModeSwitch('presentation')}
                 className={`py-1.5 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-150 active-press ${
-                  activeMode === 'presentation'
+                  presentationMode
                     ? 'bg-[#C9922E] text-white font-extrabold glowing-ring'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                📑 Strategy Deck
+                📑 Executive Presentation
               </button>
               <button
                 onClick={() => handleModeSwitch('crm')}
                 className={`py-1.5 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-150 active-press ${
-                  activeMode === 'crm'
+                  !presentationMode
                     ? 'bg-[#C9922E] text-white font-extrabold glowing-ring'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                💻 Live CRM
-              </button>
-              <button
-                onClick={() => handleModeSwitch('architecture')}
-                className={`py-1.5 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-150 active-press ${
-                  activeMode === 'architecture'
-                    ? 'bg-[#C9922E] text-white font-extrabold glowing-ring'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🏗 Architecture
+                💻 Interactive Demo CRM
               </button>
             </div>
           </div>
