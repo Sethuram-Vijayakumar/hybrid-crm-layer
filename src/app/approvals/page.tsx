@@ -286,7 +286,7 @@ export default function ApprovalsPage() {
                                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-l-4 border-[#C9922E] bg-[#FBF1DE] p-5 rounded-r-xl shadow-xs space-y-4 md:space-y-0 md:space-x-6 relative">
                                   <div className="space-y-1.5 flex-1">
                                     <div className="flex items-center space-x-2 text-xs font-bold text-amber-800">
-                                      <Zap className="h-4 w-4 text-[#C9922E]" />
+                                      <Zap className="h-4 w-4 text-[#C9922E] glowing-ring rounded-full" />
                                       <span>AI Escalation Intelligence</span>
                                     </div>
                                     <p className="text-xs text-slate-805 leading-relaxed font-medium">
@@ -312,7 +312,7 @@ export default function ApprovalsPage() {
                                     {!isEscalated ? (
                                       <button
                                         onClick={() => escalateDeal(deal.id)}
-                                        className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-semibold text-xs py-2.5 px-5 rounded-lg shadow-sm transition duration-200 active:scale-95 flex items-center space-x-1"
+                                        className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-semibold text-xs py-2.5 px-5 rounded-lg shadow-sm transition duration-200 flex items-center space-x-1 active-press"
                                       >
                                         <span>Escalate Now</span>
                                         <ArrowRight className="h-3.5 w-3.5 ml-1" />

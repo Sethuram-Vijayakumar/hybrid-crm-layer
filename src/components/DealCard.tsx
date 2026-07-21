@@ -27,7 +27,7 @@ export default function DealCard({ deal, onClick }: DealCardProps) {
   return (
     <div 
       onClick={onClick}
-      className="group relative bg-white border border-[#E5E7EB] hover:border-slate-300 rounded-xl p-4 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer active:scale-[0.99] flex flex-col justify-between h-30 animate-fade-in"
+      className="group relative bg-white border border-[#E5E7EB] hover:border-slate-300 rounded-xl p-4 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between h-30 animate-fade-in hover-card-glow active-press"
     >
       {/* Top Row: Company name & conditional AI risk assessment */}
       <div className="flex justify-between items-start space-x-2">
@@ -36,7 +36,7 @@ export default function DealCard({ deal, onClick }: DealCardProps) {
         </h4>
         
         {showRisk && (
-          <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border shrink-0 whitespace-nowrap ${getRiskBadgeColor(deal.risk)}`}>
+          <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border shrink-0 whitespace-nowrap ${getRiskBadgeColor(deal.risk)} ${deal.risk === 'High' ? 'glowing-ring' : ''}`}>
             {deal.risk}
           </span>
         )}

@@ -158,7 +158,7 @@ export default function SettingsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* HubSpot System of Record */}
-          <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden shadow-xs">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden shadow-xs hover-card-glow">
             <div className="bg-[#1B1F2A] px-5 py-4 text-white flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider">HubSpot</span>
               <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-800 text-slate-300 rounded">
@@ -190,10 +190,10 @@ export default function SettingsPage() {
           </div>
 
           {/* Custom Approval Layer */}
-          <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden shadow-xs">
-            <div className="bg-[#C9922E] px-5 py-4 text-slate-950 flex items-center justify-between">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden shadow-xs hover-card-glow">
+            <div className="bg-[#C9922E] px-5 py-4 text-white flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider">Custom Layer</span>
-              <span className="text-[10px] font-bold px-2 py-0.5 bg-[#b07f24] text-slate-950 rounded">
+              <span className="text-[10px] font-bold px-2 py-0.5 bg-[#b07f24] text-white rounded">
                 Built Here
               </span>
             </div>
