@@ -126,7 +126,7 @@ export default function ExecutiveStrategyPage() {
                 },
                 {
                   title: 'Timeline to Market',
-                  desc: 'Production ready within 6–8 weeks using iterative milestone releases, preventing pipeline downtime or record migrations.',
+                  desc: 'Production ready within 3–4 months using iterative milestone releases, preventing pipeline downtime or record migrations.',
                   icon: Clock,
                   iconBg: 'bg-amber-50 text-amber-600 border-amber-100',
                 },
@@ -162,8 +162,8 @@ export default function ExecutiveStrategyPage() {
                 {[
                   { label: 'Current CRM', value: 'HubSpot Standard' },
                   { label: 'Overlay Tech', value: 'Next.js + Supabase' },
-                  { label: 'Deployment', value: '6–8 Weeks' },
-                  { label: 'Estimated CapEx', value: '₹15L (70% Saving)' },
+                  { label: 'Deployment', value: '3–4 months' },
+                  { label: 'Estimated CapEx', value: '₹12L–18L (60–70% Saving)' },
                   { label: 'Operational Risk', value: 'Low' },
                   { label: 'AI Strategy', value: 'Enabled' }
                 ].map((item, idx) => (
@@ -405,7 +405,7 @@ export default function ExecutiveStrategyPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
                     {[
-                      { item: 'Implementation Cost', saas: 'High (₹12L/year seat licensing)', hybrid: 'Low (₹3L–5L up-front CapEx)', custom: 'Very High (₹45L–65L custom development)' },
+                      { item: 'Implementation Cost', saas: 'High (₹12L/year seat licensing)', hybrid: 'Low (₹12L–18L up-front CapEx)', custom: 'Very High (₹45L–65L custom development)' },
                       { item: 'Timeline to Launch', saas: 'Immediate', hybrid: 'Fast (3–4 Months)', custom: 'Slow (6–9 Months)' },
                       { item: 'Business Transition Risk', saas: 'Low', hybrid: 'Low (HubSpot remains database source)', custom: 'High (Complex data migrations)' },
                       { item: 'Platform Flexibility', saas: 'Low (Locked to SaaS pipeline designs)', hybrid: 'High (Custom Next.js layout structures)', custom: 'Very High' },
@@ -440,8 +440,8 @@ export default function ExecutiveStrategyPage() {
             {/* ROI Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { label: 'Development Cost Savings', saas: 'Traditional custom CRM: ₹45L', overlay: 'Hybrid Overlay: ₹15L', saving: 'Net Saved: ₹30L CapEx', icon: DollarSign, color: 'text-[#C9922E]' },
-                { label: 'Timeline Launch Speedup', saas: 'Traditional build: 9 Months', overlay: 'Hybrid build: 8 Weeks', saving: '60–70% Faster Delivery', icon: Clock, color: 'text-amber-500' },
+                { label: 'Development Cost Savings', saas: 'Traditional custom CRM: ₹45L–65L', overlay: 'Hybrid Overlay: ₹12L–18L', saving: 'Net Saved: ₹30L–50L CapEx', icon: DollarSign, color: 'text-[#C9922E]' },
+                { label: 'Timeline Launch Speedup', saas: 'Traditional build: 9 Months', overlay: 'Hybrid build: 3–4 months', saving: '60–70% Faster Delivery', icon: Clock, color: 'text-amber-500' },
                 { label: 'Approval Cycle Reduction', saas: 'Current delay: 4.4 Days', overlay: 'Target delay: 1.5 Days', saving: '65% Cycle Reduction', icon: Activity, color: 'text-emerald-500' }
               ].map((card, idx) => {
                 const Icon = card.icon;

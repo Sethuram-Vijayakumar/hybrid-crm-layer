@@ -234,7 +234,7 @@ Deliver custom signature validation portals that integrate HubSpot opportunity l
             </div>
 
             <div className="bg-[#FBF1DE]/25 p-3 rounded-lg border border-[#C9922E]/20 text-[10px] text-slate-700 font-semibold leading-relaxed">
-              <strong>Expected Outcome:</strong> Escalating Legal staff to {legalTeamSize} decreases hold cycles by {(100 - (3/legalTeamSize)*100).toFixed(0)}%, securing ₹15L+ in contract closures earlier.
+              <strong>Expected Outcome:</strong> Escalating Legal staff to {legalTeamSize} decreases hold cycles by {(100 - (3/legalTeamSize)*100).toFixed(0)}%, securing ₹45L–65L in contract closures earlier.
             </div>
           </div>
 
