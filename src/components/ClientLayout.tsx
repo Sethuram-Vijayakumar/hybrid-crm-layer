@@ -227,9 +227,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const handleScreenClick = (e: React.MouseEvent) => {
     if (!presentationMode) return;
     
-    // Ignore clicks on buttons/inputs/toolbars
+    // Ignore clicks on buttons/inputs/toolbars or inside the slide content card itself
     const target = e.target as HTMLElement;
-    if (target.closest('button') || target.closest('a') || target.closest('input') || target.closest('header') || target.closest('.fixed')) {
+    if (
+      target.closest('button') || 
+      target.closest('a') || 
+      target.closest('input') || 
+      target.closest('header') || 
+      target.closest('.fixed') ||
+      target.closest('.animate-slide-fade')
+    ) {
       return;
     }
     
