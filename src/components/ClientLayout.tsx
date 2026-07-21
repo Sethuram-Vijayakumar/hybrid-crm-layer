@@ -40,6 +40,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   } = useApp();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showChoiceModal, setShowChoiceModal] = useState<boolean>(true);
 
   // Keyboard navigation for Presentation Mode
   useEffect(() => {
@@ -279,7 +280,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       case 6: // Pipeline Demo
         return (
-          <div className="space-y-3 animate-fade-in text-slate-750 w-full">
+          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
                 Slide 6 of 14 • Working Demonstration • Pipeline Page
@@ -294,7 +295,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       case 7: // Approvals Demo
         return (
-          <div className="space-y-3 animate-fade-in text-slate-750 w-full">
+          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
                 Slide 7 of 14 • Working Demonstration • Approvals Queue
@@ -309,7 +310,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       case 8: // Analytics Demo
         return (
-          <div className="space-y-3 animate-fade-in text-slate-750 w-full">
+          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
                 Slide 8 of 14 • Working Demonstration • Blended Analytics
@@ -370,7 +371,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       case 11: // Production Readiness
         return (
-          <div className="space-y-3 animate-fade-in text-slate-750 w-full">
+          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
                 Slide 11 of 14 • Production Readiness & Mappings
@@ -418,7 +419,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <div className="bg-slate-50 border border-slate-150 rounded-xl p-6 shadow-xs text-xs space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-bold border-b border-slate-200 pb-3">
                 <span className="text-[#C9922E]">1. Phase 1 Scope (Current)</span>
-                <span className="text-slate-500 uppercase tracking-wider text-[9px] bg-slate-200 py-0.5 px-2 rounded-md">MVP Released</span>
+                <span className="text-slate-550 uppercase tracking-wider text-[9px] bg-slate-205 py-0.5 px-2 rounded-md">MVP Released</span>
               </div>
               <p className="text-slate-600 font-medium leading-relaxed">
                 We have built and launched the foundational approvals workflow tables, synced HubSpot pipelines, and created live blended analytics widgets.
@@ -426,7 +427,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-bold border-b border-slate-200 pt-2 pb-3">
                 <span className="text-[#C9922E]">2. Phase 2 Scope (Future)</span>
-                <span className="text-slate-505 uppercase tracking-wider text-[9px] bg-slate-200 py-0.5 px-2 rounded-md">Upcoming</span>
+                <span className="text-slate-550 uppercase tracking-wider text-[9px] bg-slate-205 py-0.5 px-2 rounded-md">Upcoming</span>
               </div>
               <p className="text-slate-650 font-medium leading-relaxed">
                 Deploy automated email notifications via Resend API, implement predictive resource hiring recommendations, and launch advanced pipeline forecasting models.
@@ -500,30 +501,36 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
 
           {/* Presentation Mode / Demo CRM Switching Switcher */}
-          <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
-            <button
-              onClick={() => setPresentationMode(true)}
-              className={`py-1.5 px-3.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-150 active-press ${
-                presentationMode
-                  ? 'bg-[#C9922E] text-slate-950 font-extrabold glowing-ring'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Presentation Mode
-            </button>
-            <button
-              onClick={() => {
-                setPresentationMode(false);
-                router.push('/pipeline');
-              }}
-              className={`py-1.5 px-3.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-150 active-press ${
-                !presentationMode
-                  ? 'bg-slate-700 text-white font-extrabold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              Demo CRM
-            </button>
+          <div className="relative">
+            {/* Visual Highlight indicator */}
+            <div className="absolute -top-1 -right-1 h-3 w-3 bg-emerald-500 rounded-full border-2 border-[#1B1F2A] animate-ping" />
+            <div className="absolute -top-1 -right-1 h-3 w-3 bg-emerald-500 rounded-full border-2 border-[#1B1F2A]" />
+            
+            <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700 shadow-md">
+              <button
+                onClick={() => setPresentationMode(true)}
+                className={`py-1.5 px-3.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-150 active-press ${
+                  presentationMode
+                    ? 'bg-[#C9922E] text-white font-extrabold glowing-ring'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Presentation Mode
+              </button>
+              <button
+                onClick={() => {
+                  setPresentationMode(false);
+                  router.push('/pipeline');
+                }}
+                className={`py-1.5 px-3.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-150 active-press ${
+                  !presentationMode
+                    ? 'bg-[#C9922E] text-white font-extrabold glowing-ring'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Demo CRM
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -571,7 +578,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <button
                 disabled={currentSlide === 1}
                 onClick={() => setCurrentSlide(Math.max(currentSlide - 1, 1))}
-                className="bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-800 font-bold text-[10px] px-3.5 py-2 rounded-lg border border-slate-700 transition active-press flex items-center space-x-1"
+                className="bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-850 font-bold text-[10px] px-3.5 py-2 rounded-lg border border-slate-700 transition active-press flex items-center space-x-1"
               >
                 <ChevronLeft className="h-3 w-3" />
                 <span>Prev</span>
@@ -584,7 +591,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     setPresentationMode(false);
                   }
                 }}
-                className="bg-[#C9922E] hover:bg-[#b07f24] text-slate-950 font-bold text-[10px] px-4 py-2 rounded-lg transition active-press flex items-center space-x-1"
+                className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-[10px] px-4 py-2 rounded-lg transition active-press flex items-center space-x-1"
               >
                 <span>{currentSlide === 14 ? 'Finish' : 'Next'}</span>
                 <ChevronRight className="h-3 w-3" />
@@ -782,6 +789,50 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         </div>
       )}
+
+      {/* Welcome Mode Choice Modal */}
+      {showChoiceModal && (
+        <div className="fixed inset-0 bg-[#0F111A]/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in font-sans">
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 max-w-md w-full shadow-2xl space-y-6 text-center text-slate-800">
+            <div className="flex justify-center">
+              <div className="h-12 w-12 rounded-full bg-[#FBF1DE] flex items-center justify-center">
+                <Database className="h-6 w-6 text-[#C9922E]" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-[#1B1F2A]">Welcome to the Hybrid CRM Strategy Portfolio</h3>
+              <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                Select how you would like to begin reviewing this case study prepared for the doodleblue Strategy Consulting engagement.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 pt-2">
+              <button
+                onClick={() => {
+                  setPresentationMode(true);
+                  setCurrentSlide(1);
+                  setShowChoiceModal(false);
+                }}
+                className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-xs py-3 px-6 rounded-xl shadow-md transition duration-200 active-press"
+              >
+                Launch Presentation Mode
+              </button>
+              <button
+                onClick={() => {
+                  setPresentationMode(false);
+                  setTourActive(true);
+                  setTourStep(1);
+                  router.push('/pipeline');
+                  setShowChoiceModal(false);
+                }}
+                className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-3 px-6 rounded-xl shadow-md transition duration-205 active-press"
+              >
+                Explore Demo CRM (With Walkthrough)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

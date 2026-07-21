@@ -34,7 +34,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [fieldMappings, setFieldMappings] = useState<FieldMapping[]>(initialFieldMappings);
   
   // Presentation & Style States
-  const [presentationMode, setPresentationMode] = useState<boolean>(false);
+  const [presentationMode, setPresentationMode] = useState<boolean>(true);
   const [currentSlide, setCurrentSlide] = useState<number>(1);
   const [darkMode, setDarkMode] = useState<boolean>(false);
   
