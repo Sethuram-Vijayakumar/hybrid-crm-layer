@@ -153,18 +153,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
   }, [presentationMode, pathname, router]);
 
-  // Keyboard navigation for Presentation Mode (up to 19 slides)
+  // Keyboard navigation for Presentation Mode (up to 18 slides)
   useEffect(() => {
     if (!presentationMode) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        setCurrentSlide(Math.min(currentSlide + 1, 19));
+        setCurrentSlide(Math.min(currentSlide + 1, 18));
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
         setCurrentSlide(Math.max(currentSlide - 1, 1));
       } else if (e.key === 'Home') {
         setCurrentSlide(1);
       } else if (e.key === 'End') {
-        setCurrentSlide(19);
+        setCurrentSlide(18);
       } else if (e.key === 'f' || e.key === 'F') {
         toggleFullscreen();
       } else if (e.key === 'Escape') {
@@ -241,7 +241,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     
     const screenWidth = window.innerWidth;
     if (e.clientX > screenWidth / 2) {
-      setCurrentSlide(Math.min(currentSlide + 1, 19));
+      setCurrentSlide(Math.min(currentSlide + 1, 18));
     } else {
       setCurrentSlide(Math.max(currentSlide - 1, 1));
     }
@@ -257,7 +257,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     </div>
   );
 
-  // Speaker notes content map for 19 slides (1-indexed mapping Slide 1 to 19)
+  // Narrative Transition Footer
+  const renderNarrativeTransition = (nextQuestion: string, answerText: string) => (
+    <div className="mt-4 pt-3 border-t border-slate-100/50 flex flex-col items-start space-y-1">
+      <span className="text-[9px] uppercase tracking-widest text-[#C9922E] font-bold">Reviewer Context Bridge</span>
+      <p className="text-[10px] text-slate-500 font-medium italic">
+        &ldquo;{nextQuestion}&rdquo; ➔ <span className="text-[#1B1F2A] font-semibold">{answerText}</span>
+      </p>
+    </div>
+  );
+
+  // Speaker notes content map for 18 slides (1-indexed mapping Slide 1 to 18)
   const speakerNotesMap = {
     1: 'Introduce the Assessment Context & Assumptions prefix. Clarify project boundaries, in-scope requirements, and our overall confidence levels.',
     2: 'Highlight the 60–70% CapEx savings. Emphasize that HubSpot remains doodleblue\'s System of Record. Outline the 3–4 months MVP launch window.',
@@ -270,14 +280,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     9: 'Discuss the ₹12L–18L CapEx vs ₹45L–65L custom rewrite. Point out the <3 months payback period and the immediate unblocking of pipeline deals.',
     10: 'Detail the 3–4 months timeline mapping. Explain how each phase builds incrementally to prevent workflow downtime.',
     11: 'Walk through doodleblue\'s Enterprise Tech stack. Detail the specific roles of Supabase, LangChain, Sentry, and Next.js React routing.',
-    12: 'Explain Retrieval-Augmented Generation (RAG). Discuss how it securely queries localized vector documents to feed OpenAI prompt context.',
+    12: 'Explain Retrieval-Augmented Generation (RAG) and the Explainable AI sequence. Discuss vector documents feed and safety validation checks.',
     13: 'Highlight the AI Value Add parameters satisfying Deliverable #6. Explain confidence metrics and human-in-the-loop triggers.',
     14: 'Review the AI Usage Log table satisfying Deliverable #7. Emphasize responsible AI co-creation and human-expert review limits.',
     15: 'Demonstrate the Prompt Library satisfying Deliverable #8. Walk through actual prompt templates used for consulting assessments.',
-    16: 'Describe embedded AI workflows: Risk scoring, Executive briefs, Summaries, and Email generators. AI assists rather than replacing operators.',
-    17: 'Discuss doodleblue\'s capability profile, agile cloud credentials, team alignment structure, and delivery commitment.',
-    18: 'Detail the Risk Register matrix with probability/impact ratings. Emphasize mitigations for rate limits and security.',
-    19: 'Deliver the closing strategy recommendation statement. Request the panel to toggle the switcher to the Demo CRM to view live actions.'
+    16: 'Discuss doodleblue\'s capability profile, agile cloud credentials, team alignment structure, and delivery commitment.',
+    17: 'Detail the Risk Register matrix with probability/impact ratings. Emphasize mitigations for rate limits and security.',
+    18: 'Deliver the closing strategy recommendation statement. Request the panel to toggle the switcher to the Demo CRM to view live actions.'
   };
 
   // Standard Mode Side Navigation Items
@@ -289,14 +298,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     { name: 'Settings & Sync', href: '/settings', icon: Settings },
   ];
 
-  // Helper to render slides in Light Theme (19 slides)
+  // Helper to render slides in Light Theme (18 slides)
   const renderSlideContent = (slideIndex: number) => {
     switch (slideIndex) {
       case 1: // Slide 1: Assessment Context & Assumptions
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 1 of 19 • Preface: Assessment Context & Assumptions
+              Slide 1 of 18 • Preface: Assessment Context & Assumptions
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Assessment Context & Assumptions</h2>
@@ -402,6 +411,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Consultant\'s Note',
               'This proposal represents a recommended implementation approach based on the information provided in the assessment. Final architecture, technologies, timelines, integrations and scope should be validated through stakeholder workshops, technical discovery and engineering planning.'
             )}
+
+            {renderNarrativeTransition(
+              'What assumptions are we making?',
+              'We assume HubSpot remains the CRM core, manual blocks exist across teams, and secure AI guides operators. Let\'s look at our recommended Executive Summary next.'
+            )}
           </div>
         );
 
@@ -409,7 +423,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 2 of 19 • Executive Recommendation
+              Slide 2 of 18 • Executive Recommendation
             </span>
             <div className="space-y-3">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">CRM Transformation Strategy</h2>
@@ -437,6 +451,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Recommendation',
               'The technologies and timelines shown represent an initial recommendation based on the case assumptions. Final implementation should be validated jointly with engineering, security, business stakeholders, and vendor constraints.'
             )}
+
+            {renderNarrativeTransition(
+              'What is your recommendation?',
+              'Deploy a lightweight Hybrid CRM Overlay rather than replacing HubSpot. Let\'s see who experiences these core workflow blocks in Slide 3.'
+            )}
           </div>
         );
 
@@ -444,7 +463,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 3 of 19 • Business Personas
+              Slide 3 of 18 • Business Personas
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Personas & Core Workflows</h2>
@@ -475,6 +494,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Research Assumption',
               'Personas are synthesized from the provided case study and common enterprise CRM roles. They should be validated through user interviews and workflow observation before implementation.'
             )}
+
+            {renderNarrativeTransition(
+              'Who experiences this problem?',
+              'Sales Reps, Managers, Legal Ops, Finance Teams, and Delivery Leads. Let\'s look at what specific challenges are broken in Slide 4.'
+            )}
           </div>
         );
 
@@ -482,7 +506,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 4 of 19 • Current Challenges
+              Slide 4 of 18 • Current Challenges
             </span>
             <div className="space-y-2">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">The Current Bottleneck Statement</h2>
@@ -525,6 +549,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Observation Framework',
               'Bottlenecks are evaluated based on qualitative case reviews and process observations. Quantitative verification should occur during discovery workshops.'
             )}
+
+            {renderNarrativeTransition(
+              'What exactly is broken?',
+              'Manual bottlenecks keep deals stuck on hold for 4.4 days, and delivery has no pipeline visibility. Let\'s evaluate our strategic options in Slide 5.'
+            )}
           </div>
         );
 
@@ -532,7 +561,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 5 of 19 • Solution Evaluation & Matrix
+              Slide 5 of 18 • Solution Evaluation & Matrix
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Executive Decision Matrix</h2>
@@ -587,6 +616,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Evaluation Framework',
               'Scoring is based on implementation complexity, operational impact, scalability, and long-term maintainability under the assumptions provided in the assessment.'
             )}
+
+            {renderNarrativeTransition(
+              'Why choose Hybrid over SaaS or Custom?',
+              'Hybrid balances speed, customization and low migration risk perfectly. Let\'s see what we are building in our Product Proposal (Slide 6).'
+            )}
           </div>
         );
 
@@ -594,7 +628,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 6 of 19 • Product Proposal
+              Slide 6 of 18 • Product Proposal
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Scope & Success Parameters</h2>
@@ -664,6 +698,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Proposal Note',
               'Scope represents the recommended MVP based on the assessment scenario. Requirements may evolve following stakeholder workshops, technical discovery, and engineering planning.'
             )}
+
+            {renderNarrativeTransition(
+              'What are we actually building?',
+              'We are targeting multi-department portals, notifications, and AI risk scoring in MVP. Let\'s see how users experience it in Slide 7.'
+            )}
           </div>
         );
 
@@ -671,7 +710,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 7 of 19 • UX Prototype
+              Slide 7 of 18 • UX Prototype
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Interactive UX Prototype</h2>
@@ -749,6 +788,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Figma Note',
               'The prototype represents the recommended MVP experience based on the assessment scenario. User interface components, workflows, interactions, and visual details will continue to evolve through stakeholder validation and engineering discovery.'
             )}
+
+            {renderNarrativeTransition(
+              'What will users experience?',
+              'An enterprise portal wrapping dashboards, approval logs, and interactive controls. Let\'s see the workflow improvements in the User Journey (Slide 8).'
+            )}
           </div>
         );
 
@@ -756,7 +800,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 8 of 19 • User Journey Transition
+              Slide 8 of 18 • User Journey Transition
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Streamlining the Operational Journey</h2>
@@ -783,6 +827,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Workflow Illustration',
               'This journey illustrates a representative approval process. Actual workflows may differ across departments and should be confirmed during business process mapping.'
             )}
+
+            {renderNarrativeTransition(
+              'How will this improve workflows?',
+              'Contract delays are cut by 66%, and manual pipeline checks are replaced by automated triggers. Let\'s justify the budget return in the ROI Case (Slide 9).'
+            )}
           </div>
         );
 
@@ -790,7 +839,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 9 of 19 • Business Case & ROI
+              Slide 9 of 18 • Business Case & ROI
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Financial Projections & Business Value</h2>
@@ -830,6 +879,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'ROI Note',
               'ROI estimates are directional based on publicly available SaaS pricing assumptions and typical enterprise approval metrics. Actual savings and cost reductions should be validated during discovery.'
             )}
+
+            {renderNarrativeTransition(
+              'Why is this worth investing in?',
+              'Provides a payback timeline in under 3 months while saving up to 70% in CapEx costs. Let\'s see the MVP implementation plan in Slide 10.'
+            )}
           </div>
         );
 
@@ -837,7 +891,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 10 of 19 • MVP Implementation Roadmap
+              Slide 10 of 18 • MVP Implementation Roadmap
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Incremental 3–4 months Timeline</h2>
@@ -863,6 +917,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Roadmap Note',
               'Implementation schedules are directional and assume technical discovery workshops, resource availability, API stability, and developer alignment.'
             )}
+
+            {renderNarrativeTransition(
+              'How can this be delivered safely?',
+              'An incremental 12-week MVP roadmap minimizes release friction. Let\'s look at what technology stack powers this overlay in Slide 11.'
+            )}
           </div>
         );
 
@@ -881,7 +940,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 11 of 19 • Enterprise Technology Stack
+              Slide 11 of 18 • Enterprise Technology Stack
             </span>
             <div className="space-y-1">
               <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Technology Stack</h2>
@@ -913,19 +972,24 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Stack Note',
               'The proposed stack represents a reference implementation recommendation. Final tooling selection should be validated against the client\'s existing architecture, engineering capabilities, and security policies.'
             )}
+
+            {renderNarrativeTransition(
+              'What technology enables this?',
+              'An industry-standard Next.js, Supabase, and HubSpot integration architecture. Let\'s see how AI integrates responsibly in Slide 12.'
+            )}
           </div>
         );
       }
 
-      case 12: { // AI Architecture & Intelligence Platform
+      case 12: { // AI Architecture & Intelligence Platform (Merged Explainable AI workflows)
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 12 of 19 • AI Architecture & Intelligence Platform
+              Slide 12 of 18 • AI Architecture & Intelligence Platform
             </span>
             <div className="space-y-1">
-              <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">AI Orchestration & RAG Layout</h2>
-              <p className="text-xs text-slate-500 font-semibold font-bold">Architectural blueprint of our custom Retrieval-Augmented Generation context engine.</p>
+              <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">AI Orchestration, RAG Flow, & Governance</h2>
+              <p className="text-xs text-slate-500 font-semibold font-bold">Architectural blueprint of our custom Retrieval-Augmented Generation context engine and safety guardrails.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -944,13 +1008,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               {/* RAG Flow */}
               <div className="p-4 border border-slate-150 rounded-xl space-y-2 flex flex-col justify-between">
                 <div>
-                  <span className="text-emerald-700 font-bold uppercase tracking-wider text-[9px] block">How RAG Works</span>
-                  <p className="font-mono text-[9px] text-[#C9922E] bg-slate-900 p-3 rounded-lg leading-relaxed mt-2 overflow-x-auto">
-                    User Question ➔ Vector Search ➔ Match Documents ➔ Inject Context to GPT-4 ➔ Accurate Answer
-                  </p>
+                  <span className="text-emerald-700 font-bold uppercase tracking-wider text-[9px] block">AI Trust & Sequence Processing</span>
+                  <div className="overflow-x-auto mt-2">
+                    <div className="flex items-center space-x-1.5 text-[9px] font-mono text-slate-800">
+                      <span className="px-2 py-0.5 border border-slate-200 rounded">Input Data</span>
+                      <span>➔</span>
+                      <span className="px-2 py-0.5 border border-[#C9922E]/45 bg-[#FBF1DE]/10 text-[#C9922E] rounded">AI Models</span>
+                      <span>➔</span>
+                      <span className="px-2 py-0.5 border border-emerald-200 bg-emerald-50 rounded">Human Check</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="pt-2 border-t border-slate-100 text-[10px] text-slate-505 font-semibold">
-                  Secures data integrity while satisfying GDPR parameters.
+                <div className="pt-2 border-t border-slate-100 text-[10px] text-slate-550 font-semibold space-y-1">
+                  <p><strong>Explainability Matrix:</strong> Explains confidence score parameters.</p>
+                  <p><strong>Audit Compliance:</strong> Saves override history logs in Supabase.</p>
                 </div>
               </div>
             </div>
@@ -963,7 +1034,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {renderConsultantsNote(
               'Architecture Note',
-              'This RAG diagram demonstrates a feasible technical implementation model. Specific hosting, cloud nodes, and security parameters will be validated during stakeholder workshops and engineering discover.'
+              'This RAG diagram demonstrates a feasible technical implementation model. Specific hosting, cloud nodes, and security parameters will be validated during stakeholder workshops and engineering discovery.'
+            )}
+
+            {renderNarrativeTransition(
+              'How is AI integrated responsibly?',
+              'By feeding local vector context into OpenAI and requiring manager confirmation before any sync. Let\'s evaluate AI Business Value in Slide 13.'
             )}
           </div>
         );
@@ -980,7 +1056,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 13 of 19 • AI Strategic Value Add
+              Slide 13 of 18 • AI Strategic Value Add
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Explainable AI Core Value Mappings</h2>
@@ -997,7 +1073,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <div className="space-y-1 text-[10.5px] leading-relaxed text-slate-600">
                     <p><strong>Business Problem:</strong> {val.p}</p>
                     <p><strong>AI Solution:</strong> {val.s}</p>
-                    <p className="text-slate-800 font-bold"><strong>Metric Affected:</strong> {val.m}</p>
+                    <p className="text-slate-805 font-bold"><strong>Metric Affected:</strong> {val.m}</p>
                   </div>
                 </div>
               ))}
@@ -1006,6 +1082,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {renderConsultantsNote(
               'AI Governance Note',
               'AI features are designed with strict human-in-the-loop validation, explainability outputs, and confidence indices. Final production parameters must align with internal governance policies.'
+            )}
+
+            {renderNarrativeTransition(
+              'How does AI improve business outcomes?',
+              'By predicting resource overloads, drafting context-rich alerts, and generating risk scores. Let\'s inspect the AI Usage Log in Slide 14.'
             )}
           </div>
         );
@@ -1022,7 +1103,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 14 of 19 • AI Co-Creation & Usage Log
+              Slide 14 of 18 • AI Co-Creation & Usage Log
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Responsible AI Usage Register</h2>
@@ -1044,7 +1125,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold text-[10px]">
                   {logItems.map((item, idx) => (
                     <tr key={idx} className="hover:bg-slate-50/50 leading-relaxed">
-                      <td className="p-3 font-bold text-slate-800">{item.t}</td>
+                      <td className="p-3 font-bold text-slate-805">{item.t}</td>
                       <td className="p-3 font-mono text-[9px] text-[#C9922E]">{item.a}</td>
                       <td className="p-3 text-slate-600 truncate max-w-[130px]">{item.p}</td>
                       <td className="p-3 text-slate-600 truncate max-w-[130px]">{item.g}</td>
@@ -1059,6 +1140,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {renderConsultantsNote(
               'Transparency Statement',
               'AI tools were used to accelerate ideation, drafting, summarization and content generation. Final recommendations, business assumptions, architecture decisions and financial estimates were manually reviewed and refined.'
+            )}
+
+            {renderNarrativeTransition(
+              'How was AI used to prepare this proposal?',
+              'AI structured schemas, computed basic ROI metrics, and drafted risk models. Let\'s inspect the Prompt Library in Slide 15.'
             )}
           </div>
         );
@@ -1075,7 +1161,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 15 of 19 • Prompt Library
+              Slide 15 of 18 • Prompt Library
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Structured Prompt Repository</h2>
@@ -1111,67 +1197,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Reproducibility Note',
               'Prompts are cataloged for audit transparency, showing how Generative AI assisted proposal drafting. Execution timelines and logic parameters should be validated during technical scoping workshops.'
             )}
+
+            {renderNarrativeTransition(
+              'Can the work be reproduced transparently?',
+              'Yes, our prompt library provides direct templates for verification. Let\'s look at Why doodleblue is the ideal delivery partner in Slide 16.'
+            )}
           </div>
         );
       }
 
-      case 16: // Strategic AI Integration
+      case 16: // Why doodleblue
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 16 of 19 • Strategic AI Features
-            </span>
-            <div className="space-y-1">
-              <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Explainable AI in Workflows</h2>
-              <p className="text-xs text-slate-500 font-semibold font-bold">Integrating AI scoring pipelines with human checks instead of standalone chat interfaces.</p>
-            </div>
-
-            <div className="bg-slate-50 border border-slate-150 p-5 rounded-xl space-y-4 font-semibold text-xs">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                <span className="font-bold text-[#1B1F2A] uppercase tracking-wider text-[10px]">AI Pipeline Processing Sequence</span>
-                <span className="text-[9px] bg-[#C9922E] text-white py-0.5 px-2 rounded-md uppercase">Trust Architecture</span>
-              </div>
-              
-              <div className="overflow-x-auto">
-                <div className="grid grid-cols-7 gap-2 text-center text-[10.5px] min-w-[550px] p-0.5">
-                  <div className="p-2 border border-slate-250 bg-white rounded-lg font-bold">Input Data</div>
-                  <div className="flex items-center justify-center text-slate-400">➔</div>
-                  <div className="p-2 border border-slate-250 bg-white rounded-lg font-bold">AI Analytics</div>
-                  <div className="flex items-center justify-center text-slate-400">➔</div>
-                  <div className="p-2 border border-[#C9922E]/45 bg-[#FBF1DE]/15 rounded-lg font-bold text-[#C9922E]">Confidence</div>
-                  <div className="flex items-center justify-center text-slate-400">➔</div>
-                  <div className="p-2 border border-emerald-250 bg-emerald-50 text-emerald-800 rounded-lg font-bold">Human Check</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold">
-              <div className="p-3 border border-slate-150 rounded-xl">
-                <span className="text-slate-800 font-bold block">Explainability Matrix</span>
-                <p className="text-slate-605 mt-1 leading-relaxed text-[11px]">
-                  All alerts (e.g. High Risk) include parameters detailing confidence indices, delay reasons, and suggested operational unblock steps.
-                </p>
-              </div>
-              <div className="p-3 border border-slate-150 rounded-xl">
-                <span className="text-slate-800 font-bold block">Audit compliance</span>
-                <p className="text-slate-605 mt-1 leading-relaxed text-[11px]">
-                  Overrides are tracked inside local audit trails to maintain regulatory compliance for contract revisions.
-                </p>
-              </div>
-            </div>
-
-            {renderConsultantsNote(
-              'Workflow Safety',
-              'AI status indicators are coupled with deterministic validation rules to ensure strict guardrails around automated deal status overrides.'
-            )}
-          </div>
-        );
-
-      case 17: // Why doodleblue
-        return (
-          <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 17 of 19 • Recommended Delivery Partner
+              Slide 16 of 18 • Recommended Delivery Partner
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Why doodleblue</h2>
@@ -1205,10 +1244,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Delivery Framework',
               'Capabilities and resource schedules are illustrative of specialized agency delivery. Resource plans should be customized to fit joint alignment parameters.'
             )}
+
+            {renderNarrativeTransition(
+              'Why does this approach align with doodleblue?',
+              'doodleblue brings proven agile delivery model, integration skills, and secure engineering. Let\'s evaluate project risks next in Slide 17.'
+            )}
           </div>
         );
 
-      case 18: { // Risk Register
+      case 17: { // Risk Register
         const risks = [
           { r: 'HubSpot API Rate Limits', p: 'Low', i: 'Medium', m: 'Deploy Redis webhook caching queues to throttle peaks.', o: 'Lead Engineer', s: 'Mitigated' },
           { r: 'Low User Adoption', p: 'Medium', i: 'High', m: 'Integrate interactive in-app guide walkthroughs.', o: 'UX Director', s: 'Mitigated' },
@@ -1220,7 +1264,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-rose-50 text-rose-700 rounded-md uppercase tracking-wider">
-              Slide 18 of 19 • Risk Register Matrix
+              Slide 17 of 18 • Risk Register Matrix
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Project Risks & Mitigation Matrix</h2>
@@ -1270,20 +1314,25 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Risk Note',
               'The risk register represents a snapshot of initial operational boundaries. These mitigation actions and threat vectors must be reviewed periodically during project sprint cycles.'
             )}
+
+            {renderNarrativeTransition(
+              'What could go wrong and how will we mitigate it?',
+              'Key API throttle, data compliance, and user adoption risks have clear mitigation safeguards. Let\'s conclude with the Final Recommendation in Slide 18.'
+            )}
           </div>
         );
       }
 
-      case 19: // Final Strategic Recommendation
+      case 18: // Final Strategic Recommendation
         return (
           <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs text-center">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md uppercase tracking-wider">
-              Slide 19 of 19 • Strategic Recommendation Summary
+              Slide 18 of 18 • Strategic Recommendation Summary
             </span>
             
             <div className="space-y-4 py-4">
               <h2 className="text-4xl font-extrabold text-[#1B1F2A] tracking-tight">Strategic Recommendation Summary</h2>
-              <p className="text-sm text-slate-505 font-bold max-w-md mx-auto leading-relaxed">
+              <p className="text-sm text-slate-550 font-bold max-w-md mx-auto leading-relaxed">
                 Adopt the **Hybrid CRM Overlay** architecture to preserve HubSpot as doodleblue&apos;s System of Record, while unblocking signature cycles via custom, serverless approver portals.
               </p>
             </div>
@@ -1313,6 +1362,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Final Framework',
               'Recommendations represent the final strategy synthesis. Execution should occur iteratively under proper change management controls.'
             )}
+
+            <div className="mt-4 pt-3 border-t border-slate-100/50 flex flex-col items-center">
+              <span className="text-[9px] uppercase tracking-widest text-[#C9922E] font-bold">Next Action</span>
+              <p className="text-[10px] text-slate-500 font-medium italic mt-1">
+                We invite you to toggle the switcher at the top to explore the live interactive Demo CRM portal.
+              </p>
+            </div>
           </div>
         );
 
@@ -1423,13 +1479,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <div className="flex items-center space-x-2 shrink-0">
               <span className="h-2 w-2 rounded-full bg-[#C9922E] animate-pulse shrink-0" />
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Slide {currentSlide} of 19
+                Slide {currentSlide} of 18
               </span>
             </div>
 
             {/* Clickable Slide Indicator Dots */}
             <div className="hidden md:flex items-center space-x-2.5">
-              {Array.from({ length: 19 }).map((_, idx) => {
+              {Array.from({ length: 18 }).map((_, idx) => {
                 const step = idx + 1;
                 return (
                   <button
@@ -1458,7 +1514,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </button>
               <button
                 onClick={() => {
-                  if (currentSlide < 19) {
+                  if (currentSlide < 18) {
                     setCurrentSlide(currentSlide + 1);
                   } else {
                     setPresentationMode(false);
@@ -1467,7 +1523,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 }}
                 className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-[10px] px-4 py-2 rounded-lg transition active-press flex items-center space-x-1"
               >
-                <span>{currentSlide === 19 ? 'View Demo CRM' : 'Next'}</span>
+                <span>{currentSlide === 18 ? 'View Demo CRM' : 'Next'}</span>
                 <ChevronRight className="h-3 w-3" />
               </button>
             </div>
@@ -1519,7 +1575,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   </div>
 
                   {/* Next Slide Preview */}
-                  {currentSlide < 19 && (
+                  {currentSlide < 18 && (
                     <div className="bg-slate-55 border border-slate-150 rounded-xl p-5 space-y-3">
                       <h4 className="text-xs font-bold text-slate-505 uppercase tracking-wider border-b border-slate-200 pb-2">
                         Next Slide Preview
@@ -1559,13 +1615,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <span>Slide</span>
                 <span className="text-white font-extrabold">{currentSlide}</span>
                 <span>/</span>
-                <span>19</span>
+                <span>18</span>
               </div>
 
               {/* Next Button */}
               <button 
                 onClick={() => {
-                  if (currentSlide < 19) {
+                  if (currentSlide < 18) {
                     setCurrentSlide(currentSlide + 1);
                   } else {
                     setPresentationMode(false);
@@ -1575,7 +1631,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 className="hover:text-[#C9922E] transition flex items-center space-x-1 text-xs font-bold"
                 title="Next Slide (→ / Space / PageDown)"
               >
-                <span className="hidden sm:inline">{currentSlide === 19 ? 'View Demo' : 'Next'}</span>
+                <span className="hidden sm:inline">{currentSlide === 18 ? 'View Demo' : 'Next'}</span>
                 <ChevronRight className="h-4.5 w-4.5" />
               </button>
 
@@ -1785,7 +1841,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 { k: '➔ / Space / PageDown', d: 'Go to Next Slide' },
                 { k: '← / PageUp', d: 'Go to Previous Slide' },
                 { k: 'Home', d: 'Jump to Slide 1' },
-                { k: 'End', d: 'Jump to Slide 19' },
+                { k: 'End', d: 'Jump to Slide 18' },
                 { k: 'F', d: 'Toggle Fullscreen Mode' },
                 { k: 'Alt / Shift', d: 'Hold to show Laser Pointer' },
                 { k: 'Esc', d: 'Exit Presentation Mode' },
@@ -1877,8 +1933,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <li>ROI Case Study (Slide 9)</li>
                     <li>Technology Stack (Slide 11)</li>
                     <li>AI Value Add mappings (Slide 13)</li>
-                    <li>Risk Mitigation Matrix (Slide 18)</li>
-                    <li>Final Strategic Recommendation (Slide 19)</li>
+                    <li>Risk Mitigation Matrix (Slide 17)</li>
+                    <li>Final Strategic Recommendation (Slide 18)</li>
                   </ol>
                 </div>
               </div>
@@ -1917,7 +1973,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   </div>
                   <div className="flex items-center space-x-2 text-[10.5px]">
                     <span className="text-emerald-600">✓</span>
-                    <span>Risk Mitigation Register (Slide 18)</span>
+                    <span>Risk Mitigation Register (Slide 17)</span>
                   </div>
                 </div>
               </div>
@@ -1926,7 +1982,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             <div className="pt-2 border-t border-slate-100 flex justify-end">
               <button
-                onClick={() => setShowReviewerModal(false)}
+                onClick={() => setShowReviewerModal(true)}
                 className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-xs font-bold py-2 px-5 rounded-xl transition duration-150 active-press"
               >
                 Got It
