@@ -12,19 +12,13 @@ import {
   BarChart3,
   Menu,
   X,
-  BookOpen,
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  Layers
+  AlertTriangle,
+  ShieldAlert,
+  Clock
 } from 'lucide-react';
-
-// Import prototype pages to render inline in slides
-import PipelinePage from '@/app/pipeline/page';
-import ApprovalsPage from '@/app/approvals/page';
-import AnalyticsPage from '@/app/analytics/page';
-import SettingsPage from '@/app/settings/page';
-import AICommandCenter from '@/app/ai-command-center/page';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -45,12 +39,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showChoiceModal, setShowChoiceModal] = useState<boolean>(true);
 
+  // Redirect standard mode root path to /pipeline
+  useEffect(() => {
+    if (!presentationMode && pathname === '/') {
+      router.push('/pipeline');
+    }
+  }, [presentationMode, pathname, router]);
+
   // Keyboard navigation for Presentation Mode
   useEffect(() => {
     if (!presentationMode) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
-        setCurrentSlide(Math.min(currentSlide + 1, 15));
+        setCurrentSlide(Math.min(currentSlide + 1, 12));
       } else if (e.key === 'ArrowLeft') {
         setCurrentSlide(Math.max(currentSlide - 1, 1));
       } else if (e.key === 'Escape') {
@@ -61,13 +62,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [presentationMode, currentSlide, setCurrentSlide, setPresentationMode]);
 
+  // Standard Mode Side Navigation Items
   const navItems = [
-    {
-      name: 'Strategy Hub',
-      href: '/',
-      icon: BookOpen,
-      badge: undefined,
-    },
     {
       name: 'Pipeline Board',
       href: '/pipeline',
@@ -91,11 +87,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       icon: Sparkles,
     },
     {
-      name: 'Prompt Library',
-      href: '/prompt-library',
-      icon: Layers,
-    },
-    {
       name: 'Settings & Sync',
       href: '/settings',
       icon: Settings,
@@ -107,157 +98,64 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     switch (currentSlide) {
       case 1: // Executive Summary
         return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 1 of 15 • Executive Summary
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 1 of 12 • Executive Summary
             </span>
             <div className="space-y-3">
-              <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">CRM Transformation Strategy</h2>
-              <h3 className="text-xs font-semibold text-[#C9922E] uppercase tracking-wider">Executive Recommendation: Hybrid CRM Overlay</h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                To unblock approvals and integrate delivery workloads at Northbridge Advisory, we recommend deploying a lightweight **Hybrid CRM Overlay** built with Next.js and Supabase rather than executing a total CRM migration or paying expensive HubSpot subscription upgrades.
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">CRM Transformation Strategy</h2>
+              <h3 className="text-xs font-bold text-[#C9922E] uppercase tracking-wider">Strategic Recommendation: Hybrid CRM Overlay</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-semibold">
+                To eliminate approval delays and integrate delivery workloads at Northbridge Advisory, we recommend deploying a lightweight **Hybrid CRM Overlay** built with Next.js and Supabase. This approach preserves HubSpot as the core System of Record while introducing targeted approval portals.
               </p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { title: 'Business Challenge', desc: 'Standard CRM seats cannot track multi-signature custom approvals or resource metrics without expensive licensing upgrades.', color: 'border-l-rose-400' },
-                { title: 'Selected Strategy', desc: 'Retain standard HubSpot pipelines as the source of truth, and overlay approval logic using light serverless portals.', color: 'border-l-[#C9922E]' },
-                { title: 'Financial ROI', desc: 'Prevents database rebuilds and data migrations, reducing upfront implementation CapEx by approximately 70%.', color: 'border-l-emerald-400' },
-                { title: 'Roadmap Target', desc: 'Production-ready MVP rolled out incrementally within 6–8 weeks with zero sales workflow downtime.', color: 'border-l-amber-450' }
+                { title: 'Business Problem', desc: 'Standard CRM seats lack custom multi-signature workflows, blocking contract sign-offs in Legal/Finance.', color: 'border-l-rose-500' },
+                { title: 'Recommendation', desc: 'Overlay light custom portals on HubSpot, syncing data securely via serverless APIs.', color: 'border-l-[#C9922E]' },
+                { title: 'Expected ROI', desc: 'Avoids custom CRM rebuilding risks, reducing upfront CapEx by approximately 70%.', color: 'border-l-emerald-500' },
+                { title: 'Timeline & Timeline', desc: 'Production-ready MVP deployment in 8 weeks with zero sales workflow downtime.', color: 'border-l-amber-500' }
               ].map((kpi, idx) => (
                 <div key={idx} className={`bg-slate-50 border border-slate-150 border-l-4 ${kpi.color} rounded-xl p-4 shadow-2xs hover-card-glow`}>
-                  <h4 className="text-xs font-semibold text-slate-800 uppercase tracking-wider">{kpi.title}</h4>
-                  <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">{kpi.desc}</p>
+                  <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">{kpi.title}</h4>
+                  <p className="text-xs text-slate-600 mt-1 leading-relaxed font-semibold">{kpi.desc}</p>
                 </div>
               ))}
             </div>
 
-            <div className="bg-[#FBF1DE]/30 border-l-4 border-[#C9922E] p-4 rounded-r-xl text-xs font-medium text-slate-655">
-              &ldquo;The Hybrid CRM Overlay maximizes current HubSpot investments while introducing custom workflows and capacity checking only where measurable business value exists.&rdquo;
+            <div className="bg-[#FBF1DE]/30 border-l-4 border-[#C9922E] p-4 rounded-r-xl text-xs font-bold text-slate-655">
+              &ldquo;The Hybrid CRM Overlay model maximizes doodleblue&apos;s product strategy objectives, delivering enterprise workflows without custom migration risk.&rdquo;
             </div>
           </div>
         );
 
-      case 2: // Business Proposal
+      case 2: // Business Personas
         return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 2 of 15 • Business Proposal
-            </span>
-            <div className="space-y-2">
-              <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Product Proposal</h2>
-              <p className="text-xs text-slate-550 font-medium">Scoping boundaries, core objectives, constraints, and KPI metrics.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium">
-              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Objectives & Scope</h4>
-                <ul className="space-y-2 text-slate-600 leading-relaxed list-disc pl-4">
-                  <li>Deploy Next.js/Supabase validation portals to sync HubSpot deal entities.</li>
-                  <li>Enable resource checking alerts on active contract stages.</li>
-                  <li>Avoid seat licensing additions for cross-division approvers.</li>
-                </ul>
-              </div>
-
-              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Out of Scope</h4>
-                <ul className="space-y-2 text-slate-600 leading-relaxed list-disc pl-4">
-                  <li>Replacing standard HubSpot CRM contacts/leads databases.</li>
-                  <li>Client portal billing structures or custom payroll integrations.</li>
-                  <li>Redesigning existing sales pipelines.</li>
-                </ul>
-              </div>
-
-              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
-                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Dependencies & Constraints</h4>
-                <ul className="space-y-2 text-slate-600 leading-relaxed list-disc pl-4">
-                  <li>HubSpot developer API read/write token access rate limits.</li>
-                  <li>Strict GDPR privacy compliance constraints (PII sanitization).</li>
-                  <li>Supabase JWT role authentication controls.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 3: // Business Problem
-        return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 3 of 15 • Business Problem
-            </span>
-            <div className="space-y-2">
-              <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">The Current Problem Statement</h2>
-              <p className="text-xs text-slate-550 font-medium">Identifying constraints in standard SaaS setups.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 space-y-3">
-                <h4 className="text-xs font-semibold text-rose-600 uppercase tracking-wider">Current SaaS Limitations</h4>
-                <ul className="space-y-2.5 text-xs font-medium text-slate-600">
-                  <li className="flex items-start space-x-2">
-                    <span className="text-rose-500 shrink-0 font-bold">✕</span>
-                    <span>Costly seat licensing additions for cross-division approvals.</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-rose-500 shrink-0 font-bold">✕</span>
-                    <span>Contract bottleneck holds in Legal/Finance go unnotified.</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-rose-500 shrink-0 font-bold">✕</span>
-                    <span>Sales pipeline is siloed from project delivery loads (ResourceOps).</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 space-y-3">
-                <h4 className="text-xs font-semibold text-[#C9922E] uppercase tracking-wider">doodleblue Strategic Target</h4>
-                <ul className="space-y-2.5 text-xs font-medium text-slate-655">
-                  <li className="flex items-start space-x-2">
-                    <span className="text-emerald-600 shrink-0 font-bold">✓</span>
-                    <span>Cheap standard CRM seats with custom validation portals.</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-emerald-600 shrink-0 font-bold">✓</span>
-                    <span>Automated AI risk flags alert managers to stagnant deals.</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-emerald-600 shrink-0 font-bold">✓</span>
-                    <span>Blended analytics alert sales before overallocation occurs.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 4: // User Personas
-        return (
-          <div className="space-y-5 max-w-5xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 4 of 15 • User Personas
+          <div className="space-y-6 max-w-5xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 2 of 12 • Business Personas
             </span>
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Key User Personas & Pain Points</h2>
-              <p className="text-xs text-slate-550 font-medium">Outlining the goals, frustrations, and AI benefits for the six primary roles.</p>
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Personas & Core Workflows</h2>
+              <p className="text-xs text-slate-500 font-semibold">Outlining goals, friction, and metrics for the six primary roles.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold">
               {[
-                { role: 'Sales Executive', goals: 'Close fast', frustrations: 'Manual email checks', benefits: 'Instant email drafts' },
-                { role: 'Sales Manager', goals: 'Revenue predictions', frustrations: 'Siloed status updates', benefits: 'Forecasting views' },
-                { role: 'Legal Director', goals: 'Clause audits', frustrations: 'No signature prioritization', benefits: 'Explainability badges' },
-                { role: 'Finance Director', goals: 'Rapid payments', frustrations: 'No signature sequence tracking', benefits: 'Automated workflow orders' },
-                { role: 'Delivery Lead', goals: 'Manage capacity', frustrations: 'Sales closing overloads', benefits: 'Resource limits warning' },
-                { role: 'Executive Board', goals: 'Lower CapEx risk', frustrations: 'Seat license renewals waste', benefits: '70% custom CapEx saving' }
+                { role: 'Sales Representative', goal: 'Close deals rapidly', friction: 'Lack of legal status visibility', kpi: 'Sales Cycle (Days)' },
+                { role: 'Sales Manager', goal: 'Accurate revenue forecast', friction: 'Siloed status updates', kpi: 'Pipeline Win Rate' },
+                { role: 'Legal Operations', goal: 'Ensure contract compliance', friction: 'SLA queues with zero sorting', kpi: 'Review Turnaround' },
+                { role: 'Finance Team', goal: 'Validate billing details', friction: 'Manual sign-off alerts', kpi: 'Billing Cycle Speed' },
+                { role: 'Delivery Lead', goal: 'Optimize team capacity', friction: 'Blind to sales pipelines', kpi: 'Resource Utilization' },
+                { role: 'Executive Leadership', goal: 'Control software costs', friction: 'CRM license overheads', kpi: 'Overall Software CapEx' }
               ].map((p, idx) => (
-                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-3.5 space-y-2 hover-card-glow">
-                  <h4 className="text-xs font-bold text-[#C9922E] border-b border-slate-200 pb-1 uppercase tracking-wider">{p.role}</h4>
-                  <div className="space-y-1 text-[10px] leading-relaxed text-slate-600">
-                    <p><strong>Goal:</strong> {p.goals}</p>
-                    <p><strong>Friction:</strong> {p.frustrations}</p>
-                    <p><strong>AI Benefit:</strong> {p.benefits}</p>
+                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2 hover-card-glow">
+                  <h4 className="text-xs font-bold text-[#C9922E] border-b border-slate-200 pb-1.5 uppercase tracking-wider">{p.role}</h4>
+                  <div className="space-y-1 text-[10.5px] leading-relaxed text-slate-600">
+                    <p><strong>Goal:</strong> {p.goal}</p>
+                    <p><strong>Friction:</strong> {p.friction}</p>
+                    <p><strong>KPI:</strong> {p.kpi}</p>
                   </div>
                 </div>
               ))}
@@ -265,245 +163,368 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 5: // User Journey
+      case 3: // Current Problems
         return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 5 of 15 • User Journeys
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 3 of 12 • Current Problems
             </span>
             <div className="space-y-2">
-              <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Transitioning to the Future State</h2>
-              <p className="text-xs text-slate-550 font-medium">Comparing user workflows side-by-side.</p>
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">The Current Bottleneck Statement</h2>
+              <p className="text-xs text-slate-500 font-semibold">Identifying workflow friction under standard SaaS CRM setups.</p>
             </div>
 
-            <div className="space-y-4 text-xs font-medium">
-              <div className="bg-rose-50/20 border border-rose-100 p-4 rounded-xl space-y-2">
-                <h4 className="text-rose-600 font-semibold uppercase tracking-wider text-[10px]">Current Loop:</h4>
-                <p className="text-slate-600">
-                  Lead logged in HubSpot → Proposal sent → Request emailed manually → Stalls in inbox → Closed without checking resource availability → Delivery delays.
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold">
+              <div className="bg-rose-50/30 border border-rose-100 rounded-xl p-4 space-y-2">
+                <div className="flex items-center space-x-2 text-rose-700">
+                  <AlertTriangle className="h-4 w-4" />
+                  <h4 className="font-bold uppercase tracking-wider">Siloed SaaS Blocks</h4>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-[11px]">
+                  Standard CRM seats do not accommodate cross-department approvers (Legal & Finance), creating dark communication silos.
                 </p>
               </div>
 
-              <div className="bg-[#FBF1DE]/20 border border-[#C9922E]/20 p-4 rounded-xl space-y-2">
-                <h4 className="text-[#C9922E] font-semibold uppercase tracking-wider text-[10px]">Future Integrated Loop:</h4>
-                <p className="text-slate-700">
-                  Lead logged in HubSpot → AI validations risk score → Custom Approvals table → Resource capacity check → One-click escalation alerts → Seamless client project kickoff.
+              <div className="bg-rose-50/30 border border-rose-100 rounded-xl p-4 space-y-2">
+                <div className="flex items-center space-x-2 text-rose-700">
+                  <Clock className="h-4 w-4" />
+                  <h4 className="font-bold uppercase tracking-wider">Contract Hold Delays</h4>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-[11px]">
+                  Deals sit stagnant in queues for an average of 4.4 days due to manual email routing notifications.
+                </p>
+              </div>
+
+              <div className="bg-rose-50/30 border border-rose-100 rounded-xl p-4 space-y-2">
+                <div className="flex items-center space-x-2 text-rose-700">
+                  <ShieldAlert className="h-4 w-4" />
+                  <h4 className="font-bold uppercase tracking-wider">Capacity Blind Spots</h4>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-[11px]">
+                  Sales contracts close without visibility into team capacity, resulting in delivery overloads (90%+ load levels).
                 </p>
               </div>
             </div>
           </div>
         );
 
-      case 6: // Decision Matrix
+      case 4: // Solution Evaluation
         return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 6 of 15 • Decision Matrix
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 4 of 12 • Solution Evaluation & Matrix
             </span>
-            <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Executive Decision Matrix</h2>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Executive Decision Matrix</h2>
+              <p className="text-xs text-slate-500 font-semibold">Comparing standard alternatives to highlight the Hybrid CRM Overlay approach.</p>
+            </div>
 
             <div className="overflow-hidden border border-slate-200 rounded-xl bg-white">
-              <table className="w-full text-[11px] text-left">
-                <thead className="bg-slate-50 text-slate-500 font-semibold uppercase text-[9px]">
+              <table className="w-full text-xs text-left border-collapse">
+                <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-[9px] border-b border-slate-200">
                   <tr>
-                    <th className="p-3">Option</th>
-                    <th className="p-3">Implementation Cost</th>
-                    <th className="p-3">Launch Timeline</th>
-                    <th className="p-3">Business Risk</th>
+                    <th className="p-3.5">Evaluation Parameter</th>
+                    <th className="p-3.5">Option A: Stay SaaS</th>
+                    <th className="p-3.5 bg-[#FBF1DE]/10 text-[#C9922E]">Option B: Hybrid CRM</th>
+                    <th className="p-3.5">Option C: Custom CRM</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
                   <tr>
-                    <td className="p-3 font-bold">Stay on SaaS & Upgrade</td>
-                    <td className="p-3">High (Seat Upgrades)</td>
-                    <td className="p-3">Immediate</td>
-                    <td className="p-3">Low</td>
-                  </tr>
-                  <tr className="bg-[#FBF1DE]/10 font-bold text-[#C9922E]">
-                    <td className="p-3">Hybrid Overlay Model</td>
-                    <td className="p-3">Low (₹3L–5L CapEx)</td>
-                    <td className="p-3">3–4 Months</td>
-                    <td className="p-3">Low (HubSpot Retained)</td>
+                    <td className="p-3.5 font-bold">Implementation Cost</td>
+                    <td className="p-3.5">High (SaaS Seat Overhead)</td>
+                    <td className="p-3.5 bg-[#FBF1DE]/10 font-bold text-emerald-700">Low (₹15L CapEx)</td>
+                    <td className="p-3.5">Very High (₹45L+)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-bold">Build 100% Custom CRM</td>
-                    <td className="p-3">Very High (₹45L–65L)</td>
-                    <td className="p-3">6–9 Months</td>
-                    <td className="p-3">High (Data Migration)</td>
+                    <td className="p-3.5 font-bold">Deployment Timeline</td>
+                    <td className="p-3.5">Immediate</td>
+                    <td className="p-3.5 bg-[#FBF1DE]/10 font-bold text-emerald-700">8 Weeks (Rapid Overlay)</td>
+                    <td className="p-3.5">6-9 Months</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3.5 font-bold">Migration Risk</td>
+                    <td className="p-3.5">Zero</td>
+                    <td className="p-3.5 bg-[#FBF1DE]/10 font-bold text-emerald-700">Low (HubSpot Retained)</td>
+                    <td className="p-3.5">High (Full DB Move)</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3.5 font-bold">Workflow Customization</td>
+                    <td className="p-3.5">Poor (Rigid SaaS Rules)</td>
+                    <td className="p-3.5 bg-[#FBF1DE]/10 font-bold text-emerald-700">Unrestricted (Next.js/Supabase)</td>
+                    <td className="p-3.5">Unrestricted</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-          </div>
-        );
 
-      case 7: // Pipeline Demo
-        return (
-          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
-            <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
-              <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 7 of 15 • Working Demonstration • Pipeline Page
-              </span>
-              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Fully Interactive Prototype</span>
-            </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
-              <PipelinePage />
+            <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-between text-xs font-bold text-emerald-800">
+              <span>Selected Route: Option B (Hybrid Overlay) - High flexibility with low cost risk.</span>
+              <span className="bg-emerald-600 text-white text-[9px] px-2 py-0.5 rounded-full uppercase">Winner</span>
             </div>
           </div>
         );
 
-      case 8: // Approvals Demo
+      case 5: // User Journey
         return (
-          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
-            <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
-              <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 8 of 15 • Working Demonstration • Approvals Queue
-              </span>
-              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Interactive Workflow Interface</span>
-            </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
-              <ApprovalsPage />
-            </div>
-          </div>
-        );
-
-      case 9: // Analytics Demo
-        return (
-          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
-            <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
-              <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 9 of 15 • Working Demonstration • Blended Analytics
-              </span>
-              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Live Capacity Simulator</span>
-            </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
-              <AnalyticsPage />
-            </div>
-          </div>
-        );
-
-      case 10: // AI Command Center Demo
-        return (
-          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
-            <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
-              <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 10 of 15 • Working Demonstration • AI Command Center
-              </span>
-              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Enterprise Copilot & What-If Simulator</span>
-            </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
-              <AICommandCenter />
-            </div>
-          </div>
-        );
-
-      case 11: // ROI Dashboard
-        return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 11 of 15 • Strategic Business ROI
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 5 of 12 • User Journey Transition
             </span>
-            <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Business ROI Dashboard</h2>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Streamlining the Operational Journey</h2>
+              <p className="text-xs text-slate-500 font-semibold">Comparison of the contract lifecycle before and after overlay implementation.</p>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="space-y-4 text-xs font-semibold">
+              <div className="bg-rose-50/20 border border-rose-100 p-4 rounded-xl space-y-2">
+                <h4 className="text-rose-600 font-bold uppercase tracking-wider text-[10px]">Before (Siloed Workflow - Average 4.4 Days)</h4>
+                <p className="text-slate-600 leading-relaxed">
+                  Opportunity logged ➔ Legal/Finance manually emailed ➔ Contract sits in inbox queue ➔ Project delivery capacity checked manually ➔ Delayed contract signatures.
+                </p>
+              </div>
+
+              <div className="bg-[#FBF1DE]/25 border border-[#C9922E]/20 p-4 rounded-xl space-y-2">
+                <h4 className="text-[#C9922E] font-bold uppercase tracking-wider text-[10px]">After (Proposed Hybrid Workflow - Target 1.5 Days)</h4>
+                <p className="text-slate-700 leading-relaxed">
+                  Opportunity logged ➔ Webhooks auto-sync to Supabase ➔ Custom Approvals dashboard ➔ AI risk scoring prioritize queues ➔ Automated capacity check alerts ➔ Rapid contract sign-off.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 6: // Business Case & ROI
+        return (
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 6 of 12 • Business Case & ROI
+            </span>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Financial Projections & Business Value</h2>
+              <p className="text-xs text-slate-500 font-semibold">Clear ROI metrics and payback parameters for executive stakeholders.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                { label: 'Development Cost', saas: 'Custom CRM: ₹45L', overlay: 'Hybrid Overlay: ₹15L', metric: 'Saved: ₹30L CapEx', color: 'text-[#C9922E]' },
-                { label: 'Launch Speed-to-Market', saas: 'Custom CRM: 9 Months', overlay: 'Hybrid Overlay: 8 Weeks', metric: '60–70% Faster Delivery', color: 'text-amber-500' },
-                { label: 'Approval Speed', saas: 'Current delay: 4.4 Days', overlay: 'Target delay: 1.5 Days', metric: '65% Turnaround Cycle', color: 'text-emerald-500' }
+                { title: 'Development Cost', val: '₹15L CapEx', desc: '70% cheaper than a full custom rebuild (₹45L+).', color: 'text-indigo-650' },
+                { title: 'Annual License Savings', val: '₹8.5L/year', desc: 'Avoids custom HubSpot Enterprise seat overheads.', color: 'text-[#C9922E]' },
+                { title: 'Payback Period', val: '< 3 Months', desc: 'Rapid break-even based on accelerated deal closure.', color: 'text-emerald-600' }
               ].map((roi, idx) => (
-                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-5 shadow-2xs text-xs space-y-2">
-                  <h4 className="font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5">{roi.label}</h4>
-                  <p className="text-slate-505 font-semibold">{roi.saas}</p>
-                  <p className="text-slate-700 font-semibold">{roi.overlay}</p>
-                  <p className={`font-bold pt-1.5 ${roi.color}`}>{roi.metric}</p>
+                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-4 shadow-2xs space-y-2 hover-card-glow">
+                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">{roi.title}</h4>
+                  <p className={`text-lg font-bold ${roi.color}`}>{roi.val}</p>
+                  <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">{roi.desc}</p>
+                </div>
+              ))}
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold pt-2">
+              <div className="p-3 border border-slate-150 rounded-xl bg-slate-50/20">
+                <span className="text-[#C9922E] font-bold uppercase tracking-wider text-[9px] block">Contract Cycle Reduction</span>
+                <p className="text-slate-700 mt-1 leading-relaxed">
+                  Average approval hold times fall from **4.4 days to 1.5 days**, unblocking ₹45L+ in pending contracts.
+                </p>
+              </div>
+              <div className="p-3 border border-slate-150 rounded-xl bg-slate-50/20">
+                <span className="text-[#C9922E] font-bold uppercase tracking-wider text-[9px] block">Resource Optimization</span>
+                <p className="text-slate-700 mt-1 leading-relaxed">
+                  Aligns sales closings with live capacity levels, preventing overallocation resource burnout.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 7: // MVP Roadmap
+        return (
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 7 of 12 • MVP Implementation Roadmap
+            </span>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Incremental 8-Week Timeline</h2>
+              <p className="text-xs text-slate-500 font-semibold">Four phases built iteratively to guarantee zero deployment friction.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs font-semibold">
+              {[
+                { phase: 'Phase 1: Overlay', wks: 'Weeks 1-2', task: 'Deploy Next.js portal layout and connect Supabase database schemas.' },
+                { phase: 'Phase 2: AI Strategy', wks: 'Weeks 3-4', task: 'Integrate OpenAI risk-scoring engines and briefing models.' },
+                { phase: 'Phase 3: Enterprise', wks: 'Weeks 5-6', task: 'Connect live HubSpot webhooks and field mappings registries.' },
+                { phase: 'Phase 4: Automation', wks: 'Weeks 7-8', task: 'Configure Resend email triggers and complete audit logs.' }
+              ].map((step, idx) => (
+                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2 hover-card-glow">
+                  <span className="text-[#C9922E] font-bold text-[9px] uppercase block">{step.wks}</span>
+                  <h4 className="font-bold text-slate-800 uppercase tracking-wider">{step.phase}</h4>
+                  <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">{step.task}</p>
                 </div>
               ))}
             </div>
           </div>
         );
 
-      case 12: // Architecture
+      case 8: // Risks & Readiness
         return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 12 of 15 • Enterprise Integration Architecture
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 8 of 12 • Risks & Readiness
             </span>
-            <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Integration Flow</h2>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Implementation Risks & Mitigations</h2>
+              <p className="text-xs text-slate-500 font-semibold">Minimizing deployment exposure through strategic rollout safeguards.</p>
+            </div>
 
-            <div className="bg-slate-50 border border-slate-150 text-slate-700 p-6 rounded-xl font-mono text-[10px] leading-relaxed overflow-x-auto space-y-4">
+            <div className="space-y-3.5 text-xs font-semibold">
+              <div className="grid grid-cols-3 gap-4 border-b border-slate-100 pb-2 text-[10px] text-slate-400 font-bold uppercase">
+                <span>Identified Risk</span>
+                <span>Potential Business Impact</span>
+                <span>Mitigation Safeguard</span>
+              </div>
+              
+              {[
+                { r: 'API Rate Limits (HubSpot)', i: 'Delayed database sync status updates', m: 'Implement Redis caching to throttle webhook payloads' },
+                { r: 'Legal / Compliance (GDPR)', i: 'PII data exposure risk', m: 'Filter customer names using hash opportunity IDs' },
+                { r: 'Operational Adoption', i: 'Siloed teams revert to legacy flows', m: 'Deploy interactive product walkthroughs (Tour System)' }
+              ].map((item, idx) => (
+                <div key={idx} className="grid grid-cols-3 gap-4 py-2 border-b border-slate-50 font-semibold text-slate-700">
+                  <span className="text-[#1B1F2A] font-bold">{item.r}</span>
+                  <span className="text-slate-600">{item.i}</span>
+                  <span className="text-[#C9922E]">{item.m}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 9: // AI Strategy
+        return (
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 9 of 12 • Strategic AI Integration
+            </span>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Explainable AI in Workflows</h2>
+              <p className="text-xs text-slate-500 font-semibold">Integrating AI scoring pipelines with human checks instead of standalone chat interfaces.</p>
+            </div>
+
+            <div className="bg-slate-50 border border-slate-150 p-5 rounded-xl space-y-4 font-semibold text-xs">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                <span className="font-bold text-[#1B1F2A] uppercase tracking-wider text-[10px]">AI Pipeline Processing Sequence</span>
+                <span className="text-[9px] bg-[#C9922E] text-white py-0.5 px-2 rounded-md uppercase">Trust Architecture</span>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-7 gap-2 text-center text-[10.5px]">
+                <div className="p-2 border border-slate-250 bg-white rounded-lg font-bold">Input Data</div>
+                <div className="flex items-center justify-center text-slate-400">➔</div>
+                <div className="p-2 border border-slate-250 bg-white rounded-lg font-bold">AI Analytics</div>
+                <div className="flex items-center justify-center text-slate-400">➔</div>
+                <div className="p-2 border border-[#C9922E]/45 bg-[#FBF1DE]/15 rounded-lg font-bold text-[#C9922E]">Confidence</div>
+                <div className="flex items-center justify-center text-slate-400">➔</div>
+                <div className="p-2 border border-emerald-250 bg-emerald-50 text-emerald-800 rounded-lg font-bold">Human Check</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold">
+              <div className="p-3 border border-slate-150 rounded-xl">
+                <span className="text-slate-800 font-bold block">Explainability Matrix</span>
+                <p className="text-slate-600 mt-1 leading-relaxed text-[11px]">
+                  All alerts (e.g. High Risk) include parameters detailing confidence indices, delay reasons, and suggested operational unblock steps.
+                </p>
+              </div>
+              <div className="p-3 border border-slate-150 rounded-xl">
+                <span className="text-slate-800 font-bold block">Audit compliance</span>
+                <p className="text-slate-600 mt-1 leading-relaxed text-[11px]">
+                  Overrides are tracked inside local audit trails to maintain regulatory compliance for contract revisions.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 10: // Enterprise Architecture
+        return (
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 10 of 12 • Enterprise Architecture
+            </span>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Technology Integration Landscape</h2>
+              <p className="text-xs text-slate-500 font-semibold">System schema connecting Next.js, Supabase, and HubSpot API services securely.</p>
+            </div>
+
+            <div className="bg-slate-50 border border-slate-150 text-slate-700 p-5 rounded-xl font-mono text-[10px] leading-relaxed overflow-x-auto space-y-4.5">
               <div>
-                <span className="text-[#1B1F2A] font-bold">1. User Interaction Flow</span>
-                <p>Users ➔ Hybrid CRM UI (Next.js) ➔ HubSpot API / Supabase PostgreSQL ➔ AI Risk Engine ➔ Resend Email Webhooks</p>
+                <span className="text-[#1B1F2A] font-bold">1. SYSTEM FLOW SCHEMATIC</span>
+                <p className="mt-1">Users (Roles: Sales/Legal/Finance/Delivery) ➔ Next.js App ➔ JWT Auth SSO ➔ HubSpot API / Supabase DB Overlay ➔ Resend / Slack Alerts</p>
               </div>
-              <div className="border-t border-slate-200 pt-4">
-                <span className="text-[#1B1F2A] font-bold">2. Security & Compliance Specs</span>
-                <p>JWT Session Tokens Auth ➔ PostgreSQL Row-level Security ➔ Anonymized deal fields ➔ GDPR Compliance compliant Logs</p>
+              <div className="border-t border-slate-200 pt-3">
+                <span className="text-[#1B1F2A] font-bold">2. SECURITY & DEPLOYMENT PARAMETERS</span>
+                <p className="mt-1">Role-Based Access (RBAC) ➔ HTTPS encryption ➔ GDPR sanitization ➔ Vercel Deployment with GitHub Actions CI/CD</p>
               </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-[10px] font-bold">
+              <span className="bg-slate-50 border border-slate-150 py-1.5 rounded-lg text-slate-700">Next.js / Tailwind</span>
+              <span className="bg-slate-50 border border-slate-150 py-1.5 rounded-lg text-slate-700">Supabase / Postgres</span>
+              <span className="bg-slate-50 border border-slate-150 py-1.5 rounded-lg text-slate-700">HubSpot developer API</span>
+              <span className="bg-slate-50 border border-slate-150 py-1.5 rounded-lg text-slate-700">OpenAI / Claude</span>
             </div>
           </div>
         );
 
-      case 13: // Production Readiness
+      case 11: // Recommended Delivery Partner
         return (
-          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
-            <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
-              <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 13 of 15 • Production Readiness & Mappings
-              </span>
-              <span className="text-[10px] text-slate-555 font-semibold uppercase tracking-wider">Security & System Configuration</span>
-            </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
-              <SettingsPage />
-            </div>
-          </div>
-        );
-
-      case 14: // Future Vision
-        return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 14 of 15 • Future Platform Vision & Lessons
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 11 of 12 • Recommended Delivery Partner
             </span>
-            <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Today ➔ Predictive ➔ Autonomous</h2>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold text-[#1B1F2A] tracking-tight">Why doodleblue</h2>
+              <p className="text-xs text-slate-500 font-semibold">Leveraging doodleblue&apos;s product development, enterprise UX, and cloud engineering expertise.</p>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold">
-              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
-                <h4 className="text-xs font-bold text-[#C9922E] uppercase tracking-wider border-b border-slate-200 pb-1.5">Future Scaling Roadmap</h4>
-                <ul className="space-y-2 text-slate-600 list-disc pl-4 leading-relaxed">
-                  <li><strong>Phase 1 (Current)</strong>: Launch basic overlays and approvals table logs.</li>
-                  <li><strong>Phase 2 (Predictive)</strong>: Integrate email escalations and staffing logs.</li>
-                  <li><strong>Phase 3 (Agentic)</strong>: Deploy voice deal tracking and automated pipeline triggers.</li>
-                </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-semibold">
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2 hover-card-glow">
+                <h4 className="font-bold text-slate-800 uppercase tracking-wider">Specialized Capabilities</h4>
+                <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">
+                  Proven expertise in building lightweight SaaS overlay layers that hook into legacy systems without migration risks.
+                </p>
               </div>
 
-              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
-                <h4 className="text-xs font-bold text-[#C9922E] uppercase tracking-wider border-b border-slate-200 pb-1.5">Tradeoffs & Lessons</h4>
-                <ul className="space-y-2 text-slate-600 list-disc pl-4 leading-relaxed">
-                  <li><strong>Product</strong>: Keeping HubSpot avoids data migrations.</li>
-                  <li><strong>Tech</strong>: Custom Supabase schema handles validation rules parallelly.</li>
-                  <li><strong>AI</strong>: Risk scoring works as manager prompts with human controls.</li>
-                </ul>
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2 hover-card-glow">
+                <h4 className="font-bold text-slate-800 uppercase tracking-wider">Agile Delivery Model</h4>
+                <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">
+                  Structured 8-week sprint timeline mapping, ensuring active client reviews and feedback loops.
+                </p>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2 hover-card-glow">
+                <h4 className="font-bold text-slate-800 uppercase tracking-wider">Enterprise Security</h4>
+                <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">
+                  Strict compliance protocols, deploying secure RBAC configurations and GDPR-ready data policies.
+                </p>
               </div>
             </div>
           </div>
         );
 
-      case 15: // Executive Recommendation
+      case 12: // Final Recommendation
         return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 15 of 15 • Concluding Strategic Recommendation
+          <div className="space-y-6 max-w-4xl mx-auto p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
+              Slide 12 of 12 • Concluding Recommendation
             </span>
             
             <div className="bg-slate-50 border-2 border-[#C9922E]/30 rounded-2xl p-6 shadow-md text-center space-y-4">
-              <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Strategic Recommendation Summary</h2>
+              <h2 className="text-2xl font-bold text-[#1B1F2A] tracking-tight">Strategic Recommendation Summary</h2>
               <p className="text-xs text-slate-600 leading-relaxed font-semibold max-w-xl mx-auto">
-                Adopt a **Hybrid CRM Overlay** architecture that preserves HubSpot as the System of Record while extending enterprise capabilities through AI-powered approval workflows, blended resource analytics, and scalable serverless architecture.
+                Adopt the **Hybrid CRM Overlay** architecture to preserve HubSpot as doodleblue&apos;s System of Record, while unblocking signature cycles via custom, serverless approver portals.
               </p>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-bold pt-4 max-w-lg mx-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-bold pt-2 max-w-lg mx-auto">
                 {[
-                  '✔ 70% Lower CapEx',
+                  '✔ Lower Custom CapEx',
                   '✔ Fast 8-Week MVP',
                   '✔ Low Transition Risk',
                   '✔ High Adoption Rate',
@@ -517,7 +538,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </div>
 
               <p className="text-[11px] text-slate-500 leading-relaxed max-w-md mx-auto pt-4 border-t border-slate-200 font-medium">
-                Rather than replacing or rewriting database tables, this solution maximizes current CRM investments and deploys features only where they solve measurable bottlenecks.
+                This strategy maximizes existing HubSpot CRM investments and deploys new custom code only where it resolves measurable operational bottlenecks.
               </p>
             </div>
           </div>
@@ -554,7 +575,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
           {/* Presentation Mode / Demo CRM Switching Switcher */}
           <div className="relative">
-            {/* Visual Highlight indicator */}
             <div className="absolute -top-1 -right-1 h-3 w-3 bg-emerald-500 rounded-full border-2 border-[#1B1F2A] animate-ping" />
             <div className="absolute -top-1 -right-1 h-3 w-3 bg-emerald-500 rounded-full border-2 border-[#1B1F2A]" />
             
@@ -597,13 +617,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <div className="flex items-center space-x-2 shrink-0">
               <span className="h-2 w-2 rounded-full bg-[#C9922E] animate-pulse shrink-0" />
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Slide {currentSlide} of 15
+                Slide {currentSlide} of 12
               </span>
             </div>
 
             {/* Clickable Slide Indicator Dots */}
             <div className="hidden md:flex items-center space-x-2.5">
-              {Array.from({ length: 15 }).map((_, idx) => {
+              {Array.from({ length: 12 }).map((_, idx) => {
                 const step = idx + 1;
                 return (
                   <button
@@ -625,14 +645,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <button
                 disabled={currentSlide === 1}
                 onClick={() => setCurrentSlide(Math.max(currentSlide - 1, 1))}
-                className="bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-850 font-bold text-[10px] px-3.5 py-2 rounded-lg border border-slate-700 transition active-press flex items-center space-x-1"
+                className="bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-855 font-bold text-[10px] px-3.5 py-2 rounded-lg border border-slate-700 transition active-press flex items-center space-x-1"
               >
                 <ChevronLeft className="h-3 w-3" />
                 <span>Prev</span>
               </button>
               <button
                 onClick={() => {
-                  if (currentSlide < 15) {
+                  if (currentSlide < 12) {
                     setCurrentSlide(currentSlide + 1);
                   } else {
                     setPresentationMode(false);
@@ -641,7 +661,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 }}
                 className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-[10px] px-4 py-2 rounded-lg transition active-press flex items-center space-x-1"
               >
-                <span>{currentSlide === 15 ? 'View Demo' : 'Next'}</span>
+                <span>{currentSlide === 12 ? 'View Demo CRM' : 'Next'}</span>
                 <ChevronRight className="h-3 w-3" />
               </button>
             </div>
