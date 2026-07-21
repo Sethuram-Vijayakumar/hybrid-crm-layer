@@ -2,13 +2,15 @@
 
 import React, { useState, useMemo } from 'react';
 import { useApp } from '@/context/AppContext';
+import { useRouter } from 'next/navigation';
 import { Deal, mockOwners } from '@/lib/mock-data';
 import DealCard from '@/components/DealCard';
 import DealDetailDrawer from '@/components/DealDetailDrawer';
 import { Search, Filter, RefreshCw, User, ClipboardList } from 'lucide-react';
 
 export default function PipelinePage() {
-  const { deals, isSyncing, triggerSync, tourActive, tourStep } = useApp();
+  const { deals, isSyncing, triggerSync, tourActive, tourStep, setTourActive, setTourStep } = useApp();
+  const router = useRouter();
   
   // State for search and filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -117,14 +119,31 @@ export default function PipelinePage() {
       {/* Filter Bar with Tour Pointer 1 */}
       <div className="relative">
         {tourActive && tourStep === 1 && (
-          <div className="absolute -top-28 left-4 z-40 bg-white border-2 border-[#C9922E] p-3 rounded-xl shadow-xl w-64 animate-fade-in text-xs text-left">
+          <div className="absolute -top-36 left-4 z-45 bg-white border-2 border-[#C9922E] p-4 rounded-xl shadow-xl w-68 animate-fade-in text-xs text-left">
             <div className="flex items-center space-x-2 text-[#C9922E] font-bold mb-1">
               <span className="h-5 w-5 rounded-full bg-[#C9922E] text-white flex items-center justify-center text-[10px] font-bold shrink-0">1</span>
               <span className="font-semibold text-slate-800">Search & Pipeline Filters</span>
             </div>
-            <p className="text-slate-600 font-medium leading-relaxed">
+            <p className="text-slate-600 font-medium leading-relaxed mb-2.5">
               Filter incoming sales opportunities by company name, HubSpot owner, or deal pipeline stage instantly.
             </p>
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button
+                onClick={() => setTourActive(false)}
+                className="text-[10px] text-slate-400 hover:text-slate-655 font-bold uppercase transition"
+              >
+                Skip Tour
+              </button>
+              <button
+                onClick={() => {
+                  setTourStep(2);
+                  router.push('/approvals');
+                }}
+                className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-[10px] py-1 px-3 rounded font-bold uppercase shadow-sm transition duration-150 active-press"
+              >
+                Next Step →
+              </button>
+            </div>
           </div>
         )}
 

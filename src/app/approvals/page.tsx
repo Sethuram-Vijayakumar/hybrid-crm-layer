@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useApp } from '@/context/AppContext';
+import { useRouter } from 'next/navigation';
 import { Deal } from '@/lib/mock-data';
 import { 
   Check, 
@@ -13,7 +14,8 @@ import {
 } from 'lucide-react';
 
 export default function ApprovalsPage() {
-  const { deals, escalateDeal, tourActive, tourStep } = useApp();
+  const { deals, escalateDeal, tourActive, tourStep, setTourActive, setTourStep } = useApp();
+  const router = useRouter();
   
   // States
   const [highRiskOnly, setHighRiskOnly] = useState(false);
@@ -123,14 +125,40 @@ export default function ApprovalsPage() {
       {/* Approvals Table with Tour Pointer 1 */}
       <div className="relative">
         {tourActive && tourStep === 2 && (
-          <div className="absolute -top-28 left-4 z-40 bg-white border-2 border-[#C9922E] p-3 rounded-xl shadow-xl w-64 animate-fade-in text-xs text-left">
+          <div className="absolute -top-36 left-4 z-45 bg-white border-2 border-[#C9922E] p-4 rounded-xl shadow-xl w-72 animate-fade-in text-xs text-left">
             <div className="flex items-center space-x-2 text-[#C9922E] font-bold mb-1">
-              <span className="h-5 w-5 rounded-full bg-[#C9922E] text-white flex items-center justify-center text-[10px] font-bold shrink-0">1</span>
+              <span className="h-5 w-5 rounded-full bg-[#C9922E] text-white flex items-center justify-center text-[10px] font-bold shrink-0">2</span>
               <span className="font-semibold text-slate-800">Priority Sorted Queue</span>
             </div>
-            <p className="text-slate-600 font-medium leading-relaxed">
+            <p className="text-slate-600 font-medium leading-relaxed mb-2.5">
               Deals currently in approvals or legal review stages are sorted to bring high-risk items to the top automatically.
             </p>
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+              <button
+                onClick={() => {
+                  setTourStep(1);
+                  router.push('/pipeline');
+                }}
+                className="text-[10px] text-slate-500 hover:text-slate-700 font-bold uppercase transition"
+              >
+                ← Back
+              </button>
+              <button
+                onClick={() => setTourActive(false)}
+                className="text-[10px] text-slate-400 hover:text-slate-655 font-bold uppercase transition"
+              >
+                Skip
+              </button>
+              <button
+                onClick={() => {
+                  setTourStep(3);
+                  router.push('/analytics');
+                }}
+                className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-[10px] py-1 px-2.5 rounded font-bold uppercase shadow-sm transition duration-150 active-press"
+              >
+                Next Step →
+              </button>
+            </div>
           </div>
         )}
 

@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useApp } from '@/context/AppContext';
+import { useRouter } from 'next/navigation';
 import { Deal } from '@/lib/mock-data';
 import { 
   BarChart3, 
@@ -13,7 +14,8 @@ import {
 } from 'lucide-react';
 
 export default function AnalyticsPage() {
-  const { deals, tourActive, tourStep } = useApp();
+  const { deals, tourActive, tourStep, setTourActive, setTourStep } = useApp();
+  const router = useRouter();
   
   // Simulation State: Toggle between baseline capacity and a spike scenario
   const [simulationMode, setSimulationMode] = useState<'Q2' | 'Q3'>('Q2');
@@ -105,14 +107,31 @@ export default function AnalyticsPage() {
         <div className="relative">
           {/* Tour Pointer 1 for Blended Metrics (positioned under the description title) */}
           {tourActive && tourStep === 3 && (
-            <div className="absolute top-16 left-0 z-40 bg-white border-2 border-[#C9922E] p-3 rounded-xl shadow-xl w-64 animate-fade-in text-xs text-left">
+            <div className="absolute top-16 left-0 z-45 bg-white border-2 border-[#C9922E] p-4 rounded-xl shadow-xl w-68 animate-fade-in text-xs text-left">
               <div className="flex items-center space-x-2 text-[#C9922E] font-bold mb-1">
                 <span className="h-5 w-5 rounded-full bg-[#C9922E] text-white flex items-center justify-center text-[10px] font-bold shrink-0">1</span>
                 <span className="font-semibold text-slate-800">Blended Analytics Metrics</span>
               </div>
-              <p className="text-slate-600 font-medium leading-relaxed">
+              <p className="text-slate-600 font-medium leading-relaxed mb-2.5">
                 Aggregates sales value metrics from HubSpot alongside simulated project delivery capacity loads from ResourceOps logs.
               </p>
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                <button
+                  onClick={() => {
+                    setTourStep(2);
+                    router.push('/approvals');
+                  }}
+                  className="text-[10px] text-slate-500 hover:text-slate-700 font-bold uppercase transition"
+                >
+                  ← Back
+                </button>
+                <button
+                  onClick={() => setTourActive(false)}
+                  className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-[10px] py-1 px-3 rounded font-bold uppercase shadow-sm transition duration-150 active-press"
+                >
+                  Finish Tour
+                </button>
+              </div>
             </div>
           )}
           
@@ -125,14 +144,31 @@ export default function AnalyticsPage() {
         {/* Simulation Selector pill container with Tour Pointer 3 (positioned floating below) */}
         <div className="relative flex items-center space-x-3 bg-white border border-[#E5E7EB] rounded-xl p-2.5 shadow-xs shrink-0 self-start md:self-auto">
           {tourActive && tourStep === 3 && (
-            <div className="absolute top-14 right-0 z-40 bg-white border-2 border-[#C9922E] p-3 rounded-xl shadow-xl w-64 animate-fade-in text-xs text-left">
+            <div className="absolute top-14 right-0 z-45 bg-white border-2 border-[#C9922E] p-4 rounded-xl shadow-xl w-68 animate-fade-in text-xs text-left">
               <div className="flex items-center space-x-2 text-[#C9922E] font-bold mb-1">
                 <span className="h-5 w-5 rounded-full bg-[#C9922E] text-white flex items-center justify-center text-[10px] font-bold shrink-0">3</span>
                 <span className="font-semibold text-slate-850">Q3 Staff Spike Simulator</span>
               </div>
-              <p className="text-slate-600 font-medium leading-relaxed">
+              <p className="text-slate-600 font-medium leading-relaxed mb-2.5">
                 Simulates a 35% surge in deal volume to demonstrate how delivery capacity spikes over limit, triggering real-time alerts.
               </p>
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                <button
+                  onClick={() => {
+                    setTourStep(2);
+                    router.push('/approvals');
+                  }}
+                  className="text-[10px] text-slate-500 hover:text-slate-700 font-bold uppercase transition"
+                >
+                  ← Back
+                </button>
+                <button
+                  onClick={() => setTourActive(false)}
+                  className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-[10px] py-1 px-3 rounded font-bold uppercase shadow-sm transition duration-150 active-press"
+                >
+                  Finish Tour
+                </button>
+              </div>
             </div>
           )}
 
@@ -274,14 +310,31 @@ export default function AnalyticsPage() {
         {/* Chart 2: Blended Delivery Capacity (ResourceOps) with Tour Pointer 2 (positioned floating below title inside card) */}
         <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs space-y-6 relative animate-fade-in">
           {tourActive && tourStep === 3 && (
-            <div className="absolute top-14 left-4 z-40 bg-white border-2 border-[#C9922E] p-3 rounded-xl shadow-xl w-64 animate-fade-in text-xs text-left">
+            <div className="absolute top-14 left-4 z-45 bg-white border-2 border-[#C9922E] p-4 rounded-xl shadow-xl w-68 animate-fade-in text-xs text-left">
               <div className="flex items-center space-x-2 text-[#C9922E] font-bold mb-1">
                 <span className="h-5 w-5 rounded-full bg-[#C9922E] text-white flex items-center justify-center text-[10px] font-bold shrink-0">2</span>
                 <span className="font-semibold text-slate-800">Delivery Team Capacity</span>
               </div>
-              <p className="text-slate-600 font-medium leading-relaxed">
+              <p className="text-slate-600 font-medium leading-relaxed mb-2.5">
                 Monitors exact staff utilization. Closed-won pipeline projects are blended in real-time to alert managers of overallocation.
               </p>
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                <button
+                  onClick={() => {
+                    setTourStep(2);
+                    router.push('/approvals');
+                  }}
+                  className="text-[10px] text-slate-500 hover:text-slate-700 font-bold uppercase transition"
+                >
+                  ← Back
+                </button>
+                <button
+                  onClick={() => setTourActive(false)}
+                  className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-[10px] py-1 px-3 rounded font-bold uppercase shadow-sm transition duration-150 active-press"
+                >
+                  Finish Tour
+                </button>
+              </div>
             </div>
           )}
 
