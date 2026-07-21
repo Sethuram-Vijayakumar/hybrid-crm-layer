@@ -537,8 +537,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {/* Main Layout Container */}
       {presentationMode ? (
-        // PRESENTATION MODE SCREEN (Header = 16 (64px), Sub-Header = 14 (56px) -> pt-30 (120px) layout spacing)
-        <div className="flex-1 flex flex-col pt-30 font-sans bg-[#F8F9FB]">
+        // PRESENTATION MODE SCREEN (Header = 16 (64px), Sub-Header = 14 (56px) -> pt-40 (160px) layout spacing to prevent overlaps)
+        <div className="flex-1 flex flex-col pt-40 font-sans bg-[#F8F9FB]">
           
           {/* Slide Navigation Sub-Header - Placed directly below Header Panel */}
           <div className="fixed top-16 left-0 right-0 h-14 bg-[#1B1F2A] border-b border-slate-800 px-4 sm:px-8 flex items-center justify-between text-white z-25 shadow-md">
