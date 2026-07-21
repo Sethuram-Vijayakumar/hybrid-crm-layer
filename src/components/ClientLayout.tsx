@@ -120,7 +120,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               ))}
             </div>
 
-            <div className="bg-[#FBF1DE]/30 border-l-4 border-[#C9922E] p-4 rounded-r-xl text-xs font-medium text-slate-650">
+            <div className="bg-[#FBF1DE]/30 border-l-4 border-[#C9922E] p-4 rounded-r-xl text-xs font-medium text-slate-655">
               &ldquo;The Hybrid CRM Overlay maximizes current HubSpot investments while introducing custom workflows and capacity checking only where measurable business value exists.&rdquo;
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 space-y-3">
                 <h4 className="text-xs font-semibold text-[#C9922E] uppercase tracking-wider">doodleblue Strategic Target</h4>
-                <ul className="space-y-2.5 text-xs font-medium text-slate-650">
+                <ul className="space-y-2.5 text-xs font-medium text-slate-655">
                   <li className="flex items-start space-x-2">
                     <span className="text-emerald-600 shrink-0 font-bold">✓</span>
                     <span>Cheap standard CRM seats with custom validation portals.</span>
@@ -287,7 +287,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </span>
               <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Fully Interactive Prototype</span>
             </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[72vh] shadow-xs">
+            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
               <PipelinePage />
             </div>
           </div>
@@ -302,7 +302,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </span>
               <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Interactive Workflow Interface</span>
             </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[72vh] shadow-xs">
+            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
               <ApprovalsPage />
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </span>
               <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Live Capacity Simulator</span>
             </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[72vh] shadow-xs">
+            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
               <AnalyticsPage />
             </div>
           </div>
@@ -339,7 +339,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               ].map((roi, idx) => (
                 <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-5 shadow-2xs text-xs space-y-2">
                   <h4 className="font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5">{roi.label}</h4>
-                  <p className="text-slate-500 font-semibold">{roi.saas}</p>
+                  <p className="text-slate-505 font-semibold">{roi.saas}</p>
                   <p className="text-slate-700 font-semibold">{roi.overlay}</p>
                   <p className={`font-bold pt-1.5 ${roi.color}`}>{roi.metric}</p>
                 </div>
@@ -376,9 +376,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
                 Slide 11 of 14 • Production Readiness & Mappings
               </span>
-              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Security & System Configuration</span>
+              <span className="text-[10px] text-slate-505 font-semibold uppercase tracking-wider">Security & System Configuration</span>
             </div>
-            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[72vh] shadow-xs">
+            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
               <SettingsPage />
             </div>
           </div>
@@ -429,7 +429,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <span className="text-[#C9922E]">2. Phase 2 Scope (Future)</span>
                 <span className="text-slate-550 uppercase tracking-wider text-[9px] bg-slate-205 py-0.5 px-2 rounded-md">Upcoming</span>
               </div>
-              <p className="text-slate-650 font-medium leading-relaxed">
+              <p className="text-slate-655 font-medium leading-relaxed">
                 Deploy automated email notifications via Resend API, implement predictive resource hiring recommendations, and launch advanced pipeline forecasting models.
               </p>
             </div>
@@ -537,16 +537,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {/* Main Layout Container */}
       {presentationMode ? (
-        // PRESENTATION MODE SCREEN
-        <div className="flex-1 flex flex-col pt-16 font-sans bg-[#F8F9FB]">
+        // PRESENTATION MODE SCREEN (Header = 16 (64px), Sub-Header = 14 (56px) -> pt-30 (120px) layout spacing)
+        <div className="flex-1 flex flex-col pt-30 font-sans bg-[#F8F9FB]">
           
-          {/* Deck Body Content */}
-          <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-y-auto max-w-[1440px] mx-auto w-full">
-            {renderSlideContent()}
-          </main>
-
-          {/* Deck Bottom Navigation Controller */}
-          <footer className="h-16 bg-[#1B1F2A] border-t border-slate-800 px-4 sm:px-8 flex items-center justify-between text-white z-35 shadow-xl shrink-0">
+          {/* Slide Navigation Sub-Header - Placed directly below Header Panel */}
+          <div className="fixed top-16 left-0 right-0 h-14 bg-[#1B1F2A] border-b border-slate-800 px-4 sm:px-8 flex items-center justify-between text-white z-25 shadow-md">
             <div className="flex items-center space-x-2 shrink-0">
               <span className="h-2 w-2 rounded-full bg-[#C9922E] animate-pulse shrink-0" />
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -597,7 +592,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <ChevronRight className="h-3 w-3" />
               </button>
             </div>
-          </footer>
+          </div>
+          
+          {/* Deck Body Content */}
+          <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-y-auto max-w-[1440px] mx-auto w-full">
+            {renderSlideContent()}
+          </main>
         </div>
       ) : (
         // STANDARD MODE SCREEN
@@ -759,7 +759,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   if (prevStep === 1) router.push('/pipeline');
                   if (prevStep === 2) router.push('/approvals');
                 }}
-                className="bg-slate-800 hover:bg-slate-700 text-white font-semibold text-[10px] md:text-[11px] px-2.5 py-1.5 rounded-lg border border-slate-700 transition active-press"
+                className="bg-slate-800 hover:bg-slate-750 text-white font-semibold text-[10px] md:text-[11px] px-2.5 py-1.5 rounded-lg border border-slate-700 transition active-press"
               >
                 Back
               </button>
@@ -782,7 +782,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </button>
             <button
               onClick={() => setTourActive(false)}
-              className="text-slate-400 hover:text-white font-medium text-[10px] md:text-[11px] px-2 py-1.5 transition"
+              className="text-slate-405 hover:text-white font-medium text-[10px] md:text-[11px] px-2 py-1.5 transition"
             >
               Skip
             </button>
