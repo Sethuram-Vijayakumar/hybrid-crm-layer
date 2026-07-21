@@ -79,7 +79,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </h2>
               </div>
               <span className="text-[10px] text-slate-400 font-medium">
-                Prepared by doodleblue Strategy Consulting for Acme Services Inc.
+                Prepared by doodleblue Strategy Consulting for Northbridge Advisory
               </span>
             </div>
 
@@ -92,10 +92,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </div>
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">The Hybrid Case & ROI</h3>
                 <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  Migrating completely off SaaS to a custom CRM causes severe sales disruption and costs <strong>₹15L+</strong> in custom development. Staying on SaaS requires upgrading to expensive tiers for approval features.
+                  Migrating completely off SaaS to a custom CRM causes severe sales disruption and costs <strong>₹45L–65L</strong> in custom development. Staying on SaaS requires upgrading to expensive tiers for approval features.
                 </p>
                 <p className="text-xs text-slate-700 leading-relaxed font-bold border-t border-slate-100 pt-2">
-                  <strong>Recommendation</strong>: A Hybrid Layer. Retain HubSpot as the sales system of record, and overlay this custom light framework for approvals and resource sync. <strong>Saves 75% in dev time.</strong>
+                  <strong>Recommendation</strong>: A Hybrid Layer. Retain HubSpot as the sales system of record, and overlay this custom light framework for approvals and resource sync. <strong>Saves 60–70% in dev time.</strong>
                 </p>
               </div>
 
@@ -131,7 +131,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {/* Footer */}
             <div className="p-6 border-t border-[#E5E7EB] bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-4">
               <span className="text-xs text-slate-600 font-semibold">
-                Status: Connected to HubSpot Instance • acme-hubspot-prd
+                Status: Connected to HubSpot Instance • northbridge-hubspot-prd
               </span>
               <button
                 onClick={() => {
@@ -245,7 +245,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <Database className="h-4 w-4 text-[#C9922E] mt-0.5" />
                     <div>
                       <h4 className="text-xs font-semibold text-slate-300">Connected Instance</h4>
-                      <p className="text-[10px] text-slate-500">acme-hubspot-prd</p>
+                      <p className="text-[10px] text-slate-500">northbridge-hubspot-prd</p>
                     </div>
                   </div>
                 </div>
@@ -294,7 +294,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Database className="h-4 w-4 text-[#C9922E] mt-0.5" />
                 <div>
                   <h4 className="text-xs font-semibold text-slate-300">Connected Instance</h4>
-                  <p className="text-[10px] text-slate-500">acme-hubspot-prd</p>
+                  <p className="text-[10px] text-slate-500">northbridge-hubspot-prd</p>
                 </div>
               </div>
               <div className="mt-3 py-2 px-3 bg-slate-800/40 rounded border border-slate-800 text-[10px] text-slate-400">
@@ -314,6 +314,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           {/* Footer */}
           <footer className="border-t border-[#E5E7EB] py-4 px-8 text-center text-xs text-slate-500 bg-white">
             <p>© 2026 Hybrid CRM Layer. Build verification Case Study for doodleblue. System design powered by Next.js & Supabase overlay.</p>
+            <p className="text-[10px] text-slate-400 mt-1">Northbridge Advisory is a fictional example client created for this case study exercise.</p>
           </footer>
         </main>
       </div>

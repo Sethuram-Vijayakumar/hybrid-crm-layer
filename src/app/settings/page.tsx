@@ -51,7 +51,7 @@ export default function SettingsPage() {
             
             <div className="mt-4">
               <p className="text-xs text-slate-500 font-semibold">ACCOUNT NAME</p>
-              <p className="text-sm font-bold text-[#1B1F2A] mt-0.5">Acme Services Inc.</p>
+              <p className="text-sm font-bold text-[#1B1F2A] mt-0.5">Northbridge Advisory</p>
             </div>
           </div>
 
