@@ -51,6 +51,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [showShortcuts, setShowShortcuts] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [presenterMode, setPresenterMode] = useState<boolean>(false);
+  const [showReviewerModal, setShowReviewerModal] = useState<boolean>(false);
 
   // Expandable state for Prompt Library cards (Slide 15)
   const [expandedPromptTab, setExpandedPromptTab] = useState<string | null>(null);
@@ -597,7 +598,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Scope & Success Parameters</h2>
-              <p className="text-xs text-slate-505 font-semibold font-bold">Comprehensive project requirements and boundary definitions.</p>
+              <p className="text-xs text-slate-550 font-semibold font-bold">Comprehensive project requirements and boundary definitions.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold">
@@ -660,13 +661,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Discovery Note',
-              'Scope represents the recommended MVP based on the assessment scenario. Requirements may evolve following stakeholder workshops and process mapping sessions.'
+              'Proposal Note',
+              'Scope represents the recommended MVP based on the assessment scenario. Requirements may evolve following stakeholder workshops, technical discovery, and engineering planning.'
             )}
           </div>
         );
 
-      case 7: // Slide 7 [NEW FIGMA PROTOTYPE SLIDE]
+      case 7: // Slide 7: UX Prototype
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
@@ -745,8 +746,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Prototype Note',
-              'The prototype represents the recommended MVP experience based on the assessment scenario. User interface components, workflows and interactions will continue to evolve through stakeholder validation, usability testing and engineering collaboration.'
+              'Figma Note',
+              'The prototype represents the recommended MVP experience based on the assessment scenario. User interface components, workflows, interactions, and visual details will continue to evolve through stakeholder validation and engineering discovery.'
             )}
           </div>
         );
@@ -826,8 +827,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Business Assumption',
-              'ROI calculations are directional estimates based on publicly available SaaS pricing, implementation assumptions, and typical enterprise approval workflows. Actual savings should be validated during discovery.'
+              'ROI Note',
+              'ROI estimates are directional based on publicly available SaaS pricing assumptions and typical enterprise approval metrics. Actual savings and cost reductions should be validated during discovery.'
             )}
           </div>
         );
@@ -859,8 +860,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Planning Assumption',
-              'Timeline assumes stakeholder availability, API readiness, and prioritized engineering capacity. Final delivery schedule will be confirmed after discovery and sprint planning.'
+              'Roadmap Note',
+              'Implementation schedules are directional and assume technical discovery workshops, resource availability, API stability, and developer alignment.'
             )}
           </div>
         );
@@ -901,7 +902,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <tr key={idx} className="hover:bg-slate-50/50">
                       <td className="p-3 font-bold text-[#1B1F2A]">{item.l}</td>
                       <td className="p-3 font-mono text-[10.5px] text-[#C9922E]">{item.t}</td>
-                      <td className="p-3 text-slate-650 text-[10.5px] font-semibold">{item.w}</td>
+                      <td className="p-3 text-slate-655 text-[10.5px] font-semibold">{item.w}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -909,8 +910,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Architecture Note',
-              'The proposed stack is intended as a reference implementation. During project initiation, the final technology selection should be validated against the client\'s existing architecture, engineering capabilities, security policies, licensing constraints, and enterprise standards.'
+              'Stack Note',
+              'The proposed stack represents a reference implementation recommendation. Final tooling selection should be validated against the client\'s existing architecture, engineering capabilities, and security policies.'
             )}
           </div>
         );
@@ -961,8 +962,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Reference Architecture',
-              'The architecture demonstrates one feasible implementation approach. Component choices may vary depending on enterprise infrastructure, cloud provider, security requirements, and integration patterns.'
+              'Architecture Note',
+              'This RAG diagram demonstrates a feasible technical implementation model. Specific hosting, cloud nodes, and security parameters will be validated during stakeholder workshops and engineering discover.'
             )}
           </div>
         );
@@ -1003,19 +1004,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'AI Governance',
-              'AI capabilities are intentionally designed with human review, confidence scoring, and explainability. Production deployment should align with organizational AI governance, privacy, and compliance policies.'
+              'AI Governance Note',
+              'AI features are designed with strict human-in-the-loop validation, explainability outputs, and confidence indices. Final production parameters must align with internal governance policies.'
             )}
           </div>
         );
       }
 
-      case 14: { // AI Usage Log
+      case 14: { // Slide 14: AI Usage Log
         const logItems = [
-          { t: 'Research Phase', a: 'OpenAI GPT-4o', p: 'Synthesize standard HubSpot multi-signature workflow limits.', g: 'Comparative outline of seat licensing vs overlay modules.', m: 'Added Northbridge specific parameters and doodleblue integration models.' },
-          { t: 'Architecture Map', a: 'Claude 3.5 Sonnet', p: 'Draft Supabase serverless webhook sync database schema.', g: 'PostgreSQL relational diagram connecting deals and approvals.', m: 'Verified RAG pgvector semantic match nodes manually.' },
-          { t: 'ROI Calculation', a: 'OpenAI GPT-4o', p: 'Calculate payback cycles for ₹12L-18L CapEx vs HubSpot seat overhead.', g: 'Excel mathematical payback equation models.', m: 'Adjusted target payback timeline limits to < 3 months.' },
-          { t: 'Risk Register', a: 'Claude 3.5 Sonnet', p: 'Formulate mitigation matrix for HubSpot API rate throttling.', g: 'Mitigations table outlining caching and queueing systems.', m: 'Added Redis cache throttle rules specific to Northbridge load levels.' }
+          { t: 'Research Phase', a: 'OpenAI GPT-4o', p: 'Synthesize standard HubSpot multi-signature workflow limits.', g: 'Comparative outline of seat licensing vs overlay modules.', m: 'Added Northbridge specific parameters and doodleblue integration models.', o: 'Validated and refined architecture' },
+          { t: 'Architecture Map', a: 'Claude 3.5 Sonnet', p: 'Draft Supabase serverless webhook sync database schema.', g: 'PostgreSQL relational diagram connecting deals and approvals.', m: 'Verified RAG pgvector semantic match nodes manually.', o: 'Adopted reference design' },
+          { t: 'ROI Calculation', a: 'OpenAI GPT-4o', p: 'Calculate payback cycles for ₹12L-18L CapEx vs HubSpot seat overhead.', g: 'Excel mathematical payback equation models.', m: 'Adjusted target payback timeline limits to < 3 months.', o: 'Validated cash targets' },
+          { t: 'Risk Register', a: 'Claude 3.5 Sonnet', p: 'Formulate mitigation matrix for HubSpot API rate throttling.', g: 'Mitigations table outlining caching and queueing systems.', m: 'Added Redis cache throttle rules specific to Northbridge load levels.', o: 'Mitigation plan confirmed' }
         ];
 
         return (
@@ -1029,14 +1030,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             <div className="overflow-x-auto border border-slate-200 rounded-xl bg-white">
-              <table className="w-full text-xs text-left border-collapse min-w-[700px]">
+              <table className="w-full text-xs text-left border-collapse min-w-[750px]">
                 <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-[9px] border-b border-slate-200">
                   <tr>
-                    <th className="p-3">Task</th>
-                    <th className="p-3">AI Engine</th>
-                    <th className="p-3">Prompt Parameters</th>
-                    <th className="p-3">What AI Generated</th>
-                    <th className="p-3 text-[#C9922E]">Manual Modifications / Refinements</th>
+                    <th className="p-3">Project Activity</th>
+                    <th className="p-3">AI Tool</th>
+                    <th className="p-3">Prompt Purpose</th>
+                    <th className="p-3">AI Contribution</th>
+                    <th className="p-3">Human Validation & Refinement</th>
+                    <th className="p-3 text-[#C9922E]">Outcome</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold text-[10px]">
@@ -1044,9 +1046,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <tr key={idx} className="hover:bg-slate-50/50 leading-relaxed">
                       <td className="p-3 font-bold text-slate-800">{item.t}</td>
                       <td className="p-3 font-mono text-[9px] text-[#C9922E]">{item.a}</td>
-                      <td className="p-3 text-slate-600 truncate max-w-[150px]">{item.p}</td>
-                      <td className="p-3 text-slate-600 truncate max-w-[150px]">{item.g}</td>
-                      <td className="p-3 bg-[#FBF1DE]/10 text-[#C9922E] font-semibold">{item.m}</td>
+                      <td className="p-3 text-slate-600 truncate max-w-[130px]">{item.p}</td>
+                      <td className="p-3 text-slate-600 truncate max-w-[130px]">{item.g}</td>
+                      <td className="p-3 text-slate-600 truncate max-w-[135px]">{item.m}</td>
+                      <td className="p-3 bg-[#FBF1DE]/10 text-[#C9922E] font-bold">{item.o}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1055,7 +1058,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {renderConsultantsNote(
               'Transparency Statement',
-              'AI tools were used to accelerate ideation, drafting, and content refinement. Final recommendations, assumptions, architecture, and business decisions were reviewed, validated, and edited manually.'
+              'AI tools were used to accelerate ideation, drafting, summarization and content generation. Final recommendations, business assumptions, architecture decisions and financial estimates were manually reviewed and refined.'
             )}
           </div>
         );
@@ -1105,8 +1108,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Reproducibility',
-              'Prompts are included to demonstrate the AI-assisted workflow and provide transparency into how generative AI supported the preparation of this assessment.'
+              'Reproducibility Note',
+              'Prompts are cataloged for audit transparency, showing how Generative AI assisted proposal drafting. Execution timelines and logic parameters should be validated during technical scoping workshops.'
             )}
           </div>
         );
@@ -1207,11 +1210,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       case 18: { // Risk Register
         const risks = [
-          { r: 'HubSpot API Rate Limits', p: 'Low', i: 'Medium', m: 'Deploy Redis webhook caching queues to throttle peaks.', o: 'Lead Engineer' },
-          { r: 'Low User Adoption', p: 'Medium', i: 'High', m: 'Integrate interactive in-app guide walkthroughs.', o: 'UX Director' },
-          { r: 'Scope Creep', p: 'Medium', i: 'Medium', m: 'Strictly freeze MVP scope; defer payments to Phase 2.', o: 'Product Manager' },
-          { r: 'AI Model Hallucinations', p: 'Low', i: 'High', m: 'Inject pgvector context; require manual manager check.', o: 'AI Strategist' },
-          { r: 'GDPR Data Compliance', p: 'Low', i: 'High', m: 'Encrypt contract logs; strip PII customer name feeds.', o: 'Legal Ops' }
+          { r: 'HubSpot API Rate Limits', p: 'Low', i: 'Medium', m: 'Deploy Redis webhook caching queues to throttle peaks.', o: 'Lead Engineer', s: 'Mitigated' },
+          { r: 'Low User Adoption', p: 'Medium', i: 'High', m: 'Integrate interactive in-app guide walkthroughs.', o: 'UX Director', s: 'Mitigated' },
+          { r: 'Scope Creep', p: 'Medium', i: 'Medium', m: 'Strictly freeze MVP scope; defer payments to Phase 2.', o: 'Product Manager', s: 'Managed' },
+          { r: 'AI Model Hallucinations', p: 'Low', i: 'High', m: 'Inject pgvector context; require manual manager check.', o: 'AI Strategist', s: 'Mitigated' },
+          { r: 'GDPR Data Compliance', p: 'Low', i: 'High', m: 'Encrypt contract logs; strip PII customer name feeds.', o: 'Legal Ops', s: 'Active' }
         ];
 
         return (
@@ -1233,6 +1236,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <th className="p-3">Severity Impact</th>
                     <th className="p-3">Mitigation Safeguard</th>
                     <th className="p-3">Owner</th>
+                    <th className="p-3">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold text-[10.5px]">
@@ -1251,6 +1255,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                       </td>
                       <td className="p-3 text-slate-605">{risk.m}</td>
                       <td className="p-3 font-mono text-[9px] text-[#C9922E]">{risk.o}</td>
+                      <td className="p-3">
+                        <span className={`py-0.5 px-2 rounded font-bold text-[9px] uppercase ${
+                          risk.s === 'Active' ? 'text-amber-700 bg-amber-50 border border-amber-200' : 'text-emerald-700 bg-emerald-50 border border-emerald-200'
+                        }`}>{risk.s}</span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -1258,8 +1267,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             {renderConsultantsNote(
-              'Living Document',
-              'The risk register should be reviewed throughout the project lifecycle and updated as new technical, operational, or organizational risks emerge.'
+              'Risk Note',
+              'The risk register represents a snapshot of initial operational boundaries. These mitigation actions and threat vectors must be reviewed periodically during project sprint cycles.'
             )}
           </div>
         );
@@ -1335,6 +1344,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <div className="flex items-center space-x-4 shrink-0 text-xs font-semibold">
           <span className="text-slate-405 hidden lg:inline">Prepared by: Sethuram Vijayakumar</span>
           
+          <button
+            onClick={() => setShowReviewerModal(true)}
+            className="hidden sm:flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-[#C9922E] font-bold text-[10px] uppercase py-1.5 px-3 rounded-lg border border-slate-700 transition duration-150 active-press"
+          >
+            <span>📋 Reviewer Guide</span>
+          </button>
+
           <div className="hidden md:flex items-center space-x-3 text-slate-400 text-[10px] font-bold border-l border-slate-800 pl-4 uppercase tracking-wider mr-2">
             <span>⏱️ 5 min read</span>
             <span>v1.2.0</span>
@@ -1823,6 +1839,97 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 className="bg-slate-800 hover:bg-slate-750 text-white font-bold text-xs py-3 px-6 rounded-xl shadow-md transition duration-205 active-press"
               >
                 Explore Demo CRM (With Walkthrough)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reviewer Guide Modal */}
+      {showReviewerModal && (
+        <div className="fixed inset-0 bg-[#0F111A]/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in font-sans">
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 max-w-lg w-full shadow-2xl text-slate-800 space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center space-x-2">
+                <span className="text-lg">📋</span>
+                <h3 className="text-base font-extrabold text-[#1B1F2A] uppercase tracking-wider">Reviewer Guide</h3>
+              </div>
+              <button onClick={() => setShowReviewerModal(false)} className="text-slate-400 hover:text-slate-600 transition">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-semibold">
+              
+              {/* Flow Path */}
+              <div className="space-y-3">
+                <h4 className="text-[10px] uppercase tracking-wider text-slate-400 font-extrabold">Recommended Flow</h4>
+                <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
+                  <div className="flex items-center justify-between text-[10px] text-slate-500">
+                    <span>Target Reading Time</span>
+                    <span className="text-emerald-700 font-bold">8 to 10 minutes</span>
+                  </div>
+                  <ol className="list-decimal pl-4 space-y-1.5 text-slate-655 leading-relaxed text-[10.5px]">
+                    <li>Presentation Mode Preface (Slide 1)</li>
+                    <li>Executive Summary (Slide 2)</li>
+                    <li>Product Proposal Scope (Slide 6)</li>
+                    <li>Figma UX Prototype (Slide 7)</li>
+                    <li>ROI Case Study (Slide 9)</li>
+                    <li>Technology Stack (Slide 11)</li>
+                    <li>AI Value Add mappings (Slide 13)</li>
+                    <li>Risk Mitigation Matrix (Slide 18)</li>
+                    <li>Final Strategic Recommendation (Slide 19)</li>
+                  </ol>
+                </div>
+              </div>
+
+              {/* Assignment Checklist */}
+              <div className="space-y-3">
+                <h4 className="text-[10px] uppercase tracking-wider text-slate-400 font-extrabold">Deliverables Covered</h4>
+                <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-1.5 text-slate-700">
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>Option Evaluation Matrix (Slide 5)</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>Product Proposal MVP Scope (Slide 6)</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>Figma UX Prototype Layout (Slide 7)</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>Business Value Case & ROI (Slide 9)</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>AI Strategic Value Add (Slide 13)</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>Responsible AI Usage Log (Slide 14)</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>Structured Prompt Library (Slide 15)</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[10.5px]">
+                    <span className="text-emerald-600">✓</span>
+                    <span>Risk Mitigation Register (Slide 18)</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div className="pt-2 border-t border-slate-100 flex justify-end">
+              <button
+                onClick={() => setShowReviewerModal(false)}
+                className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-xs font-bold py-2 px-5 rounded-xl transition duration-150 active-press"
+              >
+                Got It
               </button>
             </div>
           </div>

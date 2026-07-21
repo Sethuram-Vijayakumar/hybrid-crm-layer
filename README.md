@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hybrid CRM Overlay — Strategy Case Study Portfolio
 
-## Getting Started
+An enterprise strategy recommendation and interactive demo website prepared for the **doodleblue Product Manager Assessment**. 
 
-First, run the development server:
+This repository presents the strategic proposal, product proposal, system architecture, UX prototypes, ROI metrics, risk mitigation registers, and prompt co-creation logs for deploying a lightweight custom **CRM Overlay Layer** on top of **HubSpot** for Northbridge Advisory.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 📑 Project Overview
+
+Northbridge Advisory faces operational hold delays in contract sign-off cycles (averaging **4.4 days**) due to the lack of custom multi-department approval flows (Legal & Finance) in standard CRM seat licenses.
+
+Instead of a high-risk, expensive custom CRM rewrite (estimated at **₹45L–65L**), this study recommends a **Hybrid CRM Overlay** (budgeted at **₹12L–18L**) built with Next.js, Supabase, and OpenAI.
+
+---
+
+## 🏆 doodleblue Assignment Deliverables Checklist
+
+All core deliverables from the assessment briefing are fully implemented and visible directly in the interactive presentation deck:
+
+- [x] **Deliverable 1: CRM Option Evaluation Matrix** (Slide 5) - Evaluating Stay SaaS, Custom CRM, and Hybrid Overlay.
+- [x] **Deliverable 2: Figma UX Prototype Wireframe** (Slide 7) - Interactive prototype coverage and WCAG principles.
+- [x] **Deliverable 3: User Journey Progression** (Slide 8) - Streamlined approvals timeline dropping hold times from 4.4 to 1.5 days.
+- [x] **Deliverable 4: Product Proposal MVP Scope** (Slide 6) - Stakeholders, boundary scopes, metrics, and KPI definitions.
+- [x] **Deliverable 5: Technology Architecture Stack** (Slide 11) - Next.js, Supabase PostgreSQL, LangChain vector indexes, OpenAI APIs.
+- [x] **Deliverable 6: AI Strategic Value Add Mappings** (Slide 13) - Delay risk scoring, email assistants, and explainability score guardrails.
+- [x] **Deliverable 7: Responsible AI Usage Log** (Slide 14) - Complete audit trails of GPT-4/Claude prompts and expert refinement steps.
+- [x] **Deliverable 8: Structured Prompt Library** (Slide 15) - Actual prompt templates used to construct the strategy framework.
+
+---
+
+## 🏗 System Architecture & Technology Stack
+
+The reference architecture implements a zero-migration, real-time sync model:
+
+```
+[ HubSpot CRM REST APIs ] ◄──(Serverless Webhooks)──► [ Supabase DB / Postgres ]
+                                                               ▲
+                                                               │
+                                                     [ Next.js React Portal ]
+                                                               ▲
+                                                               │
+                                                    [ OpenAI Vector Search ]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Frontend**: Next.js 14, React, Tailwind CSS, Lucide icons, Framer Motion.
+* **Database & Auth**: Supabase Serverless PostgreSQL Database.
+* **AI Orchestration**: OpenAI GPT-4 API context-injected via vector pgvector NDA documents.
+* **Notifications**: Resend serverless email queues + Slack webhooks.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💻 How to Run Locally
 
-## Learn More
+### 1. Clone & Install Dependencies
+```bash
+git clone https://github.com/Sethuram-Vijayakumar/hybrid-crm-layer.git
+cd hybrid-crm-layer
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Run the Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Production Compilation Build
+```bash
+npm run build
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 💡 AI Usage Transparency Statement
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+AI tools (specifically OpenAI GPT-4o and Claude 3.5 Sonnet) were utilized to accelerate strategic ideation, content drafting, database schema planning, and layout design. Final architecture configurations, calculations, recommendations, and code checks were manually reviewed, edited, and verified.
