@@ -120,7 +120,7 @@ export default function ExecutiveStrategyPage() {
                 },
                 {
                   title: 'Business Value',
-                  desc: 'Avoids costly database replacements and full user training, reducing implementation budgets by approximately 70%.',
+                  desc: 'Avoids costly database replacements and full user training, reducing implementation budgets by approximately 60–70%.',
                   icon: DollarSign,
                   iconBg: 'bg-emerald-50 text-emerald-600 border-emerald-100',
                 },
@@ -468,7 +468,7 @@ export default function ExecutiveStrategyPage() {
               <h3 className="text-xs font-bold text-[#1B1F2A] uppercase tracking-wider">Expected Strategic Outcomes</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {[
-                  { title: '70% Lower Cost', desc: 'Bypasses custom database migrations and platform seat licensing fees.' },
+                  { title: '60–70% Lower Cost', desc: 'Bypasses custom database migrations and platform seat licensing fees.' },
                   { title: '35% Faster Sales Cycle', desc: 'Priority queues and one-click lead notifications unblock contract delays.' },
                   { title: '50% Fewer Resource Conflicts', desc: 'Live capacity logs prevent signing contracts when delivery teams are overloaded.' },
                   { title: '95% CRM User Adoption', desc: 'Reps keep standard HubSpot forms, avoiding platform transition dropouts.' },
