@@ -24,8 +24,166 @@ import {
   Maximize2,
   FileText,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Award,
+  ArrowRight
 } from 'lucide-react';
+
+interface SlideGuide {
+  section: string;
+  takeaway: string;
+  whyItMatters: string;
+  time: string;
+  bridge: string;
+  checklist: string;
+}
+
+const slideGuidesMap: Record<number, SlideGuide> = {
+  1: {
+    section: 'Understanding the Business',
+    takeaway: 'Lays out the scope boundaries and baseline requirements for this PM assessment.',
+    whyItMatters: 'Provides a clear frame of reference so leadership understands our evaluation bounds.',
+    time: '45s',
+    bridge: 'Now that we have established our assumptions, let’s examine our core recommendation.',
+    checklist: '✓ Assessment Context'
+  },
+  2: {
+    section: 'Understanding the Business',
+    takeaway: 'Recommends a Hybrid CRM Overlay on top of HubSpot to unblock contract sign-off cycles.',
+    whyItMatters: 'Avoids a high-risk custom rebuild, saving 60-70% in seat licensing and database CapEx.',
+    time: '30s',
+    bridge: 'Having summarized the recommendation, let’s meet the key roles affected by this workflow.',
+    checklist: '✓ Recommendation Summary'
+  },
+  3: {
+    section: 'Understanding the Business',
+    takeaway: 'Outlines friction points, goals, and core metrics for the six primary roles.',
+    whyItMatters: 'Ensures the product targets real-world needs across Sales, Legal, Finance, and Delivery.',
+    time: '45s',
+    bridge: 'Understanding these roles, let’s pinpoint the exact bottlenecks blocking their operations.',
+    checklist: '✓ Business Personas'
+  },
+  4: {
+    section: 'Understanding the Business',
+    takeaway: 'Highlights standard CRM seat-licensing blocks, 4.4-day hold cycles, and capacity blindspots.',
+    whyItMatters: 'Siloed communication directly causes delayed revenue realization and delivery burnout.',
+    time: '30s',
+    bridge: 'With the business bottlenecks identified, let\'s evaluate our available solution options.',
+    checklist: '✓ Bottleneck Statement'
+  },
+  5: {
+    section: 'Evaluating Options',
+    takeaway: 'Compares stay-SaaS, a custom CRM rewrite, and the Hybrid CRM Overlay across cost, speed, and risk.',
+    whyItMatters: 'Justifies the Hybrid CRM Overlay as the winning route, balancing customization and zero migration risk.',
+    time: '45s',
+    bridge: 'Now that we have justified our approach, let\'s inspect the proposed feature scope.',
+    checklist: '✓ Option Evaluation Matrix'
+  },
+  6: {
+    section: 'Designing the Solution',
+    takeaway: 'Defines MVP feature boundaries, including custom approver logs, Slack syncs, and success metrics.',
+    whyItMatters: 'Prevents scope creep by keeping core HR, payroll, and invoicing systems out of scope.',
+    time: '45s',
+    bridge: 'With the MVP scope established, let’s see how users experience this interface.',
+    checklist: '✓ Product Proposal Scope'
+  },
+  7: {
+    section: 'Designing the Solution',
+    takeaway: 'Presents high-fidelity browser mockup wireframe frames designed around accessible WCAG guidelines.',
+    whyItMatters: 'Validates the user experience early, ensuring a premium executive-grade flow.',
+    time: '30s',
+    bridge: 'Now that we have reviewed the layout, let’s trace the journey before and after implementation.',
+    checklist: '✓ Figma UX Prototype'
+  },
+  8: {
+    section: 'Designing the Solution',
+    takeaway: 'Contrasts the complex 4.4-day contract cycle with the streamlined 1.5-day hybrid overlay flow.',
+    whyItMatters: 'Visually demonstrates how automated triggers eliminate manual coordination hold delays.',
+    time: '30s',
+    bridge: 'Having mapped out the journey, let’s examine the financial case and ROI.',
+    checklist: '✓ User Journey Progression'
+  },
+  9: {
+    section: 'Validating Business Value',
+    takeaway: 'Projects a ₹12L-18L CapEx vs. ₹45L-65L custom write, with a payback period of under 3 months.',
+    whyItMatters: 'Proves the financial viability of this proposal, delivering clear savings to executive stakeholders.',
+    time: '45s',
+    bridge: 'With the ROI justified, let’s look at the incremental delivery schedule.',
+    checklist: '✓ Business Value & ROI'
+  },
+  10: {
+    section: 'Preparing for Delivery',
+    takeaway: 'Lays out a 12-week timeline across core integration phases.',
+    whyItMatters: 'Ensures incremental value release while guaranteeing zero sales workflow downtime.',
+    time: '30s',
+    bridge: 'To support this roadmap, let’s inspect the underlying technology stack.',
+    checklist: '✓ MVP Roadmap Timeline'
+  },
+  11: {
+    section: 'Building the Technology',
+    takeaway: 'Details chosen technologies: Next.js frontend, Supabase serverless storage, and HubSpot integrations.',
+    whyItMatters: 'Leverages enterprise cloud standards to minimize infrastructure maintenance overhead.',
+    time: '45s',
+    bridge: 'Within this stack, let’s examine how AI is integrated securely and responsibly.',
+    checklist: '✓ Technology Stack'
+  },
+  12: {
+    section: 'Applying AI Responsibly',
+    takeaway: 'Illustrates our pgvector RAG flow, fetching vector-matched context securely before querying GPT-4.',
+    whyItMatters: 'Eliminates database hallucinations and protects internal client data privacy.',
+    time: '45s',
+    bridge: 'With the secure architecture in place, let\'s map these AI features to direct business outcomes.',
+    checklist: '✓ RAG Flow & Trust Schema'
+  },
+  13: {
+    section: 'Applying AI Responsibly',
+    takeaway: 'Maps AI features—risk scoring, briefs, and capacity planning—to impact metrics and checks.',
+    whyItMatters: 'Ensures AI acts as an explainable, human-guided co-pilot rather than an autonomous decision-maker.',
+    time: '45s',
+    bridge: 'To maintain transparency, let’s log how generative AI assisted in preparing this strategy.',
+    checklist: '✓ AI Strategic Value Add'
+  },
+  14: {
+    section: 'Applying AI Responsibly',
+    takeaway: 'Details the AI usage log, including models used, prompts, and manual edits.',
+    whyItMatters: 'Fosters strategic trust by showing exactly where AI contributions end and human validation begins.',
+    time: '30s',
+    bridge: 'To verify these prompts, let’s look at the structured Prompt Library.',
+    checklist: '✓ Responsible AI Usage Log'
+  },
+  15: {
+    section: 'Applying AI Responsibly',
+    takeaway: 'Presents copy-pasteable prompt cards for analysis, coding, and strategy replication.',
+    whyItMatters: 'Enables reviewers to easily reproduce and audit our technical logic.',
+    time: '30s',
+    bridge: 'Having detailed the solution, why is doodleblue the right partner to execute this?',
+    checklist: '✓ Structured Prompt Library'
+  },
+  16: {
+    section: 'Preparing for Delivery',
+    takeaway: 'Highlights doodleblue\'s specialized agency capabilities, agile models, and security compliance.',
+    whyItMatters: 'Ensures delivery alignment and mitigates project initiation risks.',
+    time: '30s',
+    bridge: 'What potential risks exist, and how will they be managed? Let’s review the Risk Matrix.',
+    checklist: '✓ Recommended Delivery Partner'
+  },
+  17: {
+    section: 'Implementation Risks',
+    takeaway: 'Outlines rate-limiting, user adoption, and compliance risks with clear mitigation safeguards.',
+    whyItMatters: 'Proactively identifies blockers to ensure operational stability at launch.',
+    time: '45s',
+    bridge: 'With all parameters covered, let’s wrap up with our Final Strategy Recommendation.',
+    checklist: '✓ Risk Mitigation Register'
+  },
+  18: {
+    section: 'Final Recommendation',
+    takeaway: 'Adopt the Hybrid CRM Overlay to preserve HubSpot as doodleblue\'s System of Record.',
+    whyItMatters: 'Unlocks immediate pipeline velocity, reduces cycle hold times, and saves license CapEx.',
+    time: '30s',
+    bridge: 'Now let\'s experience the proposed solution in action. Transitioning to the live Demo CRM...',
+    checklist: '✓ Final Strategic Recommendation'
+  }
+};
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -52,6 +210,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [presenterMode, setPresenterMode] = useState<boolean>(false);
   const [showReviewerModal, setShowReviewerModal] = useState<boolean>(false);
+
+  // Review Track States
+  const [guidedMode, setGuidedMode] = useState<boolean>(false);
+  const [activeTrack, setActiveTrack] = useState<'executive' | 'product' | 'technical' | 'ux' | null>(null);
+  const [customSequence, setCustomSequence] = useState<number[]>([]);
+  const [sequenceIndex, setSequenceIndex] = useState<number>(0);
+  const [presenterCardCollapsed, setPresenterCardCollapsed] = useState<boolean>(false);
+  const [showHandoffModal, setShowHandoffModal] = useState<boolean>(false);
+  const [sectionIntroActive, setSectionIntroActive] = useState<string | null>(null);
 
   // Expandable state for Prompt Library cards (Slide 15)
   const [expandedPromptTab, setExpandedPromptTab] = useState<string | null>(null);
@@ -123,6 +290,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
   }, [presentationMode]);
 
+  // Section Intro Overlays trigger on slide change
+  useEffect(() => {
+    if (!presentationMode) return;
+    const guide = slideGuidesMap[currentSlide];
+    if (guide) {
+      // Trigger section banner only if section changed
+      const prevGuide = slideGuidesMap[currentSlide - 1];
+      if (!prevGuide || prevGuide.section !== guide.section) {
+        setSectionIntroActive(guide.section);
+        const timer = setTimeout(() => {
+          setSectionIntroActive(null);
+        }, 1500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [currentSlide, presentationMode]);
+
   // Auto-hide toolbar controls after 3 seconds of inactivity
   useEffect(() => {
     const resetHideTimeout = () => {
@@ -153,18 +337,91 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
   }, [presentationMode, pathname, router]);
 
+  const handleNextSlide = () => {
+    if (customSequence.length > 0) {
+      if (sequenceIndex < customSequence.length - 1) {
+        const nextIdx = sequenceIndex + 1;
+        setSequenceIndex(nextIdx);
+        setCurrentSlide(customSequence[nextIdx]);
+      } else {
+        if (guidedMode) {
+          setShowHandoffModal(true);
+        } else {
+          setPresentationMode(false);
+          router.push('/pipeline');
+        }
+      }
+    } else {
+      if (currentSlide < 18) {
+        setCurrentSlide(currentSlide + 1);
+      } else {
+        if (guidedMode) {
+          setShowHandoffModal(true);
+        } else {
+          setPresentationMode(false);
+          router.push('/pipeline');
+        }
+      }
+    }
+  };
+
+  const handlePrevSlide = () => {
+    if (customSequence.length > 0) {
+      if (sequenceIndex > 0) {
+        const prevIdx = sequenceIndex - 1;
+        setSequenceIndex(prevIdx);
+        setCurrentSlide(customSequence[prevIdx]);
+      }
+    } else {
+      setCurrentSlide(Math.max(currentSlide - 1, 1));
+    }
+  };
+
+  const startReviewTrack = (track: 'executive' | 'product' | 'technical' | 'ux') => {
+    setGuidedMode(true);
+    setActiveTrack(track);
+    setSequenceIndex(0);
+    setPresenterCardCollapsed(false);
+    setPresentationMode(true);
+    setShowChoiceModal(false);
+
+    if (track === 'executive') {
+      // Preface (1), Summary (2), ROI (9), Recommendation (18)
+      setCustomSequence([1, 2, 9, 18]);
+      setCurrentSlide(1);
+    } else if (track === 'product') {
+      // Complete 18 slide sequence
+      setCustomSequence([]);
+      setCurrentSlide(1);
+    } else if (track === 'technical') {
+      // Preface (1), Tech Stack (11), AI RAG (12), Risk Matrix (17)
+      setCustomSequence([1, 11, 12, 17]);
+      setCurrentSlide(1);
+    } else if (track === 'ux') {
+      // Prototype (7), User Journey (8), then CRM transition handoff modal directly
+      setCustomSequence([7, 8]);
+      setCurrentSlide(7);
+    }
+  };
+
   // Keyboard navigation for Presentation Mode (up to 18 slides)
   useEffect(() => {
     if (!presentationMode) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-        setCurrentSlide(Math.min(currentSlide + 1, 18));
+        handleNextSlide();
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        setCurrentSlide(Math.max(currentSlide - 1, 1));
+        handlePrevSlide();
       } else if (e.key === 'Home') {
-        setCurrentSlide(1);
+        setCurrentSlide(customSequence.length > 0 ? customSequence[0] : 1);
+        setSequenceIndex(0);
       } else if (e.key === 'End') {
-        setCurrentSlide(18);
+        if (customSequence.length > 0) {
+          setCurrentSlide(customSequence[customSequence.length - 1]);
+          setSequenceIndex(customSequence.length - 1);
+        } else {
+          setCurrentSlide(18);
+        }
       } else if (e.key === 'f' || e.key === 'F') {
         toggleFullscreen();
       } else if (e.key === 'Escape') {
@@ -175,7 +432,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [presentationMode, currentSlide, setCurrentSlide, setPresentationMode]);
+  }, [presentationMode, currentSlide, customSequence, sequenceIndex, setPresentationMode, setCurrentSlide]);
 
   // Mode Transition Handler
   const handleModeSwitch = (mode: 'presentation' | 'crm' | 'architecture') => {
@@ -241,9 +498,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     
     const screenWidth = window.innerWidth;
     if (e.clientX > screenWidth / 2) {
-      setCurrentSlide(Math.min(currentSlide + 1, 18));
+      handleNextSlide();
     } else {
-      setCurrentSlide(Math.max(currentSlide - 1, 1));
+      handlePrevSlide();
     }
   };
 
@@ -1381,6 +1638,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     return speakerNotesMap[slideIndex as keyof typeof speakerNotesMap] || 'No speaker guidelines logged.';
   };
 
+  const totalStepsInTrack = customSequence.length > 0 ? customSequence.length : 18;
+  const currentStepInTrack = customSequence.length > 0 ? sequenceIndex + 1 : currentSlide;
+  const progressPercentage = Math.round((currentStepInTrack / totalStepsInTrack) * 100);
+
   return (
     <div className="min-h-screen bg-[#F8F9FB] flex flex-col font-sans select-none overflow-x-hidden">
       
@@ -1479,7 +1740,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <div className="flex items-center space-x-2 shrink-0">
               <span className="h-2 w-2 rounded-full bg-[#C9922E] animate-pulse shrink-0" />
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Slide {currentSlide} of 18
+                Slide {currentSlide} of 18 {activeTrack && `• ${activeTrack.toUpperCase()} REVIEW`}
               </span>
             </div>
 
@@ -1593,6 +1854,110 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               // Normal fullscreen slide view
               renderSlideContent(currentSlide)
             )}
+
+            {/* Floating Guided Presenter Card */}
+            {guidedMode && (
+              <div className="fixed bottom-24 right-8 z-40 max-w-sm w-full font-sans animate-slide-up text-slate-800">
+                {presenterCardCollapsed ? (
+                  <button
+                    onClick={() => setPresenterCardCollapsed(false)}
+                    className="float-right bg-[#1B1F2A] text-white p-3 rounded-full shadow-2xl hover:bg-slate-800 border border-slate-700 transition flex items-center space-x-1.5 text-xs font-bold active-press"
+                  >
+                    <span>🧭</span>
+                    <span>Guided Presenter Card</span>
+                  </button>
+                ) : (
+                  <div className="bg-[#1B1F2A]/95 text-white border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4 backdrop-blur-md">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                      <div className="flex items-center space-x-2">
+                        <Award className="h-4.5 w-4.5 text-[#C9922E]" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9922E]">Guided Reviewer Mode</span>
+                      </div>
+                      <button
+                        onClick={() => setPresenterCardCollapsed(true)}
+                        className="text-slate-400 hover:text-white p-0.5 rounded transition"
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <span className="text-[9px] uppercase tracking-wider text-slate-400 block">
+                        Current Section: {(() => {
+                          const guide = slideGuidesMap[currentSlide];
+                          return guide ? guide.section : 'Summary';
+                        })()}
+                      </span>
+                      <h4 className="text-xs font-bold text-white uppercase tracking-wider">Slide Key Takeaway</h4>
+                      <p className="text-[11px] text-slate-300 leading-relaxed font-semibold">
+                        {(() => {
+                          const guide = slideGuidesMap[currentSlide];
+                          return guide ? guide.takeaway : 'Lays out strategy parameters.';
+                        })()}
+                      </p>
+                    </div>
+
+                    <div className="space-y-1 bg-slate-800/60 p-2.5 rounded-xl border border-slate-800 font-semibold">
+                      <h4 className="text-[9px] font-bold text-[#C9922E] uppercase tracking-widest">Why It Matters</h4>
+                      <p className="text-[10px] text-slate-400 leading-relaxed font-semibold">
+                        {(() => {
+                          const guide = slideGuidesMap[currentSlide];
+                          return guide ? guide.whyItMatters : 'Essential for review checks.';
+                        })()}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 text-center text-[10px] border-t border-slate-800 pt-3">
+                      <div>
+                        <span className="text-[8px] text-slate-500 uppercase block tracking-wider font-bold">Progress</span>
+                        <span className="font-bold text-white mt-0.5 block">{currentStepInTrack}/{totalStepsInTrack}</span>
+                      </div>
+                      <div>
+                        <span className="text-[8px] text-slate-500 uppercase block tracking-wider font-bold">Estimated Time</span>
+                        <span className="font-bold text-emerald-400 font-mono mt-0.5 block">
+                          {(() => {
+                            const guide = slideGuidesMap[currentSlide];
+                            return guide ? guide.time : '30s';
+                          })()}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[8px] text-slate-500 uppercase block tracking-wider font-bold">Completed</span>
+                        <span className="font-bold text-emerald-400 mt-0.5 block">{progressPercentage}%</span>
+                      </div>
+                    </div>
+
+                    {/* Bridge */}
+                    <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-350 italic leading-relaxed">
+                      <strong>Narrative Bridge:</strong> &ldquo;{(() => {
+                        const guide = slideGuidesMap[currentSlide];
+                        return guide ? guide.bridge : 'Moving to the next slide...';
+                      })()}&rdquo;
+                    </div>
+
+                    <div className="text-[8.5px] uppercase tracking-widest text-[#C9922E] font-bold flex items-center justify-between">
+                      <span>Deliverables covered on this slide:</span>
+                      <span className="bg-[#C9922E]/10 text-[#C9922E] px-1.5 py-0.5 rounded text-[8px]">
+                        {(() => {
+                          const guide = slideGuidesMap[currentSlide];
+                          return guide ? guide.checklist : '✓ Proposal Section';
+                        })()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={handleNextSlide}
+                        className="w-full bg-[#C9922E] hover:bg-[#b07f24] text-white text-[10px] font-bold uppercase py-2 px-4 rounded-xl transition active-press flex items-center justify-center space-x-1"
+                      >
+                        <span>{currentSlide === 18 || (customSequence.length > 0 && sequenceIndex === customSequence.length - 1) ? 'Go to Demo CRM' : 'Next Strategic Step'}</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </main>
 
           {/* Floating Keynote Presentation Toolbar */}
@@ -1601,8 +1966,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               
               {/* Previous Button */}
               <button 
-                disabled={currentSlide === 1}
-                onClick={() => setCurrentSlide(Math.max(currentSlide - 1, 1))}
+                disabled={sequenceIndex === 0 && customSequence.length > 0 || currentSlide === 1 && customSequence.length === 0}
+                onClick={handlePrevSlide}
                 className="hover:text-[#C9922E] disabled:opacity-30 disabled:hover:text-white transition flex items-center space-x-1 text-xs font-bold"
                 title="Previous Slide (← / PageUp)"
               >
@@ -1620,18 +1985,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               {/* Next Button */}
               <button 
-                onClick={() => {
-                  if (currentSlide < 18) {
-                    setCurrentSlide(currentSlide + 1);
-                  } else {
-                    setPresentationMode(false);
-                    router.push('/pipeline');
-                  }
-                }}
+                onClick={handleNextSlide}
                 className="hover:text-[#C9922E] transition flex items-center space-x-1 text-xs font-bold"
                 title="Next Slide (→ / Space / PageDown)"
               >
-                <span className="hidden sm:inline">{currentSlide === 18 ? 'View Demo' : 'Next'}</span>
+                <span className="hidden sm:inline">{currentSlide === 18 || (customSequence.length > 0 && sequenceIndex === customSequence.length - 1) ? 'View Demo' : 'Next'}</span>
                 <ChevronRight className="h-4.5 w-4.5" />
               </button>
 
@@ -1859,44 +2217,152 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {/* Welcome Mode Choice Modal */}
       {showChoiceModal && (
-        <div className="fixed inset-0 bg-[#0F111A]/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in font-sans">
-          <div className="bg-white border border-slate-200 rounded-2xl p-8 max-w-md w-full shadow-2xl space-y-6 text-center text-slate-800">
-            <div className="flex justify-center">
-              <div className="h-12 w-12 rounded-full bg-[#FBF1DE] flex items-center justify-center">
-                <Database className="h-6 w-6 text-[#C9922E]" />
+        <div className="fixed inset-0 bg-[#0F111A]/90 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in font-sans text-slate-800">
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 max-w-xl w-full shadow-2xl space-y-6">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+              <div className="flex items-center space-x-2">
+                <Database className="h-5 w-5 text-[#C9922E]" />
+                <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#1B1F2A]">Welcome 👋</h3>
               </div>
+              <span className="text-[8.5px] uppercase tracking-wider bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold">Choose your review experience</span>
             </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[#1B1F2A]">Welcome to the Hybrid CRM Strategy Portfolio</h3>
-              <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                Select how you would like to begin reviewing this case study prepared for the doodleblue Strategy Consulting engagement.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 pt-2">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              {/* Executive Review Track */}
               <button
-                onClick={() => {
-                  setPresentationMode(true);
-                  setCurrentSlide(1);
-                  setShowChoiceModal(false);
-                }}
-                className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-xs py-3 px-6 rounded-xl shadow-md transition duration-205 active-press flex items-center justify-center space-x-2"
+                onClick={() => startReviewTrack('executive')}
+                className="flex flex-col justify-between items-start text-left p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl transition duration-200 text-xs space-y-2 group active-press"
               >
-                <Play className="h-3.5 w-3.5 fill-current" />
-                <span>Launch Presentation Mode</span>
+                <div className="space-y-1">
+                  <h4 className="font-bold text-slate-800 text-[13px]">👔 Executive Review (5 min)</h4>
+                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                    Quick overview of the recommendation, ROI, and final proposal.
+                  </p>
+                </div>
+                <div className="flex items-center space-x-1 text-[#C9922E] text-[9.5px] font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+                  <span>Start Review</span>
+                  <ChevronRight className="h-3 w-3" />
+                </div>
               </button>
+
+              {/* Product Review Track */}
+              <button
+                onClick={() => startReviewTrack('product')}
+                className="flex flex-col justify-between items-start text-left p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl transition duration-200 text-xs space-y-2 group active-press"
+              >
+                <div className="space-y-1">
+                  <h4 className="font-bold text-slate-800 text-[13px]">📦 Product Review (10 min)</h4>
+                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                    Complete walkthrough with proposal, UX, technology, AI, and risks.
+                  </p>
+                </div>
+                <div className="flex items-center space-x-1 text-[#C9922E] text-[9.5px] font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+                  <span>Start Review</span>
+                  <ChevronRight className="h-3 w-3" />
+                </div>
+              </button>
+
+              {/* Technical Review Track */}
+              <button
+                onClick={() => startReviewTrack('technical')}
+                className="flex flex-col justify-between items-start text-left p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl transition duration-200 text-xs space-y-2 group active-press"
+              >
+                <div className="space-y-1">
+                  <h4 className="font-bold text-slate-800 text-[13px]">⚙ Technical Review (8 min)</h4>
+                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                    Architecture, integrations, AI, APIs, and implementation.
+                  </p>
+                </div>
+                <div className="flex items-center space-x-1 text-[#C9922E] text-[9.5px] font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+                  <span>Start Review</span>
+                  <ChevronRight className="h-3 w-3" />
+                </div>
+              </button>
+
+              {/* UX Review Track */}
+              <button
+                onClick={() => startReviewTrack('ux')}
+                className="flex flex-col justify-between items-start text-left p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl transition duration-200 text-xs space-y-2 group active-press"
+              >
+                <div className="space-y-1">
+                  <h4 className="font-bold text-slate-800 text-[13px]">🎨 UX Review (5 min)</h4>
+                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                    Prototype, user journey, interaction design, and demo CRM.
+                  </p>
+                </div>
+                <div className="flex items-center space-x-1 text-[#C9922E] text-[9.5px] font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+                  <span>Start Review</span>
+                  <ChevronRight className="h-3 w-3" />
+                </div>
+              </button>
+
+            </div>
+
+            <div className="flex justify-between items-center pt-4 border-t border-slate-100">
+              <span className="text-[10px] text-slate-400 font-bold">Or explore independent items:</span>
               <button
                 onClick={() => {
+                  setGuidedMode(false);
                   setPresentationMode(false);
                   setTourActive(true);
                   setTourStep(1);
                   router.push('/pipeline');
                   setShowChoiceModal(false);
                 }}
-                className="bg-slate-800 hover:bg-slate-750 text-white font-bold text-xs py-3 px-6 rounded-xl shadow-md transition duration-205 active-press"
+                className="text-xs bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-5 rounded-xl transition duration-150 active-press"
               >
-                Explore Demo CRM (With Walkthrough)
+                Explore CRM Directly
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Guided Handoff Screen Transition Modal */}
+      {showHandoffModal && (
+        <div className="fixed inset-0 bg-[#0F111A]/95 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in font-sans">
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-6 text-slate-800">
+            <div className="flex justify-center">
+              <div className="h-14 w-14 rounded-full bg-[#FBF1DE] flex items-center justify-center">
+                <Award className="h-7 w-7 text-[#C9922E]" />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <span className="text-[#C9922E] font-bold text-[9px] uppercase tracking-widest block">Review Phase Complete</span>
+              <h3 className="text-xl font-bold text-[#1B1F2A]">The Strategy Has Been Presented</h3>
+              <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                Now let&apos;s experience the proposed solution in action. Let&apos;s guide you into the interactive Demo CRM portal.
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setGuidedMode(false);
+                  setPresentationMode(false);
+                  setTourActive(true);
+                  setTourStep(1);
+                  router.push('/pipeline');
+                  setShowHandoffModal(false);
+                }}
+                className="w-full bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-xs py-3.5 px-6 rounded-xl shadow-md transition duration-205 active-press flex items-center justify-center space-x-2"
+              >
+                <Play className="h-4 w-4 fill-current text-white" />
+                <span>Experience Demo CRM</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Section Introduction Overlay Banner */}
+      {sectionIntroActive && (
+        <div className="fixed inset-0 bg-[#0F111A]/95 z-45 flex items-center justify-center animate-fade-in pointer-events-none font-sans">
+          <div className="text-center space-y-3">
+            <span className="text-[10px] uppercase tracking-widest text-[#C9922E] font-bold">Strategy Proposal Section</span>
+            <h2 className="text-3xl font-light text-white tracking-tight animate-pulse">{sectionIntroActive}</h2>
           </div>
         </div>
       )}
