@@ -14,7 +14,9 @@ import {
   X,
   BookOpen,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Sparkles,
+  Layers
 } from 'lucide-react';
 
 // Import prototype pages to render inline in slides
@@ -22,6 +24,7 @@ import PipelinePage from '@/app/pipeline/page';
 import ApprovalsPage from '@/app/approvals/page';
 import AnalyticsPage from '@/app/analytics/page';
 import SettingsPage from '@/app/settings/page';
+import AICommandCenter from '@/app/ai-command-center/page';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -47,7 +50,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     if (!presentationMode) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
-        setCurrentSlide(Math.min(currentSlide + 1, 14));
+        setCurrentSlide(Math.min(currentSlide + 1, 15));
       } else if (e.key === 'ArrowLeft') {
         setCurrentSlide(Math.max(currentSlide - 1, 1));
       } else if (e.key === 'Escape') {
@@ -83,6 +86,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       icon: BarChart3,
     },
     {
+      name: 'AI Command Center',
+      href: '/ai-command-center',
+      icon: Sparkles,
+    },
+    {
+      name: 'Prompt Library',
+      href: '/prompt-library',
+      icon: Layers,
+    },
+    {
       name: 'Settings & Sync',
       href: '/settings',
       icon: Settings,
@@ -96,7 +109,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 1 of 14 • Executive Summary
+              Slide 1 of 15 • Executive Summary
             </span>
             <div className="space-y-3">
               <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">CRM Transformation Strategy</h2>
@@ -126,11 +139,53 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 2: // Business Problem
+      case 2: // Business Proposal
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 2 of 14 • Business Problem
+              Slide 2 of 15 • Business Proposal
+            </span>
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Product Proposal</h2>
+              <p className="text-xs text-slate-550 font-medium">Scoping boundaries, core objectives, constraints, and KPI metrics.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium">
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
+                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Objectives & Scope</h4>
+                <ul className="space-y-2 text-slate-600 leading-relaxed list-disc pl-4">
+                  <li>Deploy Next.js/Supabase validation portals to sync HubSpot deal entities.</li>
+                  <li>Enable resource checking alerts on active contract stages.</li>
+                  <li>Avoid seat licensing additions for cross-division approvers.</li>
+                </ul>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
+                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Out of Scope</h4>
+                <ul className="space-y-2 text-slate-600 leading-relaxed list-disc pl-4">
+                  <li>Replacing standard HubSpot CRM contacts/leads databases.</li>
+                  <li>Client portal billing structures or custom payroll integrations.</li>
+                  <li>Redesigning existing sales pipelines.</li>
+                </ul>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
+                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Dependencies & Constraints</h4>
+                <ul className="space-y-2 text-slate-600 leading-relaxed list-disc pl-4">
+                  <li>HubSpot developer API read/write token access rate limits.</li>
+                  <li>Strict GDPR privacy compliance constraints (PII sanitization).</li>
+                  <li>Supabase JWT role authentication controls.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 3: // Business Problem
+        return (
+          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
+              Slide 3 of 15 • Business Problem
             </span>
             <div className="space-y-2">
               <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">The Current Problem Statement</h2>
@@ -177,28 +232,32 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 3: // User Personas
+      case 4: // User Personas
         return (
           <div className="space-y-5 max-w-5xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 3 of 14 • User Personas
+              Slide 4 of 15 • User Personas
             </span>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Key User Personas & Pain Points</h2>
-              <p className="text-xs text-slate-550 font-medium">Providing visual breathing room to explore roles.</p>
+              <p className="text-xs text-slate-550 font-medium">Outlining the goals, frustrations, and AI benefits for the six primary roles.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium">
               {[
-                { role: 'Sales Rep', pain: 'Deal status goes dark in Legal review.', goal: 'Unblock pipeline friction.' },
-                { role: 'Delivery Lead', pain: 'Overallocated without advance warning.', goal: 'Align sales pipelines with developer capacity.' },
-                { role: 'Approvers (Legal/Finance)', pain: 'No centralized dashboard for contract steps.', goal: 'Approve contracts in priority sequence.' }
-              ].map((persona, idx) => (
-                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-5 shadow-2xs space-y-3 hover-card-glow">
-                  <h4 className="text-xs font-semibold text-[#C9922E] uppercase tracking-wider border-b border-slate-200 pb-2">{persona.role}</h4>
-                  <div className="space-y-2 text-xs">
-                    <p className="font-medium text-slate-600"><strong className="text-rose-500">Pain:</strong> {persona.pain}</p>
-                    <p className="font-medium text-slate-700"><strong>Goal:</strong> {persona.goal}</p>
+                { role: 'Sales Executive', goals: 'Close fast', frustrations: 'Manual email checks', benefits: 'Instant email drafts' },
+                { role: 'Sales Manager', goals: 'Revenue predictions', frustrations: 'Siloed status updates', benefits: 'Forecasting views' },
+                { role: 'Legal Director', goals: 'Clause audits', frustrations: 'No signature prioritization', benefits: 'Explainability badges' },
+                { role: 'Finance Director', goals: 'Rapid payments', frustrations: 'No signature sequence tracking', benefits: 'Automated workflow orders' },
+                { role: 'Delivery Lead', goals: 'Manage capacity', frustrations: 'Sales closing overloads', benefits: 'Resource limits warning' },
+                { role: 'Executive Board', goals: 'Lower CapEx risk', frustrations: 'Seat license renewals waste', benefits: '70% custom CapEx saving' }
+              ].map((p, idx) => (
+                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-3.5 space-y-2 hover-card-glow">
+                  <h4 className="text-xs font-bold text-[#C9922E] border-b border-slate-200 pb-1 uppercase tracking-wider">{p.role}</h4>
+                  <div className="space-y-1 text-[10px] leading-relaxed text-slate-600">
+                    <p><strong>Goal:</strong> {p.goals}</p>
+                    <p><strong>Friction:</strong> {p.frustrations}</p>
+                    <p><strong>AI Benefit:</strong> {p.benefits}</p>
                   </div>
                 </div>
               ))}
@@ -206,11 +265,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 4: // User Journey
+      case 5: // User Journey
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 4 of 14 • User Journeys
+              Slide 5 of 15 • User Journeys
             </span>
             <div className="space-y-2">
               <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Transitioning to the Future State</h2>
@@ -235,11 +294,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 5: // Decision Matrix
+      case 6: // Decision Matrix
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 5 of 14 • Decision Matrix
+              Slide 6 of 15 • Decision Matrix
             </span>
             <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Executive Decision Matrix</h2>
 
@@ -278,12 +337,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 6: // Pipeline Demo
+      case 7: // Pipeline Demo
         return (
           <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 6 of 14 • Working Demonstration • Pipeline Page
+                Slide 7 of 15 • Working Demonstration • Pipeline Page
               </span>
               <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Fully Interactive Prototype</span>
             </div>
@@ -293,12 +352,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 7: // Approvals Demo
+      case 8: // Approvals Demo
         return (
           <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 7 of 14 • Working Demonstration • Approvals Queue
+                Slide 8 of 15 • Working Demonstration • Approvals Queue
               </span>
               <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Interactive Workflow Interface</span>
             </div>
@@ -308,12 +367,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 8: // Analytics Demo
+      case 9: // Analytics Demo
         return (
           <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 8 of 14 • Working Demonstration • Blended Analytics
+                Slide 9 of 15 • Working Demonstration • Blended Analytics
               </span>
               <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Live Capacity Simulator</span>
             </div>
@@ -323,11 +382,26 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 9: // ROI Dashboard
+      case 10: // AI Command Center Demo
+        return (
+          <div className="space-y-3 animate-fade-in text-slate-755 w-full">
+            <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
+              <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
+                Slide 10 of 15 • Working Demonstration • AI Command Center
+              </span>
+              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Enterprise Copilot & What-If Simulator</span>
+            </div>
+            <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
+              <AICommandCenter />
+            </div>
+          </div>
+        );
+
+      case 11: // ROI Dashboard
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 9 of 14 • Strategic Business ROI
+              Slide 11 of 15 • Strategic Business ROI
             </span>
             <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Business ROI Dashboard</h2>
 
@@ -348,11 +422,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 10: // Architecture
+      case 12: // Architecture
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 10 of 14 • Enterprise Integration Architecture
+              Slide 12 of 15 • Enterprise Integration Architecture
             </span>
             <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Enterprise Integration Flow</h2>
 
@@ -362,21 +436,21 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <p>Users ➔ Hybrid CRM UI (Next.js) ➔ HubSpot API / Supabase PostgreSQL ➔ AI Risk Engine ➔ Resend Email Webhooks</p>
               </div>
               <div className="border-t border-slate-200 pt-4">
-                <span className="text-[#1B1F2A] font-bold">2. Automated Deployment Pipeline</span>
-                <p>Developer Push ➔ GitHub Repo ➔ GitHub Actions CI/CD (Verify & Lint) ➔ Vercel Serverless hosting ➔ Live Site</p>
+                <span className="text-[#1B1F2A] font-bold">2. Security & Compliance Specs</span>
+                <p>JWT Session Tokens Auth ➔ PostgreSQL Row-level Security ➔ Anonymized deal fields ➔ GDPR Compliance compliant Logs</p>
               </div>
             </div>
           </div>
         );
 
-      case 11: // Production Readiness
+      case 13: // Production Readiness
         return (
           <div className="space-y-3 animate-fade-in text-slate-755 w-full">
             <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between">
               <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-                Slide 11 of 14 • Production Readiness & Mappings
+                Slide 13 of 15 • Production Readiness & Mappings
               </span>
-              <span className="text-[10px] text-slate-505 font-semibold uppercase tracking-wider">Security & System Configuration</span>
+              <span className="text-[10px] text-slate-555 font-semibold uppercase tracking-wider">Security & System Configuration</span>
             </div>
             <div className="border border-slate-200 rounded-xl p-4 bg-white max-w-[1400px] mx-auto overflow-y-auto max-h-[64vh] shadow-xs">
               <SettingsPage />
@@ -384,63 +458,41 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 12: // Why doodleblue
+      case 14: // Future Vision
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 12 of 14 • Why This Solution Fits doodleblue
-            </span>
-            <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Core Capabilities & Alignment</h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { title: 'Product Strategy', desc: 'Balances business objectives, up-front CapEx costs, development speed, and client usability goals.' },
-                { title: 'Design Excellence', desc: 'Extends familiar HubSpot UI patterns with almost zero user retraining or overhead.' },
-                { title: 'Engineering Excellence', desc: 'Leverages serverless cloud tools (Next.js, Supabase, API Webhooks) for scalability.' },
-                { title: 'AI Integration Strategy', desc: 'Injects machine learning cues only where they verify resource blockages.' }
-              ].map((card, idx) => (
-                <div key={idx} className="bg-slate-50 border border-slate-150 rounded-xl p-5 shadow-2xs text-xs space-y-1 hover-card-glow">
-                  <h4 className="font-semibold text-[#C9922E] uppercase tracking-wider">{card.title}</h4>
-                  <p className="text-slate-600 font-medium leading-relaxed">{card.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 13: // Future Vision
-        return (
-          <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
-            <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 13 of 14 • Future Platform Vision
+              Slide 14 of 15 • Future Platform Vision & Lessons
             </span>
             <h2 className="text-xl font-semibold text-[#1B1F2A] tracking-tight">Today ➔ Predictive ➔ Autonomous</h2>
 
-            <div className="bg-slate-50 border border-slate-150 rounded-xl p-6 shadow-xs text-xs space-y-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-bold border-b border-slate-200 pb-3">
-                <span className="text-[#C9922E]">1. Phase 1 Scope (Current)</span>
-                <span className="text-slate-550 uppercase tracking-wider text-[9px] bg-slate-205 py-0.5 px-2 rounded-md">MVP Released</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold">
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
+                <h4 className="text-xs font-bold text-[#C9922E] uppercase tracking-wider border-b border-slate-200 pb-1.5">Future Scaling Roadmap</h4>
+                <ul className="space-y-2 text-slate-600 list-disc pl-4 leading-relaxed">
+                  <li><strong>Phase 1 (Current)</strong>: Launch basic overlays and approvals table logs.</li>
+                  <li><strong>Phase 2 (Predictive)</strong>: Integrate email escalations and staffing logs.</li>
+                  <li><strong>Phase 3 (Agentic)</strong>: Deploy voice deal tracking and automated pipeline triggers.</li>
+                </ul>
               </div>
-              <p className="text-slate-600 font-medium leading-relaxed">
-                We have built and launched the foundational approvals workflow tables, synced HubSpot pipelines, and created live blended analytics widgets.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-bold border-b border-slate-200 pt-2 pb-3">
-                <span className="text-[#C9922E]">2. Phase 2 Scope (Future)</span>
-                <span className="text-slate-550 uppercase tracking-wider text-[9px] bg-slate-205 py-0.5 px-2 rounded-md">Upcoming</span>
+
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
+                <h4 className="text-xs font-bold text-[#C9922E] uppercase tracking-wider border-b border-slate-200 pb-1.5">Tradeoffs & Lessons</h4>
+                <ul className="space-y-2 text-slate-600 list-disc pl-4 leading-relaxed">
+                  <li><strong>Product</strong>: Keeping HubSpot avoids data migrations.</li>
+                  <li><strong>Tech</strong>: Custom Supabase schema handles validation rules parallelly.</li>
+                  <li><strong>AI</strong>: Risk scoring works as manager prompts with human controls.</li>
+                </ul>
               </div>
-              <p className="text-slate-655 font-medium leading-relaxed">
-                Deploy automated email notifications via Resend API, implement predictive resource hiring recommendations, and launch advanced pipeline forecasting models.
-              </p>
             </div>
           </div>
         );
 
-      case 14: // Executive Recommendation
+      case 15: // Executive Recommendation
         return (
           <div className="space-y-5 max-w-4xl mx-auto p-4 sm:p-5 animate-fade-in text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-              Slide 14 of 14 • Concluding Strategic Recommendation
+              Slide 15 of 15 • Concluding Strategic Recommendation
             </span>
             
             <div className="bg-slate-50 border-2 border-[#C9922E]/30 rounded-2xl p-6 shadow-md text-center space-y-4">
@@ -545,13 +597,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <div className="flex items-center space-x-2 shrink-0">
               <span className="h-2 w-2 rounded-full bg-[#C9922E] animate-pulse shrink-0" />
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Slide {currentSlide} of 14
+                Slide {currentSlide} of 15
               </span>
             </div>
 
             {/* Clickable Slide Indicator Dots */}
             <div className="hidden md:flex items-center space-x-2.5">
-              {Array.from({ length: 14 }).map((_, idx) => {
+              {Array.from({ length: 15 }).map((_, idx) => {
                 const step = idx + 1;
                 return (
                   <button
@@ -580,7 +632,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </button>
               <button
                 onClick={() => {
-                  if (currentSlide < 14) {
+                  if (currentSlide < 15) {
                     setCurrentSlide(currentSlide + 1);
                   } else {
                     setPresentationMode(false);
@@ -589,7 +641,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 }}
                 className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-[10px] px-4 py-2 rounded-lg transition active-press flex items-center space-x-1"
               >
-                <span>{currentSlide === 14 ? 'View Demo' : 'Next'}</span>
+                <span>{currentSlide === 15 ? 'View Demo' : 'Next'}</span>
                 <ChevronRight className="h-3 w-3" />
               </button>
             </div>
@@ -825,7 +877,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   router.push('/pipeline');
                   setShowChoiceModal(false);
                 }}
-                className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-3 px-6 rounded-xl shadow-md transition duration-205 active-press"
+                className="bg-slate-800 hover:bg-slate-750 text-white font-bold text-xs py-3 px-6 rounded-xl shadow-md transition duration-205 active-press"
               >
                 Explore Demo CRM (With Walkthrough)
               </button>
