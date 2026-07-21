@@ -75,6 +75,21 @@ export default function ApprovalsPage() {
         </p>
       </div>
 
+      {/* Approval Intelligence Banner */}
+      <div className="bg-[#1B1F2A] text-white p-5 rounded-xl flex flex-wrap items-center justify-between gap-6 text-xs font-semibold shadow-xs">
+        <div className="flex items-center space-x-2">
+          <Zap className="h-4.5 w-4.5 text-[#C9922E] glowing-ring rounded-full" />
+          <span className="font-bold text-sm tracking-tight text-white">Approval Intelligence</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-slate-350">
+          <span>8 Active Approvals</span>
+          <span className="text-[#C9922E] font-bold">3 High Risk</span>
+          <span>Average Delay: <strong className="text-white">4.4 Days</strong></span>
+          <span>Highest Pending: <strong className="text-rose-400">Legal</strong></span>
+          <span className="text-emerald-450">AI Recommendation: <strong className="underline">Escalate immediately</strong></span>
+        </div>
+      </div>
+
       {/* Filter / Toggle Control */}
       <div className="flex items-center justify-between bg-white border border-[#E5E7EB] rounded-xl p-4 shadow-xs">
         <div className="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-lg">

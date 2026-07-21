@@ -10,7 +10,8 @@ import {
   ToggleRight, 
   Network,
   Cpu,
-  Layers
+  Layers,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -221,6 +222,57 @@ export default function SettingsPage() {
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* Production Readiness Section */}
+      <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-xs space-y-6 mt-8 hover-card-glow">
+        <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
+          <ShieldCheck className="h-5 w-5 text-[#C9922E]" />
+          <h3 className="font-bold text-sm text-[#1B1F2A] uppercase tracking-wider">Enterprise Production Readiness Checklist</h3>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            {
+              category: 'Core Technologies',
+              items: [
+                { label: 'Next.js App Server', status: 'Production Ready' },
+                { label: 'Supabase DB Cluster', status: 'Production Ready' },
+                { label: 'HubSpot REST APIs', status: 'Integrated & Synced' }
+              ]
+            },
+            {
+              category: 'Event Automation',
+              items: [
+                { label: 'Webhook Listeners', status: 'Configured' },
+                { label: 'Edge Worker Functions', status: 'Active (Deno)' },
+                { label: 'Email Integration', status: 'Configured (Resend)' }
+              ]
+            },
+            {
+              category: 'Security & Access',
+              items: [
+                { label: 'Supabase JWT Auth', status: 'Enabled' },
+                { label: 'Role-Based Access (RBAC)', status: 'Active' },
+                { label: 'Encryption at Rest & Transit', status: 'Enabled' }
+              ]
+            }
+          ].map((sec, idx) => (
+            <div key={idx} className="space-y-3">
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">{sec.category}</h4>
+              <ul className="space-y-2 text-xs">
+                {sec.items.map((item, i) => (
+                  <li key={i} className="flex items-center justify-between py-1.5 border-b border-slate-50 font-semibold text-slate-700">
+                    <span className="truncate">{item.label}</span>
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 py-0.5 px-2 rounded-full shrink-0 ml-2">
+                      {item.status}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 

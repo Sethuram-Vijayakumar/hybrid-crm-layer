@@ -17,6 +17,12 @@ interface AppContextType {
   setTourActive: (active: boolean) => void;
   tourStep: number;
   setTourStep: (step: number) => void;
+  presentationMode: boolean;
+  setPresentationMode: (active: boolean) => void;
+  currentSlide: number;
+  setCurrentSlide: (slide: number) => void;
+  darkMode: boolean;
+  setDarkMode: (active: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -26,6 +32,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [syncStatus, setSyncStatus] = useState<string>('Synced with HubSpot • 2 min ago');
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [fieldMappings, setFieldMappings] = useState<FieldMapping[]>(initialFieldMappings);
+  
+  // Presentation & Style States
+  const [presentationMode, setPresentationMode] = useState<boolean>(false);
+  const [currentSlide, setCurrentSlide] = useState<number>(1);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   
   // Guided Tour State
   const [tourActive, setTourActiveState] = useState<boolean>(() => {
@@ -181,7 +192,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         tourActive,
         setTourActive,
         tourStep,
-        setTourStep
+        setTourStep,
+        presentationMode,
+        setPresentationMode,
+        currentSlide,
+        setCurrentSlide,
+        darkMode,
+        setDarkMode
       }}
     >
       {children}

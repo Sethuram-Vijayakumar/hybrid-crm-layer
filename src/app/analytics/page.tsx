@@ -166,7 +166,7 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Pipeline value card */}
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28 hover-card-glow">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Total Pipeline</span>
             <TrendingUp className="h-4.5 w-4.5 text-indigo-500" />
@@ -178,19 +178,19 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Active approvals */}
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28 hover-card-glow">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Active Approvals</span>
-            <Activity className="h-4.5 w-4.5 text-indigo-555" />
+            <Activity className="h-4.5 w-4.5 text-indigo-500" />
           </div>
           <div className="mt-2">
             <span className="text-2xl font-bold text-[#1B1F2A]">{stats.approvalsCount}</span>
-            <span className="text-[10px] text-slate-550 block font-semibold mt-0.5">Awaiting custom sign-off</span>
+            <span className="text-[10px] text-slate-500 block font-semibold mt-0.5">Awaiting custom sign-off</span>
           </div>
         </div>
 
         {/* Average hold times */}
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28 hover-card-glow">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Avg approval Hold</span>
             <Clock className="h-4.5 w-4.5 text-[#C9922E]" />
@@ -202,7 +202,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Closed Won value */}
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs flex flex-col justify-between h-28 hover-card-glow">
           <div className="flex items-center justify-between text-slate-555">
             <span className="text-xs font-bold uppercase tracking-wider">Closed Revenue</span>
             <Users className="h-4.5 w-4.5 text-emerald-500" />
@@ -213,6 +213,20 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
+      </div>
+
+      {/* Executive Insight Panel */}
+      <div className="bg-[#FBF1DE]/40 border-l-4 border-[#C9922E] p-5 rounded-r-xl shadow-xs animate-fade-in">
+        <div className="flex items-center space-x-2 text-xs font-bold text-amber-800 mb-1.5">
+          <Sparkles className="h-4 w-4 text-[#C9922E] glowing-ring rounded-full shrink-0 animate-pulse" />
+          <span>AI Executive Analytics Insight</span>
+        </div>
+        <p className="text-xs text-slate-700 leading-relaxed font-semibold">
+          AI has identified that **Delivery Management utilization reached 90%** (and is simulated to spike to **98% in Q3**). Historical approval delays strongly correlate with current resource utilization. 
+          <span className="block mt-1 text-[#1B1F2A]">
+            <strong>Recommendation:</strong> Temporarily allocate additional delivery capacity while prioritizing Legal approvals for high-value contracts to mitigate project delay risks.
+          </span>
+        </p>
       </div>
 
       {/* Grid: Charts */}
@@ -315,20 +329,20 @@ export default function AnalyticsPage() {
 
       </div>
 
-      {/* Dynamic AI Correlation Callout */}
-      <div className="border-l-4 border-[#C9922E] bg-[#FBF1DE] p-5 rounded-r-xl shadow-xs">
-        <div className="flex items-center space-x-2 text-xs font-bold text-amber-800 mb-2">
-          <Sparkles className="h-4.5 w-4.5 text-[#C9922E]" />
-          <span>Cross-Platform AI Intelligence Report</span>
+      {/* Cross Platform AI Intelligence Report */}
+      <div className="bg-white border border-[#E5E7EB] border-l-4 border-l-[#C9922E] p-6 rounded-r-xl shadow-xs space-y-3 hover-card-glow transition duration-200">
+        <div className="flex items-center space-x-2 text-xs font-bold text-[#1B1F2A]">
+          <Sparkles className="h-4.5 w-4.5 text-[#C9922E] glowing-ring rounded-full shrink-0" />
+          <span className="uppercase tracking-wider">Cross-Platform AI Intelligence Report</span>
         </div>
-        <p className="text-xs text-slate-800 leading-relaxed font-medium">
+        <p className="text-xs text-slate-600 leading-relaxed font-semibold">
           {simulationMode === 'Q2' ? (
             <span>
-              <strong>Utilization Alert</strong>: The high utilization in the <strong>Delivery Management</strong> team (90%) directly correlates with the average approval loops (currently {stats.avgDays} days) in the Pending Approval stage. We recommend escalating high-value deals in Legal/Pending Approval directly to avoid resource friction.
+              <strong>Utilization Correlation Alert</strong>: Correlating live HubSpot opportunity parameters with ResourceOps logs shows that elevated workloads in <strong>Delivery Management (90%)</strong> are currently the primary drivers behind contract approval bottlenecks (average delay is currently {stats.avgDays} days). Escalating high-value pipelines directly will unblock resource bottlenecks.
             </span>
           ) : (
             <span>
-              <strong>Critical Bottleneck Warning (Q3 Spike scenario)</strong>: Technical Architects (92% load) and Delivery Managers (98% load) are severely constrained. AI projects a <strong>2.8x increase in approval hold times</strong> (up to 12.5 days) for upcoming contracts over ₹10L. Immediate contract streamlining or contractor hiring is required to process the pipeline.
+              <strong>Critical Operational Bottleneck (Simulated Q3 Spike)</strong>: A 35% surge in deal volume pushes <strong>Technical Architects to 92% utilization</strong> and <strong>Delivery Management to 98% utilization</strong>. The AI engine predicts a <strong>2.8x increase in transaction friction (averaging 12.5 days delay)</strong> for deals exceeding ₹10L. Mitigate this by initiating contractor procurement before pipeline closures.
             </span>
           )}
         </p>
