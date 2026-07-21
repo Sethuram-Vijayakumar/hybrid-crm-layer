@@ -97,7 +97,7 @@ Extract action items in key deliverables, assign the appropriate team owner (Sal
                     <span className="text-[10px] font-bold text-[#C9922E] uppercase block">{p.category}</span>
                     <span className="text-[10px] text-slate-500 block mt-0.5">{p.purpose}</span>
                   </div>
-                  <pre className="w-full bg-slate-900 text-slate-350 p-3 rounded-lg text-[9px] font-mono whitespace-pre-wrap leading-relaxed border border-slate-800">
+                  <pre className="w-full bg-slate-900 text-slate-200 p-3 rounded-lg text-[9px] font-mono whitespace-pre-wrap leading-relaxed border border-slate-800">
                     {p.prompt}
                   </pre>
                 </div>

@@ -390,7 +390,7 @@ Deliver custom signature validation portals that integrate HubSpot opportunity l
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                 {outputTitle}
               </span>
-              <pre className="w-full bg-slate-900 text-slate-350 p-4 rounded-xl text-[10px] font-mono whitespace-pre-wrap leading-relaxed overflow-y-auto max-h-[30vh] border border-slate-800">
+              <pre className="w-full bg-slate-900 text-slate-200 p-4 rounded-xl text-[10px] font-mono whitespace-pre-wrap leading-relaxed overflow-y-auto max-h-[30vh] border border-slate-800">
                 {copilotOutput}
               </pre>
             </div>
