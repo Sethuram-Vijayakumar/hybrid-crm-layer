@@ -584,11 +584,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     setCurrentSlide(currentSlide + 1);
                   } else {
                     setPresentationMode(false);
+                    router.push('/pipeline');
                   }
                 }}
                 className="bg-[#C9922E] hover:bg-[#b07f24] text-white font-bold text-[10px] px-4 py-2 rounded-lg transition active-press flex items-center space-x-1"
               >
-                <span>{currentSlide === 14 ? 'Finish' : 'Next'}</span>
+                <span>{currentSlide === 14 ? 'View Demo' : 'Next'}</span>
                 <ChevronRight className="h-3 w-3" />
               </button>
             </div>
