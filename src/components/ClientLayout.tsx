@@ -342,7 +342,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         }
       }
     } else {
-      if (currentSlide < 18) {
+      if (currentSlide < 20) {
         setCurrentSlide(currentSlide + 1);
       } else {
         if (guidedMode) {
@@ -377,7 +377,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     if (track === 'executive') {
       // Preface (1), Before (2), After (3), Summary (4), ROI (10), Recommendation (19)
-      setCustomSequence([1, 2, 3, 4, 10, 19]);
+      setCustomSequence([1, 2, 3, 4, 10, 19, 20]);
       setCurrentSlide(1);
     } else if (track === 'product') {
       // Complete 19 slide sequence
@@ -410,7 +410,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           setCurrentSlide(customSequence[customSequence.length - 1]);
           setSequenceIndex(customSequence.length - 1);
         } else {
-          setCurrentSlide(19);
+          setCurrentSlide(20);
         }
       } else if (e.key === 'f' || e.key === 'F') {
         toggleFullscreen();
@@ -1827,10 +1827,162 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               'Recommendations represent the final strategy synthesis. Execution should occur iteratively under proper change management controls.'
             )}
 
-            <div className="mt-4 pt-3 border-t border-slate-100/50 flex flex-col items-center">
-              <span className="text-[9px] uppercase tracking-widest text-[#C9922E] font-bold">Next Action</span>
-              <p className="text-[10px] text-slate-500 font-medium italic mt-1">
-                We invite you to toggle the switcher at the top to explore the live interactive Demo CRM portal.
+            {renderNarrativeTransition(
+              'Where to find resources?',
+              'All assets, Figma frames, and repository code are consolidated for assessment hand-off. Let\'s check the Submission Resources in Slide 20.'
+            )}
+          </div>
+        );
+
+      case 20: // Slide 20: Submission Resources
+        return (
+          <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+            <span className="text-[10px] font-bold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md uppercase tracking-wider">
+              Slide 20 of 20 • Assessment Hand-off
+            </span>
+            <div className="space-y-1">
+              <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Submission Resources</h2>
+              <p className="text-xs text-slate-500 font-semibold font-bold">Everything required to review this assessment in one place.</p>
+            </div>
+
+            {/* Three Cards Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+              
+              {/* Card 1: Interactive Presentation & Live Demo */}
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 flex flex-col justify-between shadow-3xs space-y-4 hover-card-glow">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2 text-indigo-700">
+                    <span className="text-xl">🌐</span>
+                    <h4 className="font-bold text-xs uppercase tracking-wider">Interactive Demo</h4>
+                  </div>
+                  <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">
+                    Explore the complete assessment including the executive presentation, product strategy, workflow, architecture, AI capabilities, and interactive Hybrid CRM Overlay prototype.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <span className="text-[8px] font-bold uppercase tracking-widest text-[#C9922E] block text-center font-bold">Primary Resource</span>
+                  <button
+                    onClick={() => handleModeSwitch('crm')}
+                    className="w-full bg-[#C9922E] hover:bg-[#b07f24] text-white text-[10px] py-2.5 px-4 rounded-lg font-bold uppercase transition text-center shadow-xs"
+                  >
+                    Launch Interactive Demo
+                  </button>
+                  <span className="text-[8px] text-slate-400 block text-center font-semibold">This represents the current application</span>
+                </div>
+              </div>
+
+              {/* Card 2: Refined Figma Design */}
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 flex flex-col justify-between shadow-3xs space-y-4 hover-card-glow">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2 text-indigo-700">
+                    <span className="text-xl">🎨</span>
+                    <h4 className="font-bold text-xs uppercase tracking-wider">Refined Figma Design</h4>
+                  </div>
+                  <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">
+                    Review the refined high-fidelity UI screens that were generated using Google Stitch, iteratively refined in Figma, and used as the design reference for the interactive implementation.
+                  </p>
+                </div>
+                <div>
+                  <a
+                    href="https://www.figma.com/design/I544lGrdsgBQJscYTdBlbX/Doodle-Blue---CRM-Adaptation---Dashboard-Design?node-id=6-6774&t=x8ncvxecePohzVnn-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block w-full bg-indigo-650 hover:bg-indigo-700 text-white text-[10px] py-2.5 px-4 rounded-lg font-bold uppercase transition text-center shadow-xs"
+                  >
+                    Open Figma Design
+                  </a>
+                  <span className="text-[8px] text-slate-400 block text-center mt-1.5 font-medium select-all">
+                    Link: figma.com/design/...
+                  </span>
+                </div>
+              </div>
+
+              {/* Card 3: GitHub Repository */}
+              <div className="bg-slate-50 border border-slate-150 rounded-xl p-5 flex flex-col justify-between shadow-3xs space-y-4 hover-card-glow">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2 text-indigo-700">
+                    <span className="text-xl">💻</span>
+                    <h4 className="font-bold text-xs uppercase tracking-wider">GitHub Repository</h4>
+                  </div>
+                  <p className="text-[10.5px] text-slate-600 leading-relaxed font-semibold">
+                    Review the complete source code, project structure, implementation approach, and supporting documentation.
+                  </p>
+                </div>
+                <div>
+                  <a
+                    href="https://github.com/Sethuram-Vijayakumar/hybrid-crm-layer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block w-full bg-slate-905 bg-slate-900 hover:bg-slate-800 text-white text-[10px] py-2.5 px-4 rounded-lg font-bold uppercase transition text-center shadow-xs"
+                  >
+                    View Repository
+                  </a>
+                  <span className="text-[8px] text-slate-400 block text-center mt-1.5 font-medium select-all font-bold">
+                    Link: github.com/Sethuram-Vijayakumar/hybrid-crm-layer
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Recommended Review Flow */}
+            <div className="bg-indigo-50/50 border border-indigo-150 rounded-xl p-4 space-y-3">
+              <div className="flex justify-between items-center border-b border-indigo-100 pb-2">
+                <h4 className="text-xs font-bold text-indigo-900 uppercase tracking-wider">Recommended Review Flow</h4>
+                <div className="text-[10px] text-indigo-700 font-bold bg-white px-2.5 py-0.5 rounded-full border border-indigo-200">
+                  Estimated Review Time: 10–15 minutes
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-[10px] font-bold text-slate-800">
+                <div className="flex items-center space-x-2">
+                  <span className="bg-indigo-650 text-white w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold">1</span>
+                  <span>Review Executive Presentation</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="bg-indigo-650 text-white w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold">2</span>
+                  <span>Explore CRM Prototype</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="bg-indigo-650 text-white w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold">3</span>
+                  <span>Review Refined Figma Designs</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="bg-indigo-650 text-white w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold">4</span>
+                  <span>Explore GitHub Repository</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Design Journey Section */}
+            <div className="border-t border-slate-200 pt-4 space-y-3">
+              <h4 className="text-[10px] font-bold text-[#1B1F2A] uppercase tracking-wider">Design Journey</h4>
+              
+              <div className="flex items-center justify-center space-x-4 text-[9.5px] font-bold text-slate-600 font-semibold bg-slate-50 p-2.5 rounded-lg border border-slate-150">
+                <div className="text-center">
+                  <span className="block text-[11px]">🪄</span>
+                  <span className="block text-slate-800">Google Stitch</span>
+                  <span className="text-[8px] font-normal text-slate-500 block">Concept Exploration</span>
+                </div>
+                <div className="text-slate-350">➔</div>
+                <div className="text-center">
+                  <span className="block text-[11px]">🎨</span>
+                  <span className="block text-slate-800">Figma</span>
+                  <span className="text-[8px] font-normal text-slate-500 block">UX Refinement</span>
+                </div>
+                <div className="text-slate-350">➔</div>
+                <div className="text-center">
+                  <span className="block text-[11px]">🚀</span>
+                  <span className="block text-indigo-800">Antigravity</span>
+                  <span className="text-[8px] font-normal text-indigo-600 block">Prototype Implementation</span>
+                </div>
+                <div className="text-slate-350">➔</div>
+                <div className="bg-indigo-600 text-white px-3 py-1 rounded-md text-center text-[9px] font-bold">
+                  Final PM Assessment
+                </div>
+              </div>
+
+              <p className="text-[9px] text-slate-400 leading-relaxed font-semibold">
+                Google Stitch accelerated early concept generation. The designs were then refined in Figma and implemented in Antigravity to create the final interactive prototype. In a production environment, the design would continue to evolve through user research, usability testing, stakeholder feedback, and iterative refinement.
               </p>
             </div>
           </div>
@@ -1843,7 +1995,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     return speakerNotesMap[slideIndex as keyof typeof speakerNotesMap] || 'No speaker guidelines logged.';
   };
 
-  const totalStepsInTrack = customSequence.length > 0 ? customSequence.length : 19;
+  const totalStepsInTrack = customSequence.length > 0 ? customSequence.length : 20;
   const currentStepInTrack = customSequence.length > 0 ? sequenceIndex + 1 : currentSlide;
   const progressPercentage = Math.round((currentStepInTrack / totalStepsInTrack) * 100);
 
