@@ -291,22 +291,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
   }, [presentationMode]);
 
-  // Section Intro Overlays trigger on slide change
-  useEffect(() => {
-    if (!presentationMode) return;
-    const guide = slideGuidesMap[currentSlide];
-    if (guide) {
-      // Trigger section banner only if section changed
-      const prevGuide = slideGuidesMap[currentSlide - 1];
-      if (!prevGuide || prevGuide.section !== guide.section) {
-        setSectionIntroActive(guide.section);
-        const timer = setTimeout(() => {
-          setSectionIntroActive(null);
-        }, 1500);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [currentSlide, presentationMode]);
+
 
   // Auto-hide toolbar controls after 3 seconds of inactivity
   useEffect(() => {
@@ -2466,15 +2451,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       )}
 
-      {/* Section Introduction Overlay Banner */}
-      {sectionIntroActive && (
-        <div className="fixed inset-0 bg-[#0F111A]/95 z-45 flex items-center justify-center animate-fade-in pointer-events-none font-sans">
-          <div className="text-center space-y-3">
-            <span className="text-[10px] uppercase tracking-widest text-[#C9922E] font-bold">Strategy Proposal Section</span>
-            <h2 className="text-3xl font-light text-white tracking-tight animate-pulse">{sectionIntroActive}</h2>
-          </div>
-        </div>
-      )}
+
 
       {/* Reviewer Guide Modal */}
       {showReviewerModal && (

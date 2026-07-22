@@ -1,401 +1,467 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import { useApp } from '@/context/AppContext';
-import { Deal } from '@/lib/mock-data';
+import React, { useState } from 'react';
 import { 
-  Sparkles, 
-  Search, 
-  Sliders, 
-  Mail, 
-  FileText, 
-  Activity 
+  Search, TrendingUp, AlertTriangle, Zap, Brain
 } from 'lucide-react';
 
 export default function AICommandCenter() {
-  const { deals } = useApp();
   
-  // Dynamic Calculations from HubSpot Deal Data
-  const stats = useMemo(() => {
-    const totalPipeline = deals.reduce((sum, d) => sum + d.rawValue, 0);
-    const totalPipelineStr = `₹${(totalPipeline / 100000).toFixed(1)}L`;
+  // States
+  const [promptText, setPromptText] = useState('');
+  const [copilotOutput, setCopilotOutput] = useState<string>('Morning briefing generated successfully. Select any suggested action or input a custom prompt above to instruct the AI.');
+  const [outputTitle, setOutputTitle] = useState<string>('Morning Executive Brief');
 
-    const activeApprovals = deals.filter(
-      (d) => d.stage === 'Pending Approval' || d.stage === 'Legal Review'
-    );
-    const approvalsCount = activeApprovals.length;
+  // Copilot Action generators
+  const handleExecutePrompt = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!promptText.trim()) return;
+    setOutputTitle('Custom Prompt Result');
+    setCopilotOutput(`Executing AI query against active HubSpot pipeline...
+Query: "${promptText}"
 
-    return {
-      totalPipelineStr,
-      approvalsCount
-    };
-  }, [deals]);
-  
-  // States for interactive simulations & controls
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDeal, setSelectedDeal] = useState<Deal | null>(deals[0] || null);
-  const [legalTeamSize, setLegalTeamSize] = useState(3);
-  const [deliveryTeamSize, setDeliveryTeamSize] = useState(4);
-  const [copilotOutput, setCopilotOutput] = useState<string>('Select an action from the right-hand panel to generate strategic materials.');
-  const [outputTitle, setOutputTitle] = useState<string>('Copilot Terminal Output');
+Found 3 high-value deals matching criteria. 
+1. Sovereign State Corp ($4.2M) - flagged with Liability Clause variance.
+2. Apex Digital Ltd. ($850k) - cleared compliance audit.
+3. Pacific Rim Energy ($1.1M) - pending Delivery allocation.
 
-  // Simulated AI calculations based on What-If Sliders
-  const simulationResults = useMemo(() => {
-    // Baseline averages
-    const baseDays = 4.4;
-    const baseRevenueConfidence = 82;
-    
-    // Adjust values dynamically
-    // More legal team members reduce hold times significantly
-    const legalFactor = 3 / legalTeamSize; 
-    // More delivery leads handle load spikes better
-    const deliveryFactor = 4 / deliveryTeamSize; 
-    
-    const simulatedDays = Math.max(1.2, parseFloat((baseDays * legalFactor).toFixed(1)));
-    const simulatedUtilization = Math.max(50, Math.min(98, Math.round(90 * deliveryFactor)));
-    const simulatedRevenueConfidence = Math.min(99, Math.round(baseRevenueConfidence + (legalTeamSize - 3) * 4 + (deliveryTeamSize - 4) * 3));
-    
-    return {
-      approvalDays: simulatedDays,
-      utilization: simulatedUtilization,
-      revenueConfidence: simulatedRevenueConfidence
-    };
-  }, [legalTeamSize, deliveryTeamSize]);
-
-  // Natural Language search filter simulation
-  const filteredDeals = useMemo(() => {
-    if (!searchQuery) return deals;
-    const query = searchQuery.toLowerCase();
-    
-    // Simple natural language matching rules
-    if (query.includes('high risk') || query.includes('high-risk')) {
-      return deals.filter(d => d.risk === 'High');
-    }
-    if (query.includes('above 10') || query.includes('over 10') || query.includes('10l')) {
-      return deals.filter(d => {
-        const val = parseFloat(d.dealValue.replace(/[^0-9.]/g, ''));
-        return val >= 10;
-      });
-    }
-    if (query.includes('legal')) {
-      return deals.filter(d => d.stage === 'Legal Review');
-    }
-    
-    return deals.filter(d => 
-      d.companyName.toLowerCase().includes(query) || 
-      d.stage.toLowerCase().includes(query)
-    );
-  }, [searchQuery, deals]);
-
-  // Copilot Generator actions
-  const handleGenerateEscalation = (deal: Deal) => {
-    setOutputTitle(`Escalation Email: ${deal.companyName}`);
-    setCopilotOutput(`To: legal-escalations@northbridgeadvisory.com
-Subject: URGENT: Approval Escalation Required for ${deal.companyName} [HubSpot ID: ${deal.id}]
-
-Dear Legal Operations Team,
-
-This is an automated escalation initiated via the Northbridge Advisory Hybrid CRM Layer. The opportunity with ${deal.companyName} valued at ${deal.dealValue} has spent ${deal.daysPending} days in the Legal Review stage, which exceeds our target threshold of 3 days.
-
-AI Operational Analysis:
-- Pipeline Friction Index: 87% (Probability of delivery delay)
-- Confidence Level: 91%
-- Resource Impact: High. Project Delivery slots are currently at 90% load and are projected to hit 98% capacity in Q3.
-
-Action Required:
-Please prioritize review of the attached contract clauses. If no action is logged within 24 hours, this item will escalate to executive management.
-
-Sincerely,
-Strategic Sales Operations Assistant
-[HubSpot CRM Overlay Integration]`);
+Recommendation: Proceed with immediate escalation of Sovereign State Corp to resolve contract holds.`);
+    setPromptText('');
   };
 
-  const handleGenerateBriefing = () => {
-    setOutputTitle("AI Executive Briefing Report");
-    setCopilotOutput(`# Executive Strategic Briefing - July 2026
+  const handleGenerateEscalation = (dealName: string) => {
+    setOutputTitle(`Escalation Memo: ${dealName}`);
+    setCopilotOutput(`Subject: URGENT: Risk Mitigation Workflow triggered for ${dealName}
 
-## 1. Pipeline Status Summary
-*   **Total Revenue Value**: ${stats.totalPipelineStr} Across ${deals.length} active engagements.
-*   **Revenue At Risk**: ₹45L in pending Legal Review stages.
-*   **High Risk Accounts**: 2 critical bottlenecks identified.
+Dear Legal Operations Lead,
 
-## 2. Operational Constraints
-*   **Resource Utilization**: Delivery Management is currently at **90% utilization** (Simulated to spike to **98%** under Q3 volumes).
-*   **Legal Hold Times**: Average approval hold is currently ${simulationResults.approvalDays} days (Simulated baseline).
+The AI risk analysis engine has flagged an unusual indemnity cap clause in the agreement draft for ${dealName}. The delay at the current stage exceeds our SLA threshold by 48 hours.
 
-## 3. Key Recommendations
-1.  **Immediate Procurement**: Hire 2 contract developers to mitigate Q3 delivery risks.
-2.  **Clause Streamlining**: Authorize standard NDAs automatically to unblock the legal queue.`);
+Action Required: Please audit the Governing Law and Liability Cap settings for this deal to proceed.
+
+Generated by: AI Command Center (Governance Audit: NB-AI-90345-X)`);
   };
 
-  const handleGeneratePRD = (deal: Deal) => {
-    setOutputTitle(`Product Requirements Document (PRD): ${deal.companyName}`);
-    setCopilotOutput(`# Product Requirements Document
-## Project: Hybrid Overlay Sync Integration for ${deal.companyName}
+  const handleReallocateTeam = () => {
+    setOutputTitle('Capacity Reallocation Plan');
+    setCopilotOutput(`Capacity Analysis:
+Current Legal Load: 94% Capacity (Overloaded)
+Current Dev Lead Load: 72% Capacity (Normal)
 
-### 1. Business Objective
-Deliver custom signature validation portals that integrate HubSpot opportunity logs with Supabase PostgreSQL to prevent deal hold delays.
-
-### 2. User Stories
-*   **US-1**: As a Sales Representative, I need real-time email alerts when Legal signs a contract so that I can schedule project kickoffs instantly.
-*   **US-2**: As a Delivery Manager, I need to see upcoming deal values so that I can check staff allocations.
-
-### 3. Success Metrics
-*   **Target Hold Cycle**: Under 1.5 Days.
-*   **Integrity Sync Rate**: 100% (Zero database sync faults).`);
+Reallocation Recommendation:
+Shift 2 analysts from Archive/Auditing to active Pipeline contract review queue to clear the Project Zenith backlog within 24 hours. Estimated SLA savings: 1.5 Days.`);
   };
 
   return (
-    <div className="space-y-6 font-sans pb-12 select-none text-slate-800">
+    <div className="space-y-6 font-sans text-slate-805 select-none pb-12">
       
-      {/* Header Banner */}
-      <div className="pb-3 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      {/* Top Header & Search Bar (Screenshot 6) */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between pb-4 border-b border-slate-200 gap-4">
         <div>
-          <span className="text-[10px] font-semibold px-2 py-0.5 bg-[#C9922E]/10 text-[#C9922E] rounded uppercase tracking-wider font-bold">
-            Executive Control Panel
-          </span>
-          <h1 className="text-xl font-semibold text-[#1B1F2A] tracking-tight mt-1">AI Strategy & Command Center</h1>
-          <p className="text-xs text-slate-500 font-semibold mt-1">
-            Real-time pipeline analytics, What-If simulation engines, and AI-assisted email drafting.
-          </p>
+          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Hybrid CRM Overlay</span>
+          <h1 className="text-2xl font-bold text-[#1B1F2A] tracking-tight mt-0.5">AI Command Center</h1>
+          <p className="text-xs text-slate-500 font-medium">Strategic intelligence & operations oversight for Northbridge Advisory</p>
         </div>
+
+        {/* Execute prompt bar */}
+        <form onSubmit={handleExecutePrompt} className="flex items-center space-x-3 w-full lg:w-auto max-w-md flex-1">
+          <div className="relative w-full">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <input
+              type="text"
+              value={promptText}
+              onChange={(e) => setPromptText(e.target.value)}
+              placeholder="Search strategic insights, prompt AI..."
+              className="bg-slate-50 border border-slate-200 text-xs text-slate-800 pl-10 pr-4 py-2.5 rounded-xl w-full focus:bg-white focus:border-slate-350 outline-none transition"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-[#1B1F2A] hover:bg-slate-800 text-white font-bold text-xs py-2.5 px-4.5 rounded-xl shadow-md transition active-press shrink-0"
+          >
+            Execute Prompt
+          </button>
+        </form>
       </div>
 
-      {/* Main Command Dashboard Layout */}
+      {/* Grid: Strategic Priorities & Global Risk */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Left Column: Briefing & What-If Simulator */}
-        <div className="space-y-6 lg:col-span-1">
-          
-          {/* Briefing summary */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5 border-b border-slate-50 pb-2">
-              <Sparkles className="h-4 w-4 text-[#C9922E]" />
-              <span>Today&apos;s AI Executive Briefing</span>
-            </h3>
-            
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs py-1.5 border-b border-slate-50">
-                <span className="font-semibold text-slate-600">Average Approval Hold</span>
-                <span className="font-bold text-[#1B1F2A]">{simulationResults.approvalDays} Days</span>
-              </div>
-              <div className="flex items-center justify-between text-xs py-1.5 border-b border-slate-50">
-                <span className="font-semibold text-slate-600">Simulated Delivery Load</span>
-                <span className="font-bold text-[#1B1F2A]">{simulationResults.utilization}%</span>
-              </div>
-              <div className="flex items-center justify-between text-xs py-1.5">
-                <span className="font-semibold text-slate-600">Revenue Confidence Index</span>
-                <span className="font-bold text-emerald-600">{simulationResults.revenueConfidence}%</span>
-              </div>
+        {/* Strategic Priorities for April 24 */}
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="flex items-center space-x-2 text-xs font-bold text-slate-400">
+              <span className="bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider">Morning Briefing</span>
+              <span>Updated 14 mins ago</span>
             </div>
           </div>
 
-          {/* What-If Simulator */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-5">
-            <div className="flex items-center space-x-1.5 border-b border-slate-50 pb-2">
-              <Sliders className="h-4 w-4 text-[#C9922E]" />
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">What-If Simulation Engine</h3>
-            </div>
-            
-            <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
-              Adjust resource counts to simulate the business impact on approval cycle speed and Q3 capacity.
-            </p>
-
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-600">Legal Reviewers:</span>
-                  <span className="text-[#1B1F2A] font-bold">{legalTeamSize} Staff</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="6" 
-                  value={legalTeamSize} 
-                  onChange={(e) => setLegalTeamSize(parseInt(e.target.value))}
-                  className="w-full accent-[#C9922E] h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-600">Delivery Leads:</span>
-                  <span className="text-[#1B1F2A] font-bold">{deliveryTeamSize} Staff</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="2" 
-                  max="8" 
-                  value={deliveryTeamSize} 
-                  onChange={(e) => setDeliveryTeamSize(parseInt(e.target.value))}
-                  className="w-full accent-[#C9922E] h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-            </div>
-
-            <div className="bg-[#FBF1DE]/25 p-3 rounded-lg border border-[#C9922E]/20 text-[10px] text-slate-700 font-semibold leading-relaxed">
-              <strong>Expected Outcome:</strong> Escalating Legal staff to {legalTeamSize} decreases hold cycles by {(100 - (3/legalTeamSize)*100).toFixed(0)}%, securing ₹45L–65L in contract closures earlier.
-            </div>
-          </div>
-
-        </div>
-
-        {/* Center Column: Deal Selector & Risk Analytics */}
-        <div className="space-y-6 lg:col-span-1">
-          
-          {/* Natural Language Search bar */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">Natural Language Deal Query</h3>
-            <div className="relative">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-              <input 
-                type="text"
-                placeholder="e.g. 'high risk' or 'above 10L'"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs font-semibold text-[#1B1F2A] focus:outline-none focus:border-[#C9922E] transition"
-              />
-            </div>
-            <span className="text-[9px] text-slate-400 font-semibold block">
-              Filtered {filteredDeals.length} of {deals.length} deals in workspace context.
-            </span>
-          </div>
-
-          {/* Deals list */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">Pipeline Risk Cues</h3>
-            
-            <div className="space-y-2 max-h-[30vh] overflow-y-auto pr-1">
-              {filteredDeals.map((deal) => {
-                const isSelected = selectedDeal?.id === deal.id;
-                const isHigh = deal.risk === 'High';
-                const isMed = deal.risk === 'Medium';
-                
-                return (
-                  <button
-                    key={deal.id}
-                    onClick={() => setSelectedDeal(deal)}
-                    className={`w-full text-left p-3 rounded-xl border text-xs font-semibold transition flex items-center justify-between group active-press ${
-                      isSelected 
-                        ? 'border-[#C9922E] bg-[#FBF1DE]/10' 
-                        : 'border-slate-100 hover:border-slate-200 bg-slate-50/30'
-                    }`}
-                  >
-                    <div className="truncate">
-                      <span className="block font-bold text-slate-800 truncate">{deal.companyName}</span>
-                      <span className="text-[10px] text-slate-550 block mt-0.5">{deal.stage} • {deal.dealValue}</span>
-                    </div>
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full shrink-0 ml-2 ${
-                      isHigh 
-                        ? 'bg-rose-50 text-rose-700' 
-                        : isMed 
-                        ? 'bg-amber-50 text-amber-700' 
-                        : 'bg-emerald-50 text-emerald-700'
-                    }`}>
-                      {deal.risk}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Explainability widget */}
-          {selectedDeal && (
-            <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-3 animate-fade-in">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-50 pb-2">
-                AI Risk Explanation: {selectedDeal.companyName}
-              </h3>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="md:col-span-3 space-y-4">
+              <h3 className="text-sm font-black text-[#1B1F2A] uppercase tracking-wide">Strategic Priorities for April 24</h3>
               
-              <div className="space-y-2.5 text-xs">
-                <div className="flex justify-between font-semibold">
-                  <span className="text-slate-600">Delay Probability:</span>
-                  <span className={`font-bold ${selectedDeal.risk === 'High' ? 'text-rose-600' : 'text-emerald-600'}`}>
-                    {selectedDeal.risk === 'High' ? '87%' : '14%'}
-                  </span>
+              <div className="space-y-3.5 text-xs font-semibold">
+                <div className="flex items-start space-x-3">
+                  <div className="p-1.5 bg-indigo-50 text-indigo-700 rounded-lg shrink-0">
+                    <TrendingUp className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900 leading-tight">Deal Flow Surge</h4>
+                    <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                      Three high-value acquisitions in Energy sector ready for final approval. Risk profile: Low.
+                    </p>
+                  </div>
                 </div>
-                <div className="flex justify-between font-semibold">
-                  <span className="text-slate-600">Model Confidence Rating:</span>
-                  <span className="text-[#1B1F2A] font-bold">91%</span>
+
+                <div className="flex items-start space-x-3">
+                  <div className="p-1.5 bg-rose-50 text-rose-700 rounded-lg shrink-0">
+                    <AlertTriangle className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900 leading-tight">Legal Bottleneck</h4>
+                    <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
+                      Contract review for &apos;Project Zenith&apos; is 48h overdue. Resource reallocation suggested.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-[11px] text-slate-600 leading-relaxed font-semibold mt-1">
-                  <strong>Trigger:</strong> {selectedDeal.risk === 'High' 
-                    ? 'Legal queue workload currently exceeds standard operational limits. Client contract has non-standard SLA clauses requiring direct review.' 
-                    : 'Standard NDA parameters verified. High historical turnaround probability.'}
+              </div>
+            </div>
+
+            {/* AI Forecast panel */}
+            <div className="md:col-span-2 bg-indigo-50/40 border border-indigo-100 rounded-2xl p-4 flex flex-col justify-between">
+              <div className="space-y-1.5">
+                <div className="flex items-center space-x-1 text-[10px] text-indigo-800 font-bold uppercase tracking-wider">
+                  <Brain className="h-3.5 w-3.5 text-[#C9922E]" />
+                  <span>AI Forecast</span>
+                </div>
+                <p className="text-[10px] text-slate-655 italic leading-relaxed">
+                  &ldquo;Based on current velocity, Q2 targets will be met 12 days early if &apos;Project Zenith&apos; is cleared by Friday.&rdquo;
                 </p>
               </div>
+              <button
+                onClick={handleReallocateTeam}
+                className="text-[10px] text-[#C9922E] hover:underline font-bold text-left uppercase tracking-wider block mt-4"
+              >
+                View Full Analysis →
+              </button>
             </div>
-          )}
-
+          </div>
         </div>
 
-        {/* Right Column: AI Copilot Generator Terminal */}
-        <div className="space-y-6 lg:col-span-1">
-          
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-50 pb-2">
-              Enterprise AI Copilot
-            </h3>
-            
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <button
-                onClick={() => selectedDeal && handleGenerateEscalation(selectedDeal)}
-                disabled={!selectedDeal}
-                className="p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl font-bold flex flex-col items-center justify-center gap-1.5 transition active-press text-[#C9922E] disabled:opacity-40"
-              >
-                <Mail className="h-4 w-4" />
-                <span>Draft Escalation</span>
-              </button>
-              <button
-                onClick={handleGenerateBriefing}
-                className="p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl font-bold flex flex-col items-center justify-center gap-1.5 transition active-press text-indigo-600"
-              >
-                <Activity className="h-4 w-4" />
-                <span>Q3 Report Brief</span>
-              </button>
-              <button
-                onClick={() => selectedDeal && handleGeneratePRD(selectedDeal)}
-                disabled={!selectedDeal}
-                className="p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl font-bold flex flex-col items-center justify-center gap-1.5 transition active-press text-emerald-600 disabled:opacity-40"
-              >
-                <FileText className="h-4 w-4" />
-                <span>Generate PRD</span>
-              </button>
-              <button
-                onClick={() => {
-                  setOutputTitle("Jira Sprint Automation");
-                  setCopilotOutput(`[Sprint-2 Task Automation]
-1. Task: Establish Supabase DB overlay schemas for deal field mapping.
-   - Owner: Engineering Lead
-   - Priority: High
-   - Dependency: HubSpot credentials mapping complete.
-   
-2. Task: Deploy webhook listener functions to catch opportunity updates.
-   - Owner: Staff Backend Engineer
-   - Priority: Medium
-   
-3. Task: Configure priority escalation emails via Resend API.
-   - Owner: Full Stack Developer
-   - Priority: Medium`);
-                }}
-                className="p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl font-bold flex flex-col items-center justify-center gap-1.5 transition active-press text-amber-600"
-              >
-                <Sliders className="h-4 w-4" />
-                <span>Sprint Tasks</span>
-              </button>
-            </div>
+        {/* Global Pipeline Risk */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between text-center items-center">
+          <div className="border-b border-slate-100 pb-3 w-full text-left">
+            <h3 className="font-bold text-slate-450 text-[10px] uppercase tracking-wider">Global Pipeline Risk</h3>
+          </div>
 
-            {/* Simulated AI text display */}
-            <div className="space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                {outputTitle}
-              </span>
-              <pre className="w-full bg-slate-900 text-slate-200 p-4 rounded-xl text-[10px] font-mono whitespace-pre-wrap leading-relaxed overflow-y-auto max-h-[30vh] border border-slate-800">
-                {copilotOutput}
-              </pre>
+          <div className="relative h-24 w-24 flex items-center justify-center my-3">
+            <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+              <circle cx="48" cy="48" r="40" fill="transparent" stroke="#f1f5f9" strokeWidth="6" />
+              <circle cx="48" cy="48" r="40" fill="transparent" stroke="#6366f1" strokeWidth="6" strokeDasharray="251.2" strokeDashoffset="62.8" />
+            </svg>
+            <div className="text-center">
+              <span className="text-2xl font-black text-slate-900 block leading-none">75</span>
+              <span className="text-[8px] uppercase text-slate-400 font-bold block mt-1 tracking-wider">OPTIMIZED</span>
             </div>
           </div>
 
+          <div className="text-[10px] text-slate-500 font-medium leading-normal border-t border-slate-100 pt-3 w-full">
+            Stability increased by <strong className="text-indigo-700">4.2%</strong> since last audit.
+          </div>
+        </div>
+
+      </div>
+
+      {/* Middle Grid: Contract Intelligence, Meeting Summary, Capacity Forecast */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        {/* Contract Intelligence */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4">
+          <div className="border-b border-slate-100 pb-2 flex justify-between items-center">
+            <h3 className="font-bold text-slate-805 text-xs uppercase tracking-wider flex items-center space-x-1.5">
+              <span>🗎</span>
+              <span>Contract Intelligence</span>
+            </h3>
+            <span className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-[8.5px] font-bold">12 Pending</span>
+          </div>
+
+          <div className="space-y-3 font-semibold text-[10.5px]">
+            <div className="flex justify-between items-center p-2 bg-slate-50 rounded-lg">
+              <div>
+                <span className="text-slate-800 block">Agreement_Draft_V4.pdf</span>
+                <span className="text-[9.5px] text-slate-400 block font-normal mt-0.5">High compliance match (98%)</span>
+              </div>
+              <span className="text-emerald-600">✓</span>
+            </div>
+
+            <div className="flex justify-between items-center p-2 bg-slate-50 rounded-lg">
+              <div>
+                <span className="text-slate-800 block">Liability_Clause_B.docx</span>
+                <span className="text-[9.5px] text-rose-600 block font-bold mt-0.5">Unusual indemnity detected</span>
+              </div>
+              <span className="text-rose-600">⚠</span>
+            </div>
+
+            <div className="flex justify-between items-center p-2 bg-slate-50 rounded-lg">
+              <div>
+                <span className="text-slate-800 block">M&A_Final_Terms.pdf</span>
+                <span className="text-[9.5px] text-slate-400 block font-normal mt-0.5">Awaiting CFO signature</span>
+              </div>
+              <span className="text-slate-400">○</span>
+            </div>
+          </div>
+
+          <button onClick={() => router.push('/approvals')} className="text-xs text-[#C9922E] hover:underline font-bold text-center block pt-2 border-t border-slate-100">
+            Open Contract Hub
+          </button>
+        </div>
+
+        {/* Meeting Summary */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4">
+          <div className="border-b border-slate-100 pb-2">
+            <h3 className="font-bold text-slate-805 text-xs uppercase tracking-wider">Meeting Summary</h3>
+            <span className="text-[8.5px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">Executive Board - Today</span>
+          </div>
+
+          <ul className="space-y-2 text-[10.5px] leading-relaxed font-semibold text-slate-655">
+            <li className="flex items-start space-x-1.5">
+              <span className="text-indigo-600 font-bold">•</span>
+              <span>Confirmed shift to ESG focus for H2.</span>
+            </li>
+            <li className="flex items-start space-x-1.5">
+              <span className="text-indigo-600 font-bold">•</span>
+              <span>Agreed on 15% budget increase for AI.</span>
+            </li>
+            <li className="p-2 bg-slate-50 rounded-lg border border-slate-100 text-[9.5px]">
+              <strong>INTERNAL SYNC:</strong> &ldquo;Next steps: Finalize the Zenith report by Friday COB.&rdquo;
+            </li>
+          </ul>
+
+          <button onClick={() => alert('Opening executive meeting transcripts...')} className="text-xs text-[#C9922E] hover:underline font-bold text-center block pt-2 border-t border-slate-100">
+            View Transcripts
+          </button>
+        </div>
+
+        {/* Capacity Forecast */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4">
+          <div className="border-b border-slate-100 pb-2">
+            <h3 className="font-bold text-slate-805 text-xs uppercase tracking-wider">Capacity Forecast</h3>
+          </div>
+
+          <div className="h-16 flex items-end justify-center space-x-3 pt-2">
+            <div className="w-4 bg-indigo-200 rounded-t-sm h-8" />
+            <div className="w-4 bg-indigo-200 rounded-t-sm h-12" />
+            <div className="w-4 bg-indigo-600 rounded-t-sm h-16" />
+            <div className="w-4 bg-indigo-200 rounded-t-sm h-10" />
+            <div className="w-4 bg-indigo-200 rounded-t-sm h-14" />
+          </div>
+
+          <div className="p-2.5 bg-indigo-50/50 border border-indigo-100 rounded-xl text-[9.5px] text-indigo-900 leading-normal font-semibold">
+            AI predicts high demand on Wednesday. Recommending shifting 2 analysts from Archive to Pipeline.
+          </div>
+        </div>
+
+      </div>
+
+      {/* Copilot Terminal Output Box */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-3">
+        <h3 className="text-xs font-bold text-slate-800 border-b border-slate-100 pb-2 uppercase tracking-wider">
+          {outputTitle}
+        </h3>
+        <pre className="p-4 bg-slate-900 text-emerald-400 font-mono text-[10.5px] rounded-xl overflow-x-auto whitespace-pre-wrap select-all leading-relaxed shadow-inner">
+          {copilotOutput}
+        </pre>
+      </div>
+
+      {/* Approval Recommendations & Explainable AI */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Approval Recommendations */}
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+          <div className="border-b border-slate-100 pb-2">
+            <h3 className="font-bold text-slate-850 text-xs uppercase tracking-wider">Approval Recommendations</h3>
+          </div>
+
+          <div className="divide-y divide-slate-100">
+            {[
+              { deal: 'Evergreen Holdings Merger', details: '$2.4B • 94% confidence match' },
+              { deal: 'Skyline Infrastructure Fund', details: '$850M • 88% confidence match' }
+            ].map((rec, idx) => (
+              <div key={idx} className="flex items-center justify-between py-3 first:pt-0 last:pb-0 font-semibold">
+                <div className="space-y-0.5">
+                  <span className="font-bold text-slate-900 text-xs block">{rec.deal}</span>
+                  <span className="text-[10px] text-slate-500 block font-normal">{rec.details}</span>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => alert(`Deferred recommendation for ${rec.deal}`)}
+                    className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-[10px] py-1.5 px-3.5 rounded-lg transition"
+                  >
+                    Defer
+                  </button>
+                  <button
+                    onClick={() => handleGenerateEscalation(rec.deal)}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] py-1.5 px-3.5 rounded-lg transition active-press shadow-sm font-bold"
+                  >
+                    Approve Deal
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Explainable AI */}
+        <div className="bg-[#1B1F2A] border border-slate-800 text-white rounded-2xl p-5 shadow-xs space-y-3 flex flex-col justify-between">
+          <div className="space-y-2">
+            <h3 className="font-bold text-slate-400 text-[10px] uppercase tracking-wider flex items-center space-x-1 border-b border-slate-800 pb-2">
+              <Zap className="h-3.5 w-3.5 text-[#C9922E]" />
+              <span>Explainable AI</span>
+            </h3>
+            <div>
+              <span className="text-[8px] text-slate-500 uppercase block font-bold tracking-wider">Decision Foundation</span>
+              <p className="text-[10px] text-slate-350 leading-relaxed font-semibold mt-1">
+                Recommendations are based on 14,200 historical deal data points and current market volatility in the APAC sector.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-1 pt-2 border-t border-slate-800">
+            <div className="flex justify-between items-center text-[9px] text-slate-450 font-bold uppercase">
+              <span>Confidence Score</span>
+              <span>94%</span>
+            </div>
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-full bg-indigo-500 rounded-full w-[94%]" />
+            </div>
+          </div>
+
+          <div className="text-[8px] font-mono text-slate-550 border-t border-slate-800/80 pt-2 block text-right select-all">
+            Governance Audit ID: NB-AI-90345-X
+          </div>
+        </div>
+
+      </div>
+
+      {/* Prompt History & AI Usage Transparency */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* Prompt History */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+          <div className="border-b border-slate-100 pb-2 flex justify-between items-center">
+            <h3 className="font-bold text-slate-805 text-xs uppercase tracking-wider">Prompt History</h3>
+            <button onClick={() => alert('Exporting active AI prompt logs...')} className="text-slate-400 hover:text-slate-600 text-[9px] uppercase tracking-wider font-bold">EXPORT LOG</button>
+          </div>
+
+          <div className="space-y-3 font-semibold text-[10.5px]">
+            <div className="space-y-1">
+              <p className="text-slate-700 italic font-semibold">
+                &ldquo;Summarize the legal risks for Project Zenith over the last 3h&rdquo;
+              </p>
+              <div className="flex justify-between items-center text-[9px] text-slate-400 font-bold">
+                <span className="space-x-1.5">
+                  <span className="bg-slate-100 text-slate-655 px-1.5 py-0.5 rounded">Compliance</span>
+                  <span className="bg-slate-100 text-slate-655 px-1.5 py-0.5 rounded">Internal</span>
+                </span>
+                <span>9h ago</span>
+              </div>
+            </div>
+
+            <div className="space-y-1 border-t border-slate-100 pt-3">
+              <p className="text-slate-700 italic font-semibold">
+                &ldquo;Generate a performance comparison chart for analyst util&rdquo;
+              </p>
+              <div className="flex justify-between items-center text-[9px] text-slate-400 font-bold">
+                <span className="bg-slate-100 text-slate-655 px-1.5 py-0.5 rounded">Analytics</span>
+                <span>3h ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* AI Usage Transparency */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4 flex flex-col justify-between">
+          <div className="border-b border-slate-100 pb-2">
+            <h3 className="font-bold text-slate-805 text-xs uppercase tracking-wider">AI Usage Transparency</h3>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 items-center">
+            <div>
+              <span className="text-[9px] text-slate-450 uppercase block font-bold">Model Accuracy</span>
+              <span className="text-sm font-black text-slate-900 block mt-1">99.2%</span>
+              <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-1.5">
+                <div className="h-full bg-indigo-500 rounded-full w-[99%]" />
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-[9px] text-slate-455 uppercase block font-bold">Tokens/Day</span>
+              <span className="text-sm font-black text-slate-900 block mt-1">1.2M</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 text-center border-t border-slate-100 pt-3 text-[10px] font-bold text-slate-700">
+            <div className="bg-slate-50 border border-slate-150 p-2.5 rounded-xl">
+              <span className="text-[8px] text-slate-400 block uppercase font-bold tracking-wider">Primary Engine</span>
+              <span className="mt-1 block">Claude 3.5 Sonnet</span>
+            </div>
+            <div className="bg-slate-50 border border-slate-155 p-2.5 rounded-xl">
+              <span className="text-[8px] text-slate-400 block uppercase font-bold tracking-wider">Data Sovereignty</span>
+              <span className="mt-1 block text-emerald-700">🌐 On-Premise Cloud</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Bottom Activities & Suggested Next Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Recent AI Activities */}
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+          <div className="border-b border-slate-100 pb-2">
+            <h3 className="font-bold text-slate-805 text-xs uppercase tracking-wider">Recent AI Activities</h3>
+          </div>
+
+          <div className="space-y-4 text-[10.5px] leading-relaxed text-slate-655 font-semibold">
+            <div className="flex items-start space-x-2">
+              <span className="text-indigo-600 shrink-0">🗒</span>
+              <span>Automatic Pipeline Refresh - Scanning 1,400 external data sources for market shifts... <strong className="text-slate-400 block font-normal text-[9px] mt-0.5">2 mins ago</strong></span>
+            </div>
+            <div className="flex items-start space-x-2">
+              <span className="text-rose-600 shrink-0">⚠</span>
+              <span>Alert Dispatched to Risk Committee - High-volatility detected in Southeast Asian commodities. <strong className="text-slate-400 block font-normal text-[9px] mt-0.5">45 mins ago</strong></span>
+            </div>
+            <div className="flex items-start space-x-2">
+              <span className="text-indigo-600 shrink-0">🗒</span>
+              <span>Compliance Report Generated - Weekly SEC audit ready for review. <strong className="text-slate-400 block font-normal text-[9px] mt-0.5">3 hours ago</strong></span>
+            </div>
+          </div>
+        </div>
+
+        {/* Suggested Next Actions */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+          <h3 className="font-bold text-slate-805 text-xs uppercase tracking-wider border-b border-slate-100 pb-3">Suggested Next Actions</h3>
+          
+          <div className="space-y-2">
+            {[
+              { a: 'Review Zenith Delays', d: 'Address legal bottlenecks.', action: () => handleGenerateEscalation('Project Zenith') },
+              { a: 'Reallocate Team Load', d: 'Optimize Wednesday capacity.', action: handleReallocateTeam },
+              { a: 'Draft Q3 Strategy Brief', d: 'Using board meeting notes.', action: () => alert('Generating strategy brief details...') },
+              { a: 'Audit AI Prompt Log', d: 'Weekly governance routine.', action: () => alert('Opening prompt logging auditing portal...') }
+            ].map((act, idx) => (
+              <button
+                key={idx}
+                onClick={act.action}
+                className="w-full text-left p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-150 rounded-xl transition flex justify-between items-center group active-press"
+              >
+                <div className="space-y-0.5">
+                  <span className="font-bold text-slate-900 text-[11px] block">{act.a}</span>
+                  <span className="text-[9.5px] text-slate-500 font-medium block">{act.d}</span>
+                </div>
+                <span className="text-slate-400 group-hover:translate-x-0.5 transition-transform">→</span>
+              </button>
+            ))}
+          </div>
         </div>
 
       </div>
