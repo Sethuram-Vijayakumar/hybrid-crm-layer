@@ -218,6 +218,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [customSequence, setCustomSequence] = useState<number[]>([]);
   const [sequenceIndex, setSequenceIndex] = useState<number>(0);
   const [presenterCardCollapsed, setPresenterCardCollapsed] = useState<boolean>(false);
+  const [showDetailedGuideNotes, setShowDetailedGuideNotes] = useState<boolean>(false);
   const [showHandoffModal, setShowHandoffModal] = useState<boolean>(false);
   const [sectionIntroActive, setSectionIntroActive] = useState<string | null>(null);
 
@@ -1991,15 +1992,47 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                       </p>
                     </div>
 
-                    <div className="space-y-1 bg-slate-800/60 p-2.5 rounded-xl border border-slate-800 font-semibold">
-                      <h4 className="text-[9px] font-bold text-[#C9922E] uppercase tracking-widest">Why It Matters</h4>
-                      <p className="text-[10px] text-slate-400 leading-relaxed font-semibold">
-                        {(() => {
-                          const guide = slideGuidesMap[currentSlide];
-                          return guide ? guide.whyItMatters : 'Essential for review checks.';
-                        })()}
-                      </p>
+                    {/* Collapsible toggle link */}
+                    <div className="text-center pt-1">
+                      <button
+                        onClick={() => setShowDetailedGuideNotes(!showDetailedGuideNotes)}
+                        className="text-[9px] uppercase tracking-wider text-[#C9922E] hover:underline font-bold"
+                      >
+                        {showDetailedGuideNotes ? 'Hide Strategy Details ▴' : 'Show Strategy Details ▾'}
+                      </button>
                     </div>
+
+                    {showDetailedGuideNotes && (
+                      <div className="space-y-4 animate-fade-in border-t border-slate-800 pt-3">
+                        <div className="space-y-1 bg-slate-800/60 p-2.5 rounded-xl border border-slate-800 font-semibold">
+                          <h4 className="text-[9px] font-bold text-[#C9922E] uppercase tracking-widest">Why It Matters</h4>
+                          <p className="text-[10px] text-slate-400 leading-relaxed font-semibold">
+                            {(() => {
+                              const guide = slideGuidesMap[currentSlide];
+                              return guide ? guide.whyItMatters : 'Essential for review checks.';
+                            })()}
+                          </p>
+                        </div>
+
+                        {/* Bridge */}
+                        <div className="text-[10px] text-slate-355 italic leading-relaxed">
+                          <strong>Narrative Bridge:</strong> &ldquo;{(() => {
+                            const guide = slideGuidesMap[currentSlide];
+                            return guide ? guide.bridge : 'Moving to the next slide...';
+                          })()}&rdquo;
+                        </div>
+
+                        <div className="text-[8.5px] uppercase tracking-widest text-[#C9922E] font-bold flex items-center justify-between">
+                          <span>Deliverables covered:</span>
+                          <span className="bg-[#C9922E]/10 text-[#C9922E] px-1.5 py-0.5 rounded text-[8px]">
+                            {(() => {
+                              const guide = slideGuidesMap[currentSlide];
+                              return guide ? guide.checklist : '✓ Proposal Section';
+                            })()}
+                          </span>
+                        </div>
+                      </div>
+                    )}
 
                     <div className="grid grid-cols-3 gap-2 text-center text-[10px] border-t border-slate-800 pt-3">
                       <div>
@@ -2019,24 +2052,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                         <span className="text-[8px] text-slate-500 uppercase block tracking-wider font-bold">Completed</span>
                         <span className="font-bold text-emerald-400 mt-0.5 block">{progressPercentage}%</span>
                       </div>
-                    </div>
-
-                    {/* Bridge */}
-                    <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-350 italic leading-relaxed">
-                      <strong>Narrative Bridge:</strong> &ldquo;{(() => {
-                        const guide = slideGuidesMap[currentSlide];
-                        return guide ? guide.bridge : 'Moving to the next slide...';
-                      })()}&rdquo;
-                    </div>
-
-                    <div className="text-[8.5px] uppercase tracking-widest text-[#C9922E] font-bold flex items-center justify-between">
-                      <span>Deliverables covered on this slide:</span>
-                      <span className="bg-[#C9922E]/10 text-[#C9922E] px-1.5 py-0.5 rounded text-[8px]">
-                        {(() => {
-                          const guide = slideGuidesMap[currentSlide];
-                          return guide ? guide.checklist : '✓ Proposal Section';
-                        })()}
-                      </span>
                     </div>
 
                     <div className="flex items-center space-x-2">
@@ -2534,7 +2549,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             <div className="pt-2 border-t border-slate-100 flex justify-end">
               <button
-                onClick={() => setShowReviewerModal(true)}
+                onClick={() => setShowReviewerModal(false)}
                 className="bg-[#C9922E] hover:bg-[#b07f24] text-white text-xs font-bold py-2 px-5 rounded-xl transition duration-150 active-press"
               >
                 Got It
