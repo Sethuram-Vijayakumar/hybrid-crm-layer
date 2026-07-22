@@ -1261,7 +1261,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {renderNarrativeTransition(
               'Why is this worth investing in?',
-              'Provides a payback timeline in under 3 months while saving up to 70% in CapEx costs. Let\'s see the MVP implementation plan in Slide 11.'
+              'Provides a payback timeline in under 3 months while saving 60–70% in CapEx costs. Let\'s see the MVP implementation plan in Slide 11.'
             )}
           </div>
         );
