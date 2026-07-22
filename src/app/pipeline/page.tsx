@@ -208,15 +208,15 @@ export default function PipelinePage() {
       <div className="relative">
         
         {/* Kanban Board Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 items-start overflow-x-auto pb-6">
+        <div className="flex space-x-6 items-start overflow-x-auto pb-6 min-h-[600px] scrollbar-thin">
           {stages.map((stage) => {
             const stageDeals = stageColumns[stage] || [];
             
             return (
-              <div key={stage} className="bg-slate-50/50 border border-slate-155 rounded-2xl p-4 flex flex-col space-y-4 min-w-[210px]">
+              <div key={stage} className="bg-slate-50/45 border border-slate-200 rounded-2xl p-4.5 flex flex-col space-y-4 w-72 shrink-0 shadow-3xs">
                 
                 {/* Column header */}
-                <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
                   <div className="space-y-0.5">
                     <h3 className="font-bold text-slate-900 text-xs block">{stageLabels[stage]}</h3>
                     <span className="text-[10px] text-slate-450 font-bold block">{stageDeals.length} Deals</span>
