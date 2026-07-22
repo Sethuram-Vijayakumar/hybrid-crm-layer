@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   Search, TrendingUp, AlertTriangle, Zap, Brain
 } from 'lucide-react';
 
 export default function AICommandCenter() {
+  const router = useRouter();
   
   // States
   const [promptText, setPromptText] = useState('');
