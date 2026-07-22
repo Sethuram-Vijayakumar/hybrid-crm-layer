@@ -216,7 +216,7 @@ export default function PipelinePage() {
               <div key={stage} className="bg-slate-50/45 border border-slate-200 rounded-2xl p-4.5 flex flex-col space-y-4 w-72 shrink-0 shadow-3xs">
                 
                 {/* Column header */}
-                <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-2.5 px-2">
                   <div className="space-y-0.5">
                     <h3 className="font-bold text-slate-900 text-xs block">{stageLabels[stage]}</h3>
                     <span className="text-[10px] text-slate-450 font-bold block">{stageDeals.length} Deals</span>
