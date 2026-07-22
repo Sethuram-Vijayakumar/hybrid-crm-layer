@@ -1158,26 +1158,28 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <div className="h-2.5 w-2.5 rounded-full bg-amber-400" />
                   <div className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
                   <div className="bg-slate-200/60 rounded px-3 py-0.5 text-[9px] font-mono text-slate-500 w-3/4 mx-auto truncate">
-                    figma.com/file/doodleblue-hybrid-crm-overlay
+                    https://www.figma.com/design/I544lGrdsgBQJscYTdBlbX/Doodle-Blue...
                   </div>
                 </div>
 
                 <div className="space-y-3 py-6">
-                  <span className="text-[10px] font-extrabold text-[#C9922E] uppercase tracking-widest block">Figma Prototype Placeholder</span>
+                  <span className="text-[10px] font-extrabold text-[#C9922E] uppercase tracking-widest block font-bold">Figma Live Design</span>
                   <p className="text-xs text-slate-505 max-w-xs font-semibold">
-                    Interactive prototype will be linked after design completion.
+                    The Figma file contains the refined design iteration used as the reference for the final interactive implementation.
                   </p>
                 </div>
 
                 <div className="w-full pt-4">
-                  <button
-                    disabled
-                    className="w-full bg-slate-800 text-slate-400 border border-slate-700 text-xs py-3 px-6 rounded-xl font-bold uppercase cursor-not-allowed transition"
+                  <a
+                    href="https://www.figma.com/design/I544lGrdsgBQJscYTdBlbX/Doodle-Blue---CRM-Adaptation---Dashboard-Design?node-id=6-6774&t=x8ncvxecePohzVnn-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block w-full bg-slate-900 hover:bg-slate-800 text-white text-xs py-3 px-6 rounded-xl font-bold uppercase transition"
                   >
-                    Open Interactive Figma Prototype
-                  </button>
+                    Open Live Figma Design Canvas
+                  </a>
                   <span className="text-[8px] text-slate-400 block mt-1.5 font-bold uppercase tracking-wider">
-                    Figma Link (Coming Soon)
+                    Click to view frames and layouts specs
                   </span>
                 </div>
               </div>
@@ -1195,14 +1197,84 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   </ul>
                 </div>
 
-                <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-2">
-                  <span className="text-slate-808 font-bold block uppercase tracking-wider text-[9px]">Design Principles</span>
-                  <ul className="list-disc pl-4 space-y-1 text-[10px] text-slate-605">
-                    <li>Enterprise-first UX</li>
-                    <li>Accessible Components (WCAG)</li>
-                    <li>Responsive Layout System</li>
-                    <li>AI-assisted Decision Workflows</li>
+                {/* View Refined Figma Design Card */}
+                <div className="bg-indigo-50 border border-indigo-150 rounded-xl p-4 space-y-3">
+                  <span className="text-indigo-808 font-bold block uppercase tracking-wider text-[9px]">View Refined Figma Design</span>
+                  <a
+                    href="https://www.figma.com/design/I544lGrdsgBQJscYTdBlbX/Doodle-Blue---CRM-Adaptation---Dashboard-Design?node-id=6-6774&t=x8ncvxecePohzVnn-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block w-full bg-indigo-650 hover:bg-indigo-700 text-white text-[10px] py-2.5 px-4 rounded-lg font-bold uppercase transition text-center shadow-xs"
+                  >
+                    Open Refined Figma Design
+                  </a>
+                  <p className="text-[9.5px] text-slate-500 font-semibold leading-normal">
+                    The Figma file contains the refined design iteration used as the reference for the final interactive implementation.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Design Evolution Section */}
+            <div className="border-t border-slate-200 pt-6 space-y-4">
+              <h3 className="text-xs font-bold text-[#1B1F2A] uppercase tracking-wider">Design Evolution</h3>
+              
+              <div className="flex flex-row items-center justify-between gap-2 overflow-x-auto pb-2">
+                
+                {/* Stage 1 */}
+                <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 flex-1 min-w-[200px] space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">🪄</span>
+                    <h4 className="font-bold text-xs text-slate-800">Google Stitch</h4>
+                  </div>
+                  <span className="text-[9px] uppercase tracking-wider text-[#C9922E] font-bold block">Initial UI Concepts</span>
+                  <ul className="text-[10px] text-slate-600 space-y-1 list-disc pl-3 font-semibold">
+                    <li>Rapidly generated initial interface concepts</li>
+                    <li>Accelerated early design exploration</li>
                   </ul>
+                </div>
+
+                <div className="text-slate-300 font-extrabold text-sm select-none">➔</div>
+
+                {/* Stage 2 */}
+                <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 flex-1 min-w-[200px] space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">🎨</span>
+                    <h4 className="font-bold text-xs text-slate-800">Figma</h4>
+                  </div>
+                  <span className="text-[9px] uppercase tracking-wider text-[#C9922E] font-bold block">UX & Visual Refinement</span>
+                  <ul className="text-[10px] text-slate-600 space-y-1 list-disc pl-3 font-semibold">
+                    <li>Refined layouts and user flows</li>
+                    <li>Improved visual hierarchy and spacing</li>
+                    <li>Increased design consistency and usability</li>
+                  </ul>
+                </div>
+
+                <div className="text-slate-300 font-extrabold text-sm select-none">➔</div>
+
+                {/* Stage 3 */}
+                <div className="bg-indigo-50 border border-indigo-150 rounded-xl p-4 flex-1 min-w-[200px] space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">🚀</span>
+                    <h4 className="font-bold text-xs text-indigo-900">Antigravity</h4>
+                  </div>
+                  <span className="text-[9px] uppercase tracking-wider text-indigo-700 font-bold block">Interactive Implementation</span>
+                  <ul className="text-[10px] text-indigo-950 space-y-1 list-disc pl-3 font-semibold">
+                    <li>Implemented the refined designs</li>
+                    <li>Built an interactive presentation and working prototype</li>
+                    <li>Validated navigation and user experience</li>
+                  </ul>
+                </div>
+
+              </div>
+
+              {/* Design Process Note Card */}
+              <div className="bg-indigo-50 border border-indigo-150 rounded-xl p-4 text-[10.5px] text-slate-700 leading-relaxed font-semibold">
+                <div className="flex items-start space-x-2">
+                  <span className="text-indigo-600 text-sm shrink-0">ℹ️</span>
+                  <p>
+                    To speed up the design process, initial UI concepts were generated using Google Stitch, refined in Figma for better UX and visual consistency, and implemented as an interactive prototype in Antigravity. In a real product, this design would go through additional user testing and refinement before development.
+                  </p>
                 </div>
               </div>
             </div>
