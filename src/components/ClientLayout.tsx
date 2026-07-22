@@ -667,41 +667,70 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 2: // Slide 2: How the Current Process Works (Before)
+      case 2: // Slide 2: How Deals Are Processed Today
         return (
-          <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+          <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-rose-50 text-rose-700 rounded-md uppercase tracking-wider">
-              Slide 2 of 19 • The Current Process (Before)
+              Slide 2 of 19 • Current Process
             </span>
             <div className="space-y-1">
-              <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">The Current Process (Before)</h2>
-              <p className="text-xs text-slate-500 font-semibold font-bold">Standard manual email pipeline bottleneck statement.</p>
+              <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">How Deals Are Processed Today</h2>
+              <p className="text-xs text-slate-500 font-semibold font-bold">A typical enterprise workflow after the Sales team closes a customer deal.</p>
             </div>
 
-            {/* Vertical Flow Diagram */}
-            <div className="flex flex-col items-center space-y-2 py-4">
+            {/* Horizontal Workflow Grid */}
+            <div className="flex flex-row items-center justify-between pt-4 overflow-x-auto pb-4 gap-2">
               {[
-                { step: 'Sales Wins Deal', desc: 'Representative closes a new customer deal.' },
-                { step: 'Email Legal', desc: 'Manual draft with contract attachment sent to Legal Operations.' },
-                { step: 'Wait...', desc: 'Legal queue hold. Rep has zero status visibility.' },
-                { step: 'Email Finance', desc: 'Billing details sent to Finance manually.' },
-                { step: 'Wait...', desc: 'Finance validation and term delays.' },
-                { step: 'Email Delivery', desc: 'Manual check of staffing and project capacity.' }
-              ].map((flow, idx) => (
+                { title: 'Sales Wins a Deal', label: 'Manual', icon: '🤝' },
+                { title: 'Sends Email to Legal', label: 'Email', icon: '✉️' },
+                { title: 'Legal Reviews Contract', label: 'Waiting', icon: '📄' },
+                { title: 'Sends to Finance', label: 'Email', icon: '➔' },
+                { title: 'Finance Validates Pricing', label: 'Waiting', icon: '🧮' },
+                { title: 'Sends to Delivery', label: 'Email', icon: '➔' },
+                { title: 'Delivery Checks Resources', label: 'Waiting', icon: '👥' },
+                { title: 'Project Starts', label: 'Follow-up', icon: '▶️' }
+              ].map((step, idx, arr) => (
                 <React.Fragment key={idx}>
-                  <div className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-center shadow-3xs max-w-md">
-                    <span className="font-bold text-slate-800 text-xs block">{flow.step}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5 font-medium">{flow.desc}</span>
+                  <div className="flex flex-col items-center text-center space-y-2 min-w-[100px] shrink-0">
+                    <span className="text-[8px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100/50">
+                      {step.label}
+                    </span>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 shadow-3xs w-14 h-14 flex items-center justify-center text-xl relative">
+                      <span>{step.icon}</span>
+                      <span className="absolute -top-1.5 -left-1.5 bg-slate-800 text-white font-extrabold text-[8px] h-4 w-4 rounded-full flex items-center justify-center">
+                        {idx + 1}
+                      </span>
+                    </div>
+                    <span className="text-[9px] font-bold text-slate-800 leading-tight max-w-[90px]">
+                      {step.title}
+                    </span>
                   </div>
-                  {idx < 5 && <div className="text-rose-400 text-xs font-mono">▼</div>}
+                  {idx < arr.length - 1 && (
+                    <div className="text-slate-300 font-extrabold text-sm select-none leading-none pt-4 text-center shrink-0">➔</div>
+                  )}
                 </React.Fragment>
               ))}
             </div>
 
-            {/* Red Callout Box */}
-            <div className="bg-rose-50 border border-rose-100 rounded-xl p-4 text-xs text-rose-800 space-y-1 font-semibold leading-relaxed">
-              <div className="font-bold uppercase tracking-wider text-[8.5px]">Result:</div>
-              <p>• Approval delays, fragmented communication, and poor visibility.</p>
+            {/* Bottom Challenges section */}
+            <div className="space-y-3 pt-2">
+              <h3 className="text-xs font-bold text-rose-700 uppercase tracking-wider">Operational Challenges</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[
+                  { title: 'Manual approvals', desc: 'No system triggers; alerts rely entirely on rep emails.' },
+                  { title: 'Poor visibility', desc: 'Silos obscure contract review statuses and handoff stages.' },
+                  { title: 'Multiple email threads', desc: 'Version discrepancies and lost communications.' },
+                  { title: 'Slow project kickoff', desc: 'Holds average 4.4 days due to resource checks.' }
+                ].map((c, idx) => (
+                  <div key={idx} className="bg-rose-55 bg-rose-50/20 border border-rose-100 rounded-xl p-4 space-y-1 hover-card-glow border-l-4 border-l-rose-500">
+                    <h4 className="text-xs font-bold text-rose-800 flex items-center space-x-1">
+                      <span>❌</span>
+                      <span>{c.title}</span>
+                    </h4>
+                    <p className="text-[9.5px] text-slate-500 font-medium leading-relaxed">{c.desc}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {renderNarrativeTransition(
@@ -711,118 +740,102 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 3: // Slide 3: How the Hybrid CRM Overlay Works (After)
+      case 3: // Slide 3: How the Hybrid CRM Overlay Works
         return (
           <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md uppercase tracking-wider">
-              Slide 3 of 19 • How the Hybrid CRM Overlay Works
+              Slide 3 of 19 • Proposed Solution Workflow
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">How the Hybrid CRM Overlay Works</h2>
-              <p className="text-xs text-slate-500 font-semibold font-bold">Standard automated overlay workflow explained with zero CRM knowledge required.</p>
+              <p className="text-xs text-slate-500 font-semibold font-bold">A single workflow that connects every department without replacing the existing CRM.</p>
             </div>
 
-            {/* 9 Step Process Diagram */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            {/* Horizontal Workflow Flow */}
+            <div className="flex flex-col space-y-6 pt-2">
               
-              {/* Steps 1-3 */}
-              <div className="space-y-3">
-                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-3xs space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-indigo-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">1</div>
-                  <h4 className="font-bold text-xs text-[#1B1F2A] flex items-center space-x-1.5">
-                    <span>🤝</span>
-                    <span>Sales Wins a Deal</span>
-                  </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">A sales representative closes a new customer deal.</p>
+              {/* Top Row: Sales Wins -> HubSpot CRM -> Hybrid CRM Overlay */}
+              <div className="flex items-center justify-center space-x-6">
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-3xs text-center w-48 relative">
+                  <span className="font-bold text-slate-800 text-xs block">🤝 Sales Wins a Deal</span>
+                  <span className="text-[9px] text-slate-500 block mt-0.5 font-semibold">Logged by Sales Rep</span>
                 </div>
-                <div className="text-center text-indigo-300 font-bold text-xs leading-none py-0.5">▼</div>
-                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-3xs space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-indigo-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">2</div>
-                  <h4 className="font-bold text-xs text-[#1B1F2A] flex items-center space-x-1.5">
-                    <span>🗄</span>
-                    <span>Deal Enters Existing CRM</span>
-                  </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">The customer and deal details are saved in HubSpot.</p>
+                <div className="text-indigo-405 font-extrabold text-sm select-none">➔</div>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-3xs text-center w-48 relative">
+                  <span className="font-bold text-slate-800 text-xs block">🗄️ Existing CRM (HubSpot)</span>
+                  <span className="text-[9px] text-slate-500 block mt-0.5 font-semibold">Single Source of Record</span>
                 </div>
-                <div className="text-center text-indigo-300 font-bold text-xs leading-none py-0.5">▼</div>
-                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-3xs space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-indigo-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">3</div>
-                  <h4 className="font-bold text-xs text-[#1B1F2A] flex items-center space-x-1.5">
-                    <span>⛓</span>
-                    <span>Hybrid CRM Overlay Starts</span>
-                  </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">The system automatically starts the internal approval process.</p>
+                <div className="text-indigo-405 font-extrabold text-sm select-none">➔</div>
+                <div className="bg-indigo-55 bg-indigo-50 border-2 border-indigo-500 rounded-xl p-4 shadow-xs text-center w-52 relative animate-pulse">
+                  <span className="font-bold text-indigo-800 text-xs block">⚙️ Hybrid CRM Overlay</span>
+                  <span className="text-[9px] text-indigo-600 block mt-0.5 font-semibold">Starts Approval Pipeline</span>
                 </div>
               </div>
 
-              {/* Steps 4-6 (Parallel reviews & AI) */}
-              <div className="space-y-3 bg-indigo-50/20 p-3 rounded-2xl border border-indigo-100/50">
-                <div className="bg-[#1B1F2A] text-white rounded-xl p-3.5 shadow-md space-y-1 relative border border-slate-800">
-                  <div className="absolute -top-2.5 -left-2 bg-[#C9922E] text-[#1B1F2A] text-[9px] font-black px-1.5 py-0.5 rounded-md">4</div>
-                  <h4 className="font-bold text-xs text-white flex items-center space-x-1.5">
-                    <span>✨</span>
-                    <span className="text-[#C9922E]">AI Assists Each Team</span>
-                  </h4>
-                  <p className="text-[9.5px] text-slate-350 leading-relaxed">AI summarizes contracts, highlights risks and suggests priorities.</p>
+              {/* Parallel Lanes Section */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-stretch px-6">
+                
+                {/* Lane 1: Legal */}
+                <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-center text-center shadow-3xs space-y-1">
+                  <span className="text-xl block">⚖️</span>
+                  <span className="font-bold text-slate-808 text-xs block">Legal</span>
+                  <span className="text-[9.5px] text-slate-500 font-medium">Contract Review</span>
                 </div>
-                <div className="text-center text-indigo-300 font-bold text-xs leading-none">▼</div>
-                <div className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-3xs space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-indigo-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">5</div>
-                  <h4 className="font-bold text-xs text-[#1B1F2A] flex items-center space-x-1.5">
-                    <span>⚖</span>
-                    <span>Legal Review</span>
-                  </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">Checks contracts and compliance. Approve or Request Changes.</p>
+
+                {/* Lane 2: Finance */}
+                <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-center text-center shadow-3xs space-y-1">
+                  <span className="text-xl block">💳</span>
+                  <span className="font-bold text-slate-808 text-xs block">Finance</span>
+                  <span className="text-[9.5px] text-slate-500 font-medium font-bold">Pricing & Payment Validation</span>
                 </div>
-                <div className="text-center text-indigo-300 font-bold text-xs leading-none">▼</div>
-                <div className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-3xs space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-indigo-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">6</div>
-                  <h4 className="font-bold text-xs text-[#1B1F2A] flex items-center space-x-1.5">
-                    <span>💳</span>
-                    <span>Finance Review</span>
-                  </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">Validates pricing and payment terms. Approve or Request Changes.</p>
+
+                {/* Lane 3: Delivery */}
+                <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-center text-center shadow-3xs space-y-1">
+                  <span className="text-xl block">📅</span>
+                  <span className="font-bold text-slate-808 text-xs block">Delivery</span>
+                  <span className="text-[9.5px] text-slate-500 font-medium">Resource & Capacity Planning</span>
                 </div>
+
+                {/* AI Assistant Card (Beside lanes) */}
+                <div className="bg-[#1B1F2A] text-white rounded-xl p-4 flex flex-col justify-center border border-slate-800 shadow-md space-y-1.5">
+                  <div className="flex items-center space-x-1">
+                    <span className="text-sm">✨</span>
+                    <span className="font-bold text-white text-xs block text-[#C9922E]">AI Assistant</span>
+                  </div>
+                  <ul className="text-[8.5px] text-slate-350 space-y-0.5 list-disc pl-3">
+                    <li>Contract Summary</li>
+                    <li>Risk Detection</li>
+                    <li>Priority Suggestions</li>
+                    <li>Resource Insights</li>
+                  </ul>
+                  <span className="text-[7.5px] text-[#C9922E] block italic leading-tight mt-1 font-semibold">Supporting human reviewers</span>
+                </div>
+
               </div>
 
-              {/* Steps 7-9 */}
-              <div className="space-y-3">
-                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-3xs space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-indigo-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">7</div>
-                  <h4 className="font-bold text-xs text-[#1B1F2A] flex items-center space-x-1.5">
-                    <span>📅</span>
-                    <span>Delivery Review</span>
-                  </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">Checks resource availability and project capacity. Approve or Request Changes.</p>
+              {/* Bottom Merging Row: Final Approval -> CRM Updated -> Project Ready */}
+              <div className="flex items-center justify-center space-x-6">
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center w-44 shadow-3xs">
+                  <span className="font-bold text-slate-800 text-xs block">✅ Final Approval</span>
                 </div>
-                <div className="text-center text-indigo-300 font-bold text-xs leading-none py-0.5">▼</div>
-                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-3xs space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-indigo-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">8</div>
-                  <h4 className="font-bold text-xs text-[#1B1F2A] flex items-center space-x-1.5">
-                    <span>✅</span>
-                    <span>Final Approval</span>
-                  </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">All departments approve the deal.</p>
+                <div className="text-indigo-405 font-extrabold text-sm select-none">➔</div>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center w-44 shadow-3xs">
+                  <span className="font-bold text-slate-800 text-xs block">🔄 CRM Updated</span>
                 </div>
-                <div className="text-center text-indigo-300 font-bold text-xs leading-none py-0.5">▼</div>
-                <div className="bg-emerald-50 border border-emerald-250 rounded-xl p-4 shadow-sm space-y-1 relative">
-                  <div className="absolute -top-2.5 -left-2 bg-emerald-650 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">9</div>
-                  <h4 className="font-bold text-xs text-emerald-800 flex items-center space-x-1.5">
-                    <span>🚀</span>
-                    <span>Project Ready</span>
-                  </h4>
-                  <p className="text-[10px] text-emerald-600 font-semibold leading-relaxed">The CRM updates automatically and the project moves into delivery.</p>
+                <div className="text-indigo-405 font-extrabold text-sm select-none">➔</div>
+                <div className="bg-emerald-50 border border-emerald-250 rounded-xl p-3 text-center w-48 shadow-sm">
+                  <span className="font-bold text-emerald-800 text-xs block">🚀 Project Ready for Delivery</span>
                 </div>
               </div>
 
             </div>
 
-            {/* Insight & Note Footer */}
-            <div className="flex flex-col sm:flex-row justify-between items-center bg-slate-50/70 border border-slate-200 p-4 rounded-xl gap-4 text-xs">
+            {/* Blue Highlight Takeaway Card */}
+            <div className="flex flex-col sm:flex-row justify-between items-center bg-indigo-50 border border-indigo-150 p-4 rounded-xl gap-4 text-xs">
               <div className="flex items-start space-x-2 flex-1">
-                <span className="text-[#C9922E] shrink-0 font-bold text-sm">💡 Key Idea</span>
+                <span className="text-indigo-700 shrink-0 font-bold text-sm">💡 Key Takeaway</span>
                 <p className="text-[10.5px] text-slate-700 leading-relaxed font-semibold">
-                  The existing CRM continues managing customers while the Hybrid CRM Overlay coordinates internal approvals and AI-assisted collaboration across departments.
+                  The existing CRM continues managing customer relationships. The Hybrid CRM Overlay coordinates internal approvals, collaboration, and AI-assisted decision support across departments.
                 </p>
               </div>
               <div className="text-slate-400 text-[9px] font-bold uppercase tracking-widest text-right shrink-0">
