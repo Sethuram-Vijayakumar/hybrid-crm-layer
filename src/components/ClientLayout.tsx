@@ -220,7 +220,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [presenterCardCollapsed, setPresenterCardCollapsed] = useState<boolean>(false);
   const [showDetailedGuideNotes, setShowDetailedGuideNotes] = useState<boolean>(false);
   const [showHandoffModal, setShowHandoffModal] = useState<boolean>(false);
-  const [sectionIntroActive, setSectionIntroActive] = useState<string | null>(null);
+
 
   // Expandable state for Prompt Library cards (Slide 15)
   const [expandedPromptTab, setExpandedPromptTab] = useState<string | null>(null);
