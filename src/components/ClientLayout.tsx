@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { 
+  LayoutGrid,
   Columns, 
   CheckCircle2, 
   Settings, 
@@ -330,12 +331,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     };
   }, [presentationMode]);
 
-  // Redirect standard mode root path to /pipeline
-  useEffect(() => {
-    if (!presentationMode && pathname === '/') {
-      router.push('/pipeline');
-    }
-  }, [presentationMode, pathname, router]);
+
 
   const handleNextSlide = () => {
     if (customSequence.length > 0) {
@@ -548,6 +544,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // Standard Mode Side Navigation Items
   const standardNavItems = [
+    { name: 'Dashboard', href: '/', icon: LayoutGrid },
     { name: 'Pipeline Board', href: '/pipeline', icon: Columns },
     { name: 'Approvals Queue', href: '/approvals', icon: CheckCircle2, badge: highRiskApprovalsCount > 0 ? highRiskApprovalsCount : undefined },
     { name: 'Blended Analytics', href: '/analytics', icon: BarChart3 },
@@ -1053,37 +1050,149 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         );
 
-      case 8: // User Journey
+      case 8: // User Journey Before vs After Comparison
         return (
-          <div className="space-y-6 max-w-4xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
+          <div className="space-y-6 max-w-5xl mx-auto p-6 animate-slide-fade text-slate-700 bg-white border border-slate-200 rounded-2xl shadow-xs">
             <span className="text-[10px] font-bold px-2.5 py-1 bg-[#C9922E]/10 text-[#C9922E] rounded-md uppercase tracking-wider">
-              Slide 8 of 18 • User Journey Transition
+              Slide 8 of 18 • How the Hybrid CRM Overlay Works
             </span>
             <div className="space-y-1">
               <h2 className="text-3xl font-semibold text-[#1B1F2A] tracking-tight">Streamlining the Operational Journey</h2>
               <p className="text-xs text-slate-500 font-semibold font-bold">Comparison of the contract lifecycle before and after overlay implementation.</p>
             </div>
 
-            <div className="space-y-4 text-xs font-semibold">
-              <div className="bg-rose-50/20 border border-rose-100 p-4 rounded-xl space-y-2">
-                <h4 className="text-rose-600 font-bold uppercase tracking-wider text-[10px]">Before (Siloed Workflow - Average 4.4 Days)</h4>
-                <p className="text-slate-605 leading-relaxed">
-                  Opportunity logged ➔ Legal/Finance manually emailed ➔ Contract sits in inbox queue ➔ Project delivery capacity checked manually ➔ Delayed contract signatures.
-                </p>
+            {/* Split Diagram Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
+              
+              {/* Before Column (Manual / Siloed) */}
+              <div className="bg-rose-50/15 border border-rose-100 rounded-2xl p-5 space-y-4">
+                <h4 className="text-rose-700 font-bold uppercase tracking-wider text-[10px] border-b border-rose-100 pb-2 flex items-center space-x-1.5">
+                  <span>❌</span>
+                  <span>Before (Siloed Manual Pipeline)</span>
+                </h4>
+
+                <div className="flex flex-col items-center space-y-2 py-2">
+                  {[
+                    { label: 'Sales Wins Deal', desc: 'Closed-Won deal logged by Rep' },
+                    { label: 'Email Legal', desc: 'Manual draft with contract attachment' },
+                    { label: 'Wait...', desc: 'Legal queue hold (no status visibility)' },
+                    { label: 'Email Finance', desc: 'Billing details sent via email' },
+                    { label: 'Wait...', desc: 'Finance validation delays' },
+                    { label: 'Email Delivery', desc: 'Manual check of staffing availability' }
+                  ].map((step, idx) => (
+                    <React.Fragment key={idx}>
+                      <div className="w-full bg-white border border-rose-100 rounded-xl p-2.5 text-center shadow-3xs max-w-xs">
+                        <span className="font-bold text-slate-800 text-[10.5px] block">{step.label}</span>
+                        <span className="text-[9.5px] text-slate-400 block mt-0.5">{step.desc}</span>
+                      </div>
+                      {idx < 5 && (
+                        <div className="text-rose-300 text-xs font-bold font-mono">↓</div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+
+                <div className="bg-rose-50 border border-rose-100 rounded-xl p-3 text-[10px] text-rose-800 space-y-1 font-semibold leading-relaxed">
+                  <div className="font-bold uppercase tracking-wider text-[8.5px]">Workflow Risks:</div>
+                  <p>• Disconnected queues create blindspots.</p>
+                  <p>• Manual reminders result in missed follow-ups.</p>
+                  <p>• Lack of unified approval audit tracking.</p>
+                </div>
               </div>
 
-              <div className="bg-[#FBF1DE]/25 border border-[#C9922E]/20 p-4 rounded-xl space-y-2">
-                <h4 className="text-[#C9922E] font-bold uppercase tracking-wider text-[10px]">After (Proposed Hybrid Workflow - Target 1.5 Days)</h4>
-                <p className="text-slate-707 leading-relaxed">
-                  Opportunity logged ➔ Webhooks auto-sync to Supabase ➔ Custom Approvals dashboard ➔ AI risk scoring prioritize queues ➔ Automated capacity check alerts ➔ Rapid contract sign-off.
-                </p>
+              {/* After Column (Proposed Hybrid CRM Overlay) */}
+              <div className="bg-indigo-50/10 border border-indigo-150 rounded-2xl p-5 space-y-4 relative">
+                <h4 className="text-indigo-800 font-bold uppercase tracking-wider text-[10px] border-b border-indigo-150 pb-2 flex items-center space-x-1.5">
+                  <span>✨</span>
+                  <span>After (Hybrid CRM Overlay Workflow)</span>
+                </h4>
+
+                <div className="flex flex-col items-center space-y-2 py-2 relative">
+                  
+                  {/* Step 1: Sales Wins Deal */}
+                  <div className="w-full bg-white border border-indigo-100 rounded-xl p-2.5 text-center shadow-3xs max-w-xs relative">
+                    <span className="font-bold text-slate-800 text-[10.5px] block">🤝 1. Sales Wins Deal</span>
+                    <span className="text-[9.5px] text-slate-500 block mt-0.5 font-semibold">Representative closes customer deal</span>
+                  </div>
+                  
+                  <div className="text-indigo-300 text-xs font-bold font-mono">↓</div>
+
+                  {/* Step 2: Existing CRM */}
+                  <div className="w-full bg-white border border-indigo-100 rounded-xl p-2.5 text-center shadow-3xs max-w-xs">
+                    <span className="font-bold text-slate-800 text-[10.5px] block">🗄 2. Deal Enters Existing CRM</span>
+                    <span className="text-[9.5px] text-slate-500 block mt-0.5 font-semibold">Deal saved in HubSpot (System of Record)</span>
+                  </div>
+                  
+                  <div className="text-indigo-300 text-xs font-bold font-mono">↓</div>
+
+                  {/* Step 3: Overlay Workflow */}
+                  <div className="w-full bg-white border border-indigo-100 rounded-xl p-2.5 text-center shadow-3xs max-w-xs">
+                    <span className="font-bold text-slate-800 text-[10.5px] block">⛓ 3. Hybrid CRM Overlay Workflow</span>
+                    <span className="text-[9.5px] text-slate-500 block mt-0.5 font-semibold">Webhook auto-triggers approval pipeline</span>
+                  </div>
+                  
+                  <div className="text-indigo-300 text-xs font-bold font-mono">↓</div>
+
+                  {/* Shared Step: AI Assistant & Department Reviewers Grid */}
+                  <div className="w-full max-w-sm grid grid-cols-1 sm:grid-cols-4 gap-2 items-center bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100/80">
+                    
+                    {/* Supporting AI assistant (rendered beside reviewers) */}
+                    <div className="bg-[#1B1F2A] text-white p-2 rounded-lg text-center border border-slate-800 space-y-1 sm:col-span-1 shrink-0 shadow-xs">
+                      <span className="text-xs block">✨</span>
+                      <span className="text-[9px] font-black uppercase tracking-wider block text-[#C9922E]">AI Assistant</span>
+                      <span className="text-[8px] text-slate-400 block font-normal leading-tight">Flags risks, sums text & ranks priority</span>
+                    </div>
+
+                    {/* Department Reviewers Column */}
+                    <div className="sm:col-span-3 space-y-1.5">
+                      <div className="bg-white border border-slate-200 p-1.5 rounded-md text-[9.5px] leading-none flex justify-between items-center">
+                        <span className="font-bold text-slate-800">⚖ 4. Legal Review</span>
+                        <span className="text-[8px] text-slate-400">Compliance check</span>
+                      </div>
+                      <div className="bg-white border border-slate-200 p-1.5 rounded-md text-[9.5px] leading-none flex justify-between items-center">
+                        <span className="font-bold text-slate-800">💳 5. Finance Review</span>
+                        <span className="text-[8px] text-slate-400">Validate terms</span>
+                      </div>
+                      <div className="bg-white border border-slate-200 p-1.5 rounded-md text-[9.5px] leading-none flex justify-between items-center">
+                        <span className="font-bold text-slate-800">📅 6. Delivery Review</span>
+                        <span className="text-[8px] text-slate-400">Capacity check</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-indigo-300 text-xs font-bold font-mono">↓</div>
+
+                  {/* Step 7: Final Approvals */}
+                  <div className="w-full bg-white border border-indigo-100 rounded-xl p-2.5 text-center shadow-3xs max-w-xs">
+                    <span className="font-bold text-slate-800 text-[10.5px] block">✅ 7. Final Approvals Complete</span>
+                    <span className="text-[9.5px] text-slate-500 block mt-0.5 font-semibold">All review departments sign off</span>
+                  </div>
+
+                  <div className="text-indigo-300 text-xs font-bold font-mono">↓</div>
+
+                  {/* Step 8: Project Ready */}
+                  <div className="w-full bg-emerald-50 border border-emerald-250 rounded-xl p-2.5 text-center shadow-sm max-w-xs">
+                    <span className="font-bold text-emerald-800 text-[10.5px] block">🚀 8. Project Ready</span>
+                    <span className="text-[9.5px] text-emerald-600 block mt-0.5 font-semibold">HubSpot auto-updates ➔ Staffing begins</span>
+                  </div>
+
+                </div>
               </div>
+
             </div>
 
-            {renderConsultantsNote(
-              'Workflow Illustration',
-              'This journey illustrates a representative approval process. Actual workflows may differ across departments and should be confirmed during business process mapping.'
-            )}
+            {/* Insight & Note Footer */}
+            <div className="flex flex-col sm:flex-row justify-between items-center bg-slate-50/70 border border-slate-200 p-4 rounded-xl gap-4 text-xs">
+              <div className="flex items-start space-x-2 flex-1">
+                <span className="text-[#C9922E] shrink-0 font-bold text-sm">💡 Key Idea</span>
+                <p className="text-[10.5px] text-slate-700 leading-relaxed font-semibold">
+                  The existing CRM continues managing customers while the Hybrid CRM Overlay coordinates internal approvals and AI-assisted collaboration across departments.
+                </p>
+              </div>
+              <div className="text-slate-400 text-[9px] font-bold uppercase tracking-widest text-right shrink-0">
+                AI supports decision-making. Final approvals always remain with people.
+              </div>
+            </div>
 
             {renderNarrativeTransition(
               'How will this improve workflows?',
